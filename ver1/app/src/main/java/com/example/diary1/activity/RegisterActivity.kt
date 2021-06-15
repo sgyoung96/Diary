@@ -103,18 +103,33 @@ class RegisterActivity : AppCompatActivity() {
             getImage()
         }
 
+        // TODO: NAME, ID, PW 저장할 때 공백 체크 예외
         btn_register_submit.setOnClickListener {
-
             /**
              * 예외처리 (입력 양식)
              */
-            // EditText 공란일 때 예외처리
+            // EditText 공란일 때 예외처리 - Toast 띄우고 이후 액션 없어서 return 처리 안함
             if (et_register_name.text.isNullOrEmpty() ||
                 et_register_id.text.isNullOrEmpty() ||
                 et_register_pw.text.isNullOrEmpty() ||
                 et_register_pw2.text.isNullOrEmpty()) {
                 Toast.makeText(this, "양식을 다 채워주세요", Toast.LENGTH_SHORT).show()
             } else {
+                /**
+                 * 1. 입력양식 예외처리
+                 * 2. 데이터 저장
+                 * 3. 화면 전환 및 종료
+                 */
+
+                // 공백이 포함되면 안내 메시지 띄우고 return
+                if (et_register_name.text.toString().contains(" ") ||
+                    et_register_id.text.toString().contains(" ") ||
+                    et_register_pw.text.toString().contains(" ") ||
+                    et_register_pw2.text.toString().contains(" ")) {
+                    Toast.makeText(this, "공백은 포함될 수 없어요", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 if (et_register_name.text.length > 5) {
                     Toast.makeText(this, "이름은 5글자를 넘을 수 없어요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
@@ -293,7 +308,7 @@ class RegisterActivity : AppCompatActivity() {
     // [2] : SQLite
     fun saveData() {
 
-        // TODO: 기 저장된 데이터면 예외 걸기
+        // 이미 저장된 아이디가 있으면 return
         if (!checkMember()) {
             Toast.makeText(this, "이미 등록된 ID 입니다", Toast.LENGTH_SHORT).show()
             return
