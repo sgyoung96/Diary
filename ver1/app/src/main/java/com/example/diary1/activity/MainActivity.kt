@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  * <!-- Status bar color. -->
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
+// TODO: RegisterActivity 에서 saveData() 에 같은 이름의 변수들 선언한 것 전역변수로 빼기
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-/*
-[물어볼 것]
-if 문에 return 안 해도 되는지
-RegisterActivity > 변수 선언 많아도 되는지 (같은 이름으로 지역 변수들 선언함)
-else 문 안에서 예외처리 뿐만 아니라 모든 작업들 다 해도 되는지 (if 문 사용법)
-*/
