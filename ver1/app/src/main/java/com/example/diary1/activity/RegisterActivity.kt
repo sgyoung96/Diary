@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.RegionIterator
@@ -55,7 +56,7 @@ import java.util.regex.Pattern
  * 7. 비밀번호 확인란 일치/불일치 체크
  * 8. 프로필 사진 등록(앨범에서 선택 및 사진 촬영) 예외
  * 9. 다 통과하면,
- * 9-1. 스택(?)에서 이 화면 없애기
+ * 9-1. 스택에서 이 화면 없애기
  * 9-2. 기기 내부에 회원가입 정보 저장하기 (이름, 아이디, 비밀번호, 프로필사진) // 저장할 때, 공백 없애기!
  * 9-3. 메인화면으로 화면 전환하기
  */
@@ -300,7 +301,9 @@ class RegisterActivity : AppCompatActivity() {
         // dbHelper 초기화 (내가 생성하고 override 한 메소드가 있는 클래스)
         val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
         // Insert 모드로 데이터 저장소 가져옴
-        val database: SQLiteDatabase = dbHelper.writableDatabase
+        var database: SQLiteDatabase = dbHelper.writableDatabase
+        var checkRegisterQuery: String
+        var result: Cursor
 
         /**
          * 1. key 값인 ID 로 먼저 DB 를 SELECT 한다.
@@ -321,11 +324,11 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // 제대로 삽입됐는지 확인 (Select)
-        val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
+        database = dbHelper.readableDatabase
         // 1. 직전에 회원가입한 정보 확인
         try{
-            val checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
-            val result = readDatabase.rawQuery(checkRegisterQuery, null)
+            checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
+            result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
                 // akakak2
@@ -337,8 +340,8 @@ class RegisterActivity : AppCompatActivity() {
 
         // 2. 지금까지 회원가입한 모든 정보 확인
         try {
-            val checkRegisterQuery = RegisterQuery.checkAllRegister()
-            val result = readDatabase.rawQuery(checkRegisterQuery, null)
+            checkRegisterQuery = RegisterQuery.checkAllRegister()
+            result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 Log.d("SHOW ALL REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
                 // rkrkrk1 sksksk1 ekekek1 fkfkfk1 akakak2 가 한줄씩 나옴
