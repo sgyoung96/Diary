@@ -27,6 +27,7 @@ import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.SharedPreferenceManager
 import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegUtils
+import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_register.*
 import java.lang.Exception
 import java.util.*
@@ -79,13 +80,6 @@ class RegisterActivity : AppCompatActivity() {
     var context: Context? = null
 */
 
-    /**
-     * SQlite 를 사용하기 위한 변수들
-     * dbHelper, database
-     */
-    lateinit var dbHelper: SQLiteDBHelper
-    lateinit var database: SQLiteDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -94,16 +88,12 @@ class RegisterActivity : AppCompatActivity() {
         context = this
 */
 
-        // [SQLite] 유저의 회원가입 정보를 저장할 DB 생성
-        dbHelper = SQLiteDBHelper(this, "${SQLiteDBInfo.DB_NAME}", null, 1)
-
         // 이미지뷰 클릭시 앨범과 카메라에서 이미지 삽입
         // TODO: 이미지 로컬에 저장.
         iv_register_image.setOnClickListener {
             getImage()
         }
 
-        // TODO: NAME, ID, PW 저장할 때 공백 체크 예외
         btn_register_submit.setOnClickListener {
             /**
              * 예외처리 (입력 양식)
@@ -306,16 +296,23 @@ class RegisterActivity : AppCompatActivity() {
 */
 
     // [2] : SQLite
-    fun saveData() {
+    private fun saveData() {
+        // dbHelper 초기화 (내가 생성하고 override 한 메소드가 있는 클래스)
+        val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
+        // Insert 모드로 데이터 저장소 가져옴
+        val database: SQLiteDatabase = dbHelper.writableDatabase
 
-        // 이미 저장된 아이디가 있으면 return
-        if (!checkMember()) {
+        /**
+         * [2] : SQLite
+         * 1. key 값인 ID 로 먼저 DB 를 SELECT 한다.
+         * 2. 만약 결과가 있으면, return 하고, toast 메시지 띄움
+         * 3. 만약 결과가 없으면, 회원가입 진행
+         */
+        if (RegisterUtils.checkMember(this, et_register_id.text.toString())) {
             Toast.makeText(this, "이미 등록된 ID 입니다", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Insert 모드로 데이터 저장소 가져옴
-        database = dbHelper.writableDatabase
         val registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), et_register_pw.text.toString())
         try {
             database.execSQL(registerQuery) // ************ 여기서 터진다
@@ -361,28 +358,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     /**
-     * [2] : SQLite
-     * 1. key 값인 ID 로 먼저 DB 를 SELECT 한다.
-     * 2. 만약 결과가 있으면, return 하고, toast 메시지 띄움
-     * 3. 만약 결과가 없으면, 회원가입 진행
-     */
-    fun checkMember(): Boolean {
-        val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
-        val checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
-        val result = readDatabase.rawQuery(checkRegisterQuery, null)
-        while (result.moveToNext()) {
-            return false
-            break
-        }
-        return true
-    }
-
-    /**
      * 1. 회원가입이 완료됐다는 다이얼로그 표시 후,
      * 2. 메인 화면으로 화면 전환하고
      * 3. 스택에서 이 화면 없앰
      */
-    fun finishRegister() {
+    private fun finishRegister() {
         var builder = AlertDialog.Builder(this)
         builder.setTitle("가입 완료")
         builder.setMessage("회원가입이 완료되었습니다.")
@@ -405,7 +385,7 @@ class RegisterActivity : AppCompatActivity() {
     /**
      * 권한을 승인했는지 확인하는 함수
      */
-    fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+    private fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
         for (permission in permissions) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, permissions, flag)
@@ -421,7 +401,7 @@ class RegisterActivity : AppCompatActivity() {
      * 2. 각각의 버튼을 클릭했을 때, 앨범 혹은 카메라로 이동
      * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
      */
-    fun getImage() {
+    private fun getImage() {
         var builder = AlertDialog.Builder(this)
         builder.setTitle("프로필 사진 등록")
         builder.setMessage("프로필 사진을 등록하세요")
@@ -446,7 +426,7 @@ class RegisterActivity : AppCompatActivity() {
      * 앨범 열기 : openGallery
      * 카메라 열기 : openCamera
      */
-    fun openGallery() {
+    private fun openGallery() {
         if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
@@ -454,7 +434,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun openCamera() {
+    private fun openCamera() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, REQUEST_CAMERA)
