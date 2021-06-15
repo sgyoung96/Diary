@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.diary1.R
 import com.example.diary1.constants.RegisterInfo
+import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.SharedPreferenceManager
@@ -94,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
 */
 
         // [SQLite] 유저의 회원가입 정보를 저장할 DB 생성
-        dbHelper = SQLiteDBHelper(this, "DiaryDB.db", null, 1)
+        dbHelper = SQLiteDBHelper(this, "${SQLiteDBInfo.DB_NAME}", null, 1)
 
         // 이미지뷰 클릭시 앨범과 카메라에서 이미지 삽입
         // TODO: 이미지 로컬에 저장.
@@ -201,12 +202,12 @@ class RegisterActivity : AppCompatActivity() {
 */
 
                 Log.d("PASS", ">>>>>>>>>>PASS")
-                Toast.makeText(this, "통과", Toast.LENGTH_SHORT).show()
+
                 /**
                  * 입력 양식 예외처리 통과 후 데이터 로컬에 저장
+                 * 이 함수 안에서 finishRegister() 함수 호출하여 마지막 단계 진행
                  */
                 saveData()
-                finishRegister()
             }
         }
     }
@@ -293,11 +294,14 @@ class RegisterActivity : AppCompatActivity() {
     fun saveData() {
 
         // TODO: 기 저장된 데이터면 예외 걸기
-        checkMember()
+        if (!checkMember()) {
+            Toast.makeText(this, "이미 등록된 ID 입니다", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // Insert 모드로 데이터 저장소 가져옴
         database = dbHelper.writableDatabase
-        var registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), et_register_pw.text.toString())
+        val registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), et_register_pw.text.toString())
         try {
             database.execSQL(registerQuery) // ************ 여기서 터진다
         } catch (e: Exception) {
@@ -306,30 +310,62 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // 제대로 삽입됐는지 확인 (Select)
+        val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
+        // 1. 직전에 회원가입한 정보 확인
         try{
-            val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
-            var checkRegisterQuery1 = RegisterQuery.checkOneRegister(et_register_id.text.toString())
-            var result1 = readDatabase.rawQuery(checkRegisterQuery1, null)
-            while (result1.moveToNext()) {
-                Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result1.getString(result1.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
+            val checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
+            val result = readDatabase.rawQuery(checkRegisterQuery, null)
+            while (result.moveToNext()) {
+                Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
+                // akakak2
             }
         } catch (e: Exception) {
             Log.d("SHOW ONE INFO ERROR", ">>>>>>>>>>$e")
             // android.database.sqlite.SQLiteException: near "=": syntax error (code 1 SQLITE_ERROR[1]): , while compiling: SELECT * FROM USERINFOWHERE USERID = sksksk1;
         }
+
+        // 2. 지금까지 회원가입한 모든 정보 확인
+        try {
+            val checkRegisterQuery = RegisterQuery.checkAllRegister()
+            val result = readDatabase.rawQuery(checkRegisterQuery, null)
+            while (result.moveToNext()) {
+                Log.d("SHOW ALL REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
+                // rkrkrk1 sksksk1 ekekek1 fkfkfk1 akakak2 가 한줄씩 나옴
+            }
+        } catch (e: Exception) {
+            Log.d("SHOW ALL INFO ERROR", ">>>>>>>>>>$e")
+        }
+
+        /**
+         * 문제 없이 저장이 완료되면,
+         * 1. 다이어로그 띄우고,
+         * 2. 메인으로 화면 전환하고,
+         * 3. 스택에서 화면 삭제
+         */
+        finishRegister()
     }
 
     /**
      * [2] : SQLite
-     *
+     * 1. key 값인 ID 로 먼저 DB 를 SELECT 한다.
+     * 2. 만약 결과가 있으면, return 하고, toast 메시지 띄움
+     * 3. 만약 결과가 없으면, 회원가입 진행
      */
-    fun checkMember() {
-
+    fun checkMember(): Boolean {
+        val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
+        val checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
+        val result = readDatabase.rawQuery(checkRegisterQuery, null)
+        while (result.moveToNext()) {
+            return false
+            break
+        }
+        return true
     }
 
     /**
-     * 회원가입이 완료됐다는 다이얼로그 표시 후,
-     * 스택에서 이 화면 없애고 메인 화면으로 화면 전환
+     * 1. 회원가입이 완료됐다는 다이얼로그 표시 후,
+     * 2. 메인 화면으로 화면 전환하고
+     * 3. 스택에서 이 화면 없앰
      */
     fun finishRegister() {
         var builder = AlertDialog.Builder(this)
