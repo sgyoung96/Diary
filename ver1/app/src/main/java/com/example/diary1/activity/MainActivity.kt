@@ -57,4 +57,4 @@ class MainActivity : AppCompatActivity() {
 if 문에 return 안 해도 되는지
 RegisterActivity > 변수 선언 많아도 되는지 (같은 이름으로 지역 변수들 선언함)
 else 문 안에서 예외처리 뿐만 아니라 모든 작업들 다 해도 되는지 (if 문 사용법)
- */
+*/

@@ -303,7 +303,6 @@ class RegisterActivity : AppCompatActivity() {
         val database: SQLiteDatabase = dbHelper.writableDatabase
 
         /**
-         * [2] : SQLite
          * 1. key 값인 ID 로 먼저 DB 를 SELECT 한다.
          * 2. 만약 결과가 있으면, return 하고, toast 메시지 띄움
          * 3. 만약 결과가 없으면, 회원가입 진행
@@ -348,12 +347,6 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("SHOW ALL INFO ERROR", ">>>>>>>>>>$e")
         }
 
-        /**
-         * 문제 없이 저장이 완료되면,
-         * 1. 다이어로그 띄우고,
-         * 2. 메인으로 화면 전환하고,
-         * 3. 스택에서 화면 삭제
-         */
         finishRegister()
     }
 
