@@ -17,7 +17,6 @@ class RegisterUtils {
             val result = readDatabase.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 return true
-                break
             }
             return false
         }

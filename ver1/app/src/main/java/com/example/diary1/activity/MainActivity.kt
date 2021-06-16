@@ -1,13 +1,21 @@
 package com.example.diary1.activity
 
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.diary1.R
+import com.example.diary1.constants.RegisterInfo
+import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.constants.UserInfo
+import com.example.diary1.datasave.SQLiteDBHelper
+import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_register.*
 
 /**
  * 타이틀바 없애기 :
@@ -16,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_main.*
  * <!-- Status bar color. -->
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
-// TODO: RegisterActivity 에서 saveData() 에 같은 이름의 변수들 선언한 것 전역변수로 빼기
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         // 회원가입 폼으로 이동
         btn_register.setOnClickListener {
-            var intent = Intent(this, RegisterActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -42,13 +49,45 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "회원가입을 먼저 해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 /**
-                 * 1. DB에서 일치하는 정보를 찾으면,
+                 * 1. DB에서 해당 ID 값에 해당하는 PW 찾아서 비교, 예외처리
                  * 2. UserInfo 에 name, id, pw 정보 각각 담기
                  * 3. 화면 전환
                  * 4. 스택에서 이 화면 없애기
                  */
-                Log.d("로그인 여부", ">>>>>>>>>>로그인 성공")
+                Log.d("ID 존재 여부", ">>>>>>>>>>ID 있음")
+
+                val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
+                val database: SQLiteDatabase = dbHelper.readableDatabase
+                val checkPWQuery: String = RegisterQuery.checkOneRegister(et_id.text.toString())
+                val result: Cursor = database.rawQuery(checkPWQuery, null)
+                var comparePW: String
+                while (result.moveToNext()) {
+                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))}")
+
+                    comparePW = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))
+
+                    if (comparePW != et_pw.text.toString()) {
+                        Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
+                        Toast.makeText(this, "비밀번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    UserInfo.userName = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_NAME}"))
+                    UserInfo.userID = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))
+                    UserInfo.userPW = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))
+                }
+                Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}, id : ${UserInfo.userID}, pw : ${UserInfo.userPW}")
+
                 Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+
+                // 화면 전환
+                val intent = Intent(this, DiaryList::class.java)
+                // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                startActivity(intent)
+
+                // 화면 종료
+                finish()
             }
         }
     }
