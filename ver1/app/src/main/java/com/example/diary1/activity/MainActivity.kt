@@ -62,18 +62,20 @@ class MainActivity : AppCompatActivity() {
                 val result: Cursor = database.rawQuery(checkPWQuery, null)
                 var comparePW: String
                 while (result.moveToNext()) {
-                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))}")
+                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                        RegisterInfo.DB_COL_PW
+                    ))}")
 
-                    comparePW = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))
+                    comparePW = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))
 
                     if (comparePW != et_pw.text.toString()) {
                         Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
                         Toast.makeText(this, "비밀번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
-                    UserInfo.userName = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_NAME}"))
-                    UserInfo.userID = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))
-                    UserInfo.userPW = result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_PW}"))
+                    UserInfo.userName = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_NAME))
+                    UserInfo.userID = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_ID))
+                    UserInfo.userPW = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))
                 }
                 Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}, id : ${UserInfo.userID}, pw : ${UserInfo.userPW}")
 

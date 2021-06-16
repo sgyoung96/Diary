@@ -330,7 +330,9 @@ class RegisterActivity : AppCompatActivity() {
             checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
             result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
-                Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
+                Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    RegisterInfo.DB_COL_ID
+                ))}")
                 // akakak2
             }
         } catch (e: Exception) {
@@ -343,7 +345,9 @@ class RegisterActivity : AppCompatActivity() {
             checkRegisterQuery = RegisterQuery.checkAllRegister()
             result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
-                Log.d("SHOW ALL REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex("${RegisterInfo.DB_COL_ID}"))}")
+                Log.d("SHOW ALL REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    RegisterInfo.DB_COL_ID
+                ))}")
                 // rkrkrk1 sksksk1 ekekek1 fkfkfk1 akakak2 가 한줄씩 나옴
             }
         } catch (e: Exception) {
