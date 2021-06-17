@@ -4,7 +4,7 @@
         android:id="@+id/bottom_item_list"
         android:enabled="true"
         android:icon="@drawable/bottom_navigation_list"
-        android:title="@string/bottom_navigation_vew_home"
+        android:title="@string/bottom_navigation_vew_list"
         />
 
     <item

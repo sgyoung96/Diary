@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:text="@string/title_main_page"
             android:textSize="25dp"
-            android:textColor="@color/white"
+            android:textColor="@color/main_text_color"
             android:gravity="center"
             />
 
@@ -40,10 +40,10 @@
         android:id="@+id/bn_bottom_icons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:backgroundTint="#018786"
-        app:itemTextColor="#FFFFFF"
-        app:itemIconTint="#FFFFFF"
+        android:background="@color/main_background"
+        app:backgroundTint="@color/main_highlight"
+        app:itemTextColor="@color/main_text_color"
+        app:itemIconTint="@color/main_text_color"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         />

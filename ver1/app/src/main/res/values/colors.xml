@@ -13,4 +13,13 @@
     <color name="main_sub_background">#232323</color>
     <color name="main_text_color">#FFFFFF</color>
     <color name="main_sub_text_color">#787878</color>
+
+    <color name="input_background">#F4F1D6</color>
+    <color name="input_highlight">#B5E8AE</color>
+    <color name="input_hint">#858585</color>
+    <color name="input_et_bg">#858585</color>
+    <color name="input_text_main">#000000</color>
+    <color name="input_sub_text">#858585</color>
+    <color name="input_submit_button">#A4B6D5</color>
+    <color name="input_submit_text">#FFFFFF</color>
 </resources>
