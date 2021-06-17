@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Diary1</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="title_main_page">상단 타이틀</string>
+    <string name="title_daily_diary_list">나의 일기</string>
+    <string name="title_diary_detail">그날은</string>
+    <string name="title_diary_list_per_day">요일별 일기</string>
+    <string name="title_post_diary">오늘은</string>
+    <string name="title_calendar">캘린더</string>
+
+    <string name="bottom_navigation_vew_home">내 일기</string>
+    <string name="bottom_navigation_vew_post">일기 쓰기</string>
+    <string name="bottom_navigation_vew_calendar">캘린더</string>
+
+    <string name="tab_bar_monday">MON</string>
+    <string name="tab_bar_tuesday">TUE</string>
+    <string name="tab_bar_wednesday">WED</string>
+    <string name="tab_bar_thursday">THU</string>
+    <string name="tab_bar_friday">FRI</string>
+    <string name="tab_bar_saturday">SAT</string>
+    <string name="tab_bar_sunday">SUN</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_list_fragment">Hello list fragment</string>
+    <string name="hello_post_fragment">Hello post fragment</string>
+    <string name="hello_calendar_fragment">hello_calendar_fragment</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.example.diary1.activity
+package com.example.diary1.ui.activity
 
 import android.content.Intent
 import android.database.Cursor
@@ -14,7 +14,7 @@ import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegisterUtils
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 /**
@@ -24,10 +24,10 @@ import kotlinx.android.synthetic.main.activity_register.*
  * <!-- Status bar color. -->
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         // 회원가입 폼으로 이동
         btn_register.setOnClickListener {
@@ -58,13 +58,11 @@ class MainActivity : AppCompatActivity() {
 
                 val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
                 val database: SQLiteDatabase = dbHelper.readableDatabase
-                val checkPWQuery: String = RegisterQuery.checkOneRegister(et_id.text.toString())
-                val result: Cursor = database.rawQuery(checkPWQuery, null)
+//                val checkPWQuery: String = RegisterQuery.checkOneRegister(et_id.text.toString())
+                val result: Cursor = database.rawQuery(RegisterQuery.checkOneRegister(et_id.text.toString()), null)
                 var comparePW: String
                 while (result.moveToNext()) {
-                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                        RegisterInfo.DB_COL_PW
-                    ))}")
+                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))}")
 
                     comparePW = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))
 
@@ -79,17 +77,26 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}, id : ${UserInfo.userID}, pw : ${UserInfo.userPW}")
 
-                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
 
                 // 화면 전환
-                val intent = Intent(this, DiaryList::class.java)
+                val intent = Intent(this, MainPageActivity::class.java)
                 // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                startActivity(intent)
+
+                try {
+                    startActivity(intent) // *********** 여기서 터짐
+                    Log.d("INTENT", ">>>>>>>>>>SUCCESS")
+                } catch (e: Exception) {
+                    Log.d("INTENT FAIL", ">>>>>>>>>>$e")
+                    // android.content.ActivityNotFoundException: Unable to find explicit activity class {com.example.diary1/com.example.diary1.ui.activity.MainPageActivity}; have you declared this activity in your AndroidManifest.xml?
+                    // -> Manifest 에 없어서 수동으로 추가해 주었다.
+                }
 
                 // 화면 종료
                 finish()
+                Log.d("FINISH", ">>>>>>>>>>SUCCESS")
             }
         }
     }

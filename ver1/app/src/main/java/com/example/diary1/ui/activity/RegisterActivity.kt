@@ -1,19 +1,15 @@
-package com.example.diary1.activity
+package com.example.diary1.ui.activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
-import android.graphics.RegionIterator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -23,16 +19,13 @@ import androidx.core.content.ContextCompat
 import com.example.diary1.R
 import com.example.diary1.constants.RegisterInfo
 import com.example.diary1.constants.SQLiteDBInfo
-import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.SharedPreferenceManager
 import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegUtils
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_register.*
 import java.lang.Exception
 import java.util.*
-import java.util.regex.Pattern
 
 /**
  * [1]
@@ -370,7 +363,7 @@ class RegisterActivity : AppCompatActivity() {
         var listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, LoginActivity::class.java))
                     Log.d("화면전환", ">>>>>>>>>Success")
                     finish()
                     Log.d("액티비티 종료", ">>>>>>>>>Success")

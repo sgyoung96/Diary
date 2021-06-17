@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary1">
-        <activity android:name=".activity.DiaryList"></activity>
+        <activity
+            android:name=".ui.activity.TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.Diary1.NoActionBar"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -25,14 +28,15 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.MainPageActivity" />
     </application>
 
 </manifest>
