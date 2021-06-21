@@ -15,6 +15,13 @@
         />
 
     <item
+        android:id="@+id/bottom_item_daily"
+        android:enabled="true"
+        android:icon="@drawable/bottom_navigation_daily"
+        android:title="요일별 일기"
+        />
+
+    <item
         android:id="@+id/bottom_item_calendar"
         android:enabled="true"
         android:icon="@drawable/bottom_navigation_calendar"

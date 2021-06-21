@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,10 +41,10 @@
         android:id="@+id/bn_bottom_icons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_background"
-        app:backgroundTint="@color/main_highlight"
-        app:itemTextColor="@color/main_text_color"
-        app:itemIconTint="@color/main_text_color"
+        app:itemBackground="@color/main_background"
+        app:itemIconTint="@drawable/bottom_navigation_menu_selector_color"
+        app:itemTextColor="@drawable/bottom_navigation_menu_selector_color"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         />
