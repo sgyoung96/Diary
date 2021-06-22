@@ -10,7 +10,7 @@
     <item
         android:id="@+id/bottom_item_post"
         android:enabled="true"
-        android:icon="@drawable/bottom_navigation_post"
+        android:icon="@drawable/bottom_navigation_post_selector"
         android:title="@string/bottom_navigation_vew_post"
         />
 

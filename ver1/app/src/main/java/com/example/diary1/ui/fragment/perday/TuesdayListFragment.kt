@@ -1,4 +1,4 @@
-package com.example.diary1.ui.fragment
+package com.example.diary1.ui.fragment.perday
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

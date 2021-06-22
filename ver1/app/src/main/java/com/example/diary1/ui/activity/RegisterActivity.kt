@@ -347,6 +347,9 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("SHOW ALL INFO ERROR", ">>>>>>>>>>$e")
         }
 
+        // DB 닫기
+        database.close()
+
         finishRegister()
     }
 
