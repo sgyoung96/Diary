@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
+// TODO : 다이어리 수정 기능 추가 (상세페이지에서)
 // TODO : BottomNavigationView 아이콘과 텍스트 선택하면 색상 바뀌도록
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // TODO : BottomNavigationView 에서 맨 오른쪽에 프로필 수정 기능 추가하기
