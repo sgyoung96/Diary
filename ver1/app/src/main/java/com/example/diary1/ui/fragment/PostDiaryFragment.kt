@@ -47,7 +47,6 @@ import java.util.*
  * 2. 날짜 선택 버튼 클릭시, 캘린더를 통해서 날짜 정보 받아와 텍스트뷰에 세팅 (연월일, 요일)
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
-// TODO : tv_post_main_text 에 이름과 함께 string 값 넣는거.. 못했다..
 // TODO : 로컬에 이미지 저장
 class PostDiaryFragment : Fragment() {
 
@@ -78,15 +77,9 @@ class PostDiaryFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_post_diary, container, false)
         val calendar = view.findViewById<CalendarView>(R.id.cv_post_calendar)
         calendar.visibility = View.GONE
-        try {
-            //tv_post_main_text.text = "${UserInfo.userName}님, 오늘 하루는 어땠나요?"
-            //tv_post_main_text.text = getString(R.string.post_main_text, UserInfo.userName)
-        } catch (e: Exception) { // Do not concatenate text displayed with setText.
-            Log.d("userNAme", ">>>>>>>>>>${UserInfo.userName}") // 나
-            Log.d("getString", ">>>>>>>>>>${getString(R.string.post_main_text)}") // %1$s님, 오늘 하루는 어땠나요?
-            Log.d("setText", ">>>>>>>>>>$e")
-            //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
-        }
+        view.findViewById<TextView>(R.id.tv_post_main_text).text = UserInfo.userName + "님, " + getString(R.string.post_main_text)
+        //꼭 그냥 아이디 바로 쓰는 게 아니라 view.findViewById 를 해줘야된다!
+        //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
 
         /**
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
