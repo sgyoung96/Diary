@@ -39,7 +39,9 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/ic_launcher_background"
-                android:foreground="@drawable/ic_launcher_foreground" />
+                android:foreground="@drawable/ic_launcher_foreground"
+                android:scaleType="centerCrop"
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vg_date_title_container"

@@ -39,6 +39,20 @@ import java.lang.Exception
 // TODO : BottomNavigationView 를 일반 View 들로 그려서 Selected = true 이런거 설정 주는 거로 수정
 class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
+    /**
+     * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
+     * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
+     */
+    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+    val STORAGE_PERMISSION = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    val PERMISSION_CAMERA = 1
+    val PERMISSION_STORAGE = 2
+    val REQUEST_CAMERA = 3
+    val REQUEST_STORAGE = 4
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +105,95 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 Log.d("changeFragmentError", ">>>>>>>>>>$e")
                 // FragmentManager has not been attached to a host.
                 // -> fragment 에서 onAttach 함수에서 이 액티비티를 가져와야 한다.
+            }
+        }
+    }
+
+    /**
+     * PostDiaryFragment 에서 이미지뷰 클릭했을 때 앨범 혹은 카메라에서 이미지 가져와 이미지뷰에 세팅하는 함수
+     */
+    fun setImageOnPostDiaryFragment() {
+        getImage()
+    }
+
+    /**
+     * 권한을 승인했는지 확인하는 함수
+     */
+    private fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions, flag)
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * 이미지뷰 클릭시 앨범과 카메라에서 이미지 삽입
+     * 1. dialog 팝업
+     * 2. 각각의 버튼을 클릭했을 때, 앨범 혹은 카메라로 이동
+     * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
+     */
+    private fun getImage() {
+        var builder = AlertDialog.Builder(this)
+        builder.setTitle("사진 등록")
+        builder.setMessage("사연과 함께 사진을 기록으로 남겨보아요")
+
+        var listener = DialogInterface.OnClickListener { _, a ->
+            when (a) {
+                DialogInterface.BUTTON_NEUTRAL -> {
+                    openGallery()
+                }
+                DialogInterface.BUTTON_POSITIVE -> {
+                    openCamera()
+                }
+            }
+        }
+        builder.setNeutralButton("앨범", listener)
+        builder.setPositiveButton("카메라", listener)
+
+        builder.show()
+    }
+
+    /**
+     * 앨범 열기 : openGallery
+     * 카메라 열기 : openCamera
+     */
+    private fun openGallery() {
+        if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            startActivityForResult(intent, REQUEST_STORAGE)
+        }
+    }
+
+    private fun openCamera() {
+        if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, REQUEST_CAMERA)
+        }
+    }
+
+    /**
+     * 이미지뷰에 이미지 셋팅
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_STORAGE -> {
+                    val uri = data?.data
+                    try {
+                        iv_post_image.setImageURI(uri)
+                    } catch (e: Exception) {
+                        Log.d("gallery Error", ">>>>>>>>>>$e")
+                    }
+                }
+                REQUEST_CAMERA -> {
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    iv_post_image.setImageBitmap(bitmap)
+                }
             }
         }
     }

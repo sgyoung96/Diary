@@ -83,7 +83,8 @@ class PostDiaryFragment : Fragment() {
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
          */
         view.findViewById<ImageView>(R.id.iv_post_image).setOnClickListener {
-
+            // MainPageActivity 에 카메라 오픈 관련 함수 만들어서, 그쪽에서 이미지 처리될 수 있도록 하기
+            mainPageActivity?.setImageOnPostDiaryFragment()
         }
 
         /**
@@ -202,25 +203,8 @@ class PostDiaryFragment : Fragment() {
 
             database.close()
 
-            /**
-             * dialog 띄우고 DiaryListFragment 로 화면 바꾸기
-             */
-            var builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("기록")
-            builder.setMessage("오늘의 사연이 기록되었어요")
-
-            var listener = DialogInterface.OnClickListener { _, a ->
-                when (a) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        // DiaryListFragment 로 이동
-                        mainPageActivity?.changeFragment(1)
-                    }
-                }
-            }
-            builder.setPositiveButton("확인", listener)
-
-            builder.show()
-
+            // 마무리 : 다이어로그 띄우고 화면 전환
+            finishPosting()
         }
 
         // Inflate the layout for this fragment
@@ -231,6 +215,27 @@ class PostDiaryFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainPageActivity = activity as MainPageActivity
+    }
+
+    /**
+     * dialog 띄우고 DiaryListFragment 로 화면 바꾸기
+     */
+    private fun finishPosting() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("기록")
+        builder.setMessage("오늘의 사연이 기록되었어요")
+
+        val listener = DialogInterface.OnClickListener { _, a ->
+            when (a) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    // DiaryListFragment 로 이동
+                    mainPageActivity?.changeFragment(1)
+                }
+            }
+        }
+        builder.setPositiveButton("확인", listener)
+
+        builder.show()
     }
 
 }
