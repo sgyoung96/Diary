@@ -5,14 +5,15 @@
 
     <string name="title_main_page">왜 안바껴...</string>
     <string name="title_daily_diary_list">나의 일기</string>
-    <string name="title_diary_detail">그날은</string>
-    <string name="title_diary_list_per_day">요일별 일기</string>
+    <string name="title_diary_detail">이날은</string>
+    <string name="title_diary_list_per_day">그날은</string>
     <string name="title_post_diary">오늘은</string>
     <string name="title_calendar">캘린더</string>
 
-    <string name="bottom_navigation_vew_list">일기 목록</string>
-    <string name="bottom_navigation_vew_post">일기 쓰기</string>
-    <string name="bottom_navigation_vew_calendar">캘린더</string>
+    <string name="bottom_button_diary_list">일기 목록</string>
+    <string name="bottom_button_diary_post">일기 쓰기</string>
+    <string name="bottom_button_diary_per_day">요일별 일기</string>
+    <string name="bottom_button_diary_calendar">캘린더</string>
 
     <string name="post_main_text">오늘 하루는 어땠나요?</string>
     <string name="post_tv_date_time">날짜가 바뀌어요</string>

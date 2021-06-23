@@ -48,7 +48,6 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
-// TODO : ImageView 에 이미지 삽입
 // TODO : 로컬에 이미지 저장
 class PostDiaryFragment : Fragment() {
 
@@ -79,6 +78,8 @@ class PostDiaryFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_post_diary, container, false)
         val calendar = view.findViewById<CalendarView>(R.id.cv_post_calendar)
         calendar.visibility = View.GONE
+        tv_post_main_text.text = UserInfo.userName + "님, ${getString(R.string.post_main_text)}"
+
         /**
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
          */

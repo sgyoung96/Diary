@@ -32,12 +32,17 @@ import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
 // TODO : 다이어리 수정 기능 추가 (상세페이지에서)
-// TODO : BottomNavigationView 아이콘과 텍스트 선택하면 색상 바뀌도록
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
-// TODO : BottomNavigationView 에서 맨 오른쪽에 프로필 수정 기능 추가하기
 // TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
-// TODO : BottomNavigationView 를 일반 View 들로 그려서 Selected = true 이런거 설정 주는 거로 수정
-class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainPageActivity : AppCompatActivity() {
+
+    /**
+     * 하단 버튼 선택에 관한 플래그
+     */
+    var ischecked_list: Boolean = true
+    var ischecked_per_day: Boolean = false
+    var ischecked_post: Boolean = false
+    var ischecked_calendar: Boolean = false
 
     /**
      * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
@@ -58,43 +63,120 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
+        /**
+         * 하단 버튼 색상 초기화
+         * 일기 목록이 메인 화면이므로 색상을 바꿔줌
+         */
+        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
+        tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
+
+        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+        tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+
         tv_title.text = getString(R.string.title_daily_diary_list)
-        bn_bottom_icons.itemIconTintList = null
-        bn_bottom_icons.setOnNavigationItemSelectedListener(this)
-
-        //bn_bottom_icons.itemIconTintList = getColorStateList(R.color.main_highlight)
-        //bn_bottom_icons.itemTextColor = getColorStateList(R.color.main_highlight)
-
-        bn_bottom_icons.itemBackground = getDrawable(R.drawable.bottom_navigation_menu_selector_color)
 
         supportFragmentManager.beginTransaction().add(R.id.vg_fragment_container, DiaryListFragment()).commit()
 
-    }
+        /**
+         * 하단 메뉴 버튼 이벤트
+         * 1. 일기목록 2. 요일별 일기 3. 일기쓰기 4. 캘린더
+         * 클릭시 아이콘, 텍스트 색상과 타이틀 바뀌고 프레그먼트 화면 전환
+         */
+        bottom_btn_list.setOnClickListener {
+            ischecked_list = true
+            ischecked_per_day = false
+            ischecked_post = false
+            ischecked_calendar = false
+            if (ischecked_list) {
+                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
+                tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.bottom_item_list -> {
-                tv_title.text = getString(R.string.title_daily_diary_list)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
-                return true
+                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
             }
-            R.id.bottom_item_post -> {
-                tv_title.text = getString(R.string.title_post_diary)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
-                return true
-            }
-            R.id.bottom_item_daily -> {
-                tv_title.text = getString(R.string.title_diary_list_per_day)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
-                return true
-            }
-            R.id.bottom_item_calendar -> {
-                tv_title.text = getString(R.string.title_calendar)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, CalendarFragment()).commitAllowingStateLoss()
-                return true
-            }
+
+            tv_title.text = getString(R.string.title_daily_diary_list)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
         }
-        return false // true 로 부장님이 바꿔주셨음
+        bottom_btn_per_day.setOnClickListener {
+            ischecked_list = false
+            ischecked_per_day = true
+            ischecked_post = false
+            ischecked_calendar = false
+            if (ischecked_per_day) {
+                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
+                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_on))
+                tv_bottom_per_day.setTextColor(getColor(R.color.main_text_color))
+
+                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+            }
+
+            tv_title.text = getString(R.string.title_diary_list_per_day)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
+        }
+        bottom_btn_post.setOnClickListener {
+            ischecked_list = false
+            ischecked_per_day = false
+            ischecked_post = true
+            ischecked_calendar = false
+            if (ischecked_post) {
+                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
+                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_on))
+                tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
+
+                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+            }
+
+            tv_title.text = getString(R.string.title_post_diary)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
+        }
+        bottom_btn_calendar.setOnClickListener {
+            ischecked_list = false
+            ischecked_per_day = false
+            ischecked_post = false
+            ischecked_calendar = true
+            if (ischecked_calendar) {
+                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
+                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_on))
+                tv_bottom_calendar.setTextColor(getColor(R.color.main_text_color))
+            }
+
+            tv_title.text = getString(R.string.title_calendar)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, CalendarFragment()).commitAllowingStateLoss()
+        }
+
     }
 
     fun changeFragment(index: Int) {
@@ -113,7 +195,7 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
      * PostDiaryFragment 에서 이미지뷰 클릭했을 때 앨범 혹은 카메라에서 이미지 가져와 이미지뷰에 세팅하는 함수
      */
     fun setImageOnPostDiaryFragment() {
-        getImage()
+        getImage() // RegisterActivity 에서 활용한 함수 그대로 가져온다.
     }
 
     /**
