@@ -1,19 +1,10 @@
 package com.example.diary1.ui.fragment
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
-import android.provider.MediaStore
-import android.transition.Visibility
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,24 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.solver.widgets.ConstraintWidget.VISIBLE
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import com.example.diary1.R
-import com.example.diary1.constants.PostDiaryInfo
-import com.example.diary1.constants.RegisterInfo
+import com.example.diary1.datasave.PostDiaryInfo
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.query.PostDiaryQuery
-import com.example.diary1.ui.activity.LoginActivity
 import com.example.diary1.ui.activity.MainPageActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
-import kotlinx.coroutines.MainScope
-import org.w3c.dom.Text
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -159,7 +141,7 @@ class PostDiaryFragment : Fragment() {
             // 날짜 중복 체크 - SQLite 사용
             // dbHelper 초기화 (내가 생성하고 override 한 메소드가 있는 클래스)
             val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
-            // Insert 모드로 데이터 저장소 가져옴
+            // Select 모드로 데이터 저장소 가져옴
             var database: SQLiteDatabase = dbHelper.readableDatabase
             var sqlQuery: String = PostDiaryQuery.checkDiary(UserInfo.userID, view.findViewById<TextView>(R.id.tv_select_date_text).text.toString())
             var result: Cursor
@@ -205,10 +187,14 @@ class PostDiaryFragment : Fragment() {
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
-                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_USERID))}")
-                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
-                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")
-                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))}")
+                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_USERID))}")
+                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_DATE))}")
+                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_TITLE))}")
+                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_CONTENT))}")
             }
 
             database.close()

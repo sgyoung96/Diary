@@ -1,6 +1,6 @@
 package com.example.diary1.datasave.query
 
-import com.example.diary1.constants.PostDiaryInfo
+import com.example.diary1.datasave.PostDiaryInfo
 import com.example.diary1.constants.RegisterInfo
 
 class DiaryListQuery {
