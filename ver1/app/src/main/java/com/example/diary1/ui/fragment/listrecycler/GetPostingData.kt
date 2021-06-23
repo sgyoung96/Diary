@@ -18,7 +18,8 @@ import com.example.diary1.datasave.query.DiaryListQuery
  */
 class GetPostingData(context: Context) {
 
-    var data: PostedDiaryInfo? = null
+//    var data: PostedDiaryInfo? = null
+    var data: MutableList<PostedDiaryInfo>? = null
 
     val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
     val database: SQLiteDatabase = dbHelper.readableDatabase
@@ -27,9 +28,14 @@ class GetPostingData(context: Context) {
 
     fun getData() {
         while (result.moveToNext()) {
-            data?.postTitle = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))
-            data?.postDate = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))
-            data?.postContent = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))
+//            data?.postTitle = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))
+//            data?.postDate = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))
+//            data?.postContent = result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))
+            data?.apply {
+                PostedDiaryInfo(result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)))
+            }
 
             Log.d("title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")
             Log.d("date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
@@ -37,8 +43,9 @@ class GetPostingData(context: Context) {
         }
 
         // 왜지..? 당황스럽네
-        Log.d("checkTitle", ">>>>>>>>>>${data?.postTitle}") // null
-        Log.d("checkDate", ">>>>>>>>>>${data?.postDate}") // null
-        Log.d("checkContent", ">>>>>>>>>>${data?.postContent}") // null
+//        Log.d("checkTitle", ">>>>>>>>>>${data?.postTitle}") // null
+//        Log.d("checkDate", ">>>>>>>>>>${data?.postDate}") // null
+//        Log.d("checkContent", ">>>>>>>>>>${data?.postContent}") // null
+        Log.d("checkData", ">>>>>>>>>>$data") // null
     }
 }
