@@ -31,6 +31,8 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
+// TODO : launchScreen 디자인하여 추가
+// TODO : 앱 설치시 나타나는 제목 수정
 // TODO : 다이어리 수정 기능 추가 (상세페이지에서)
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
