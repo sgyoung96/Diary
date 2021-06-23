@@ -47,7 +47,7 @@ import java.util.*
  * 2. 날짜 선택 버튼 클릭시, 캘린더를 통해서 날짜 정보 받아와 텍스트뷰에 세팅 (연월일, 요일)
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
-
+// TODO : tv_post_main_text 에 이름과 함께 string 값 넣는거.. 못했다..
 // TODO : 로컬에 이미지 저장
 class PostDiaryFragment : Fragment() {
 
@@ -61,7 +61,7 @@ class PostDiaryFragment : Fragment() {
      * day : 한글 요일로 떨어짐
      */
     var year: Int? = null
-    var month: Int? = null
+    var month: String? = null
     var date: Int? = null
     var day: String? = null
 
@@ -78,7 +78,15 @@ class PostDiaryFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_post_diary, container, false)
         val calendar = view.findViewById<CalendarView>(R.id.cv_post_calendar)
         calendar.visibility = View.GONE
-        tv_post_main_text.text = UserInfo.userName + "님, ${getString(R.string.post_main_text)}"
+        try {
+            //tv_post_main_text.text = "${UserInfo.userName}님, 오늘 하루는 어땠나요?"
+            //tv_post_main_text.text = getString(R.string.post_main_text, UserInfo.userName)
+        } catch (e: Exception) { // Do not concatenate text displayed with setText.
+            Log.d("userNAme", ">>>>>>>>>>${UserInfo.userName}") // 나
+            Log.d("getString", ">>>>>>>>>>${getString(R.string.post_main_text)}") // %1$s님, 오늘 하루는 어땠나요?
+            Log.d("setText", ">>>>>>>>>>$e")
+            //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+        }
 
         /**
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
@@ -110,13 +118,21 @@ class PostDiaryFragment : Fragment() {
                 Log.d("선택했어요", ">>>>>>>>>>날짜 선택했어요")
                 // 연월일 세팅
                 this.year = year
-                this.month = month // this.month 는 1달 이전꺼로 출력됨
+                // this.month 는 1달 이전꺼로 출력됨
+                // 월이 한자리 수이면 앞에 0 붙임
+                val monthPlusOne = month + 1
+                if (monthPlusOne.toString().length == 1) {
+                    this.month = "0$monthPlusOne"
+                } else {
+                    this.month = "$monthPlusOne"
+                }
+
                 this.date = dayOfMonth
                 Log.d("year, month, date", ">>>>>>>>>>${this.year}, ${this.month}, ${this.date}")
 
                 // 요일 구하기
                 val todayCalendar = Calendar.getInstance()
-                todayCalendar.set(this.year!!, this.month!!, this.date!!)
+                todayCalendar.set(year, month, dayOfMonth)
                 val todayDate = todayCalendar.time // time의 월은 정확한 월로 출력됨
                 Log.d("todayDate", ">>>>>>>>>>$todayDate")
                 val dateformat = SimpleDateFormat("EEEE", Locale.getDefault())
@@ -124,7 +140,7 @@ class PostDiaryFragment : Fragment() {
                 Log.d("day", ">>>>>>>>>>${this.day}")
 
                 // 년, 월, 일, 요일 텍스트뷰에 세팅
-                view.findViewById<TextView>(R.id.tv_select_date_text).text = "${this.year}-${this.month!! + 1}-${this.date} ${this.day}"
+                view.findViewById<TextView>(R.id.tv_select_date_text).text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
 
                 calendar.visibility = View.GONE
             }
