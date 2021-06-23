@@ -35,5 +35,10 @@ class GetPostingData(context: Context) {
             Log.d("date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
             Log.d("content", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))}")
         }
+
+        // 왜지..? 당황스럽네
+        Log.d("checkTitle", ">>>>>>>>>>${data?.postTitle}") // null
+        Log.d("checkDate", ">>>>>>>>>>${data?.postDate}") // null
+        Log.d("checkContent", ">>>>>>>>>>${data?.postContent}") // null
     }
 }
