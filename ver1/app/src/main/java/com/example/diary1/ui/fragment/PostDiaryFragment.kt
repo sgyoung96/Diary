@@ -55,18 +55,21 @@ class PostDiaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
+        // return inflater.inflate(R.layout.fragment_post_diary, container, false)
+        return inflater.inflate(R.layout.fragment_post_diary, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.fragment_post_diary, container, false)
-        val calendar = view.findViewById<CalendarView>(R.id.cv_post_calendar)
-        calendar.visibility = View.GONE
-        view.findViewById<TextView>(R.id.tv_post_main_text).text = UserInfo.userName + "님, " + getString(R.string.post_main_text)
-        //꼭 그냥 아이디 바로 쓰는 게 아니라 view.findViewById 를 해줘야된다!
-        //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        cv_post_calendar.visibility = View.GONE
+        tv_post_main_text.text = UserInfo.userName + "님, " + getString(R.string.post_main_text)
 
         /**
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
          */
-        view.findViewById<ImageView>(R.id.iv_post_image).setOnClickListener {
+        iv_post_image.setOnClickListener {
             // MainPageActivity 에 카메라 오픈 관련 함수 만들어서, 그쪽에서 이미지 처리될 수 있도록 하기
             mainPageActivity?.setImageOnPostDiaryFragment()
         }
@@ -77,19 +80,19 @@ class PostDiaryFragment : Fragment() {
          * 2. 빈 공간 터치시 캘린더 뷰 GONE 처리 한다.
          * 3. 달력에서 날짜 선택 시 캘린더 뷰 GONE 처리 -> 텍스트뷰에 날짜 박힌다.
          */
-        view.findViewById<TextView>(R.id.tv_select_date_click).setOnClickListener {
-            calendar.visibility = View.VISIBLE
+        tv_select_date_click.setOnClickListener {
+            cv_post_calendar.visibility = View.VISIBLE
             Log.d("calendar", ">>>>>>>>>>클릭했어요")
 
             view.setOnClickListener {
-                calendar.visibility = View.GONE
+                cv_post_calendar.visibility = View.GONE
             }
 
             /**
              * setInChangeListener 에 인자로 사용할 변수들
              * calendarView: CalendarView, year: Int, month: Int, dayOfMonth: Int
              */
-            calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
+            cv_post_calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
                 Log.d("선택했어요", ">>>>>>>>>>날짜 선택했어요")
                 // 연월일 세팅
                 this.year = year
@@ -115,16 +118,16 @@ class PostDiaryFragment : Fragment() {
                 Log.d("day", ">>>>>>>>>>${this.day}")
 
                 // 년, 월, 일, 요일 텍스트뷰에 세팅
-                view.findViewById<TextView>(R.id.tv_select_date_text).text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
+                tv_select_date_text.text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
 
-                calendar.visibility = View.GONE
+                cv_post_calendar.visibility = View.GONE
             }
         }
 
         /**
          * 기록하기 버튼 클릭 시, 날짜/제목/내용이 SQLite 통해서 로컬에 저장됨
          */
-        view.findViewById<Button>(R.id.btn_post_submit).setOnClickListener {
+        btn_post_submit.setOnClickListener {
             /**
              * 예외처리 :
              * 1. 날짜 지정 안 한 것 체크
@@ -133,7 +136,7 @@ class PostDiaryFragment : Fragment() {
              * 4. 내용 공란 체크 (글자 수 제한은 xml 에서 처리함)
              */
             // 날짜 지정 안 한 것 체크
-            if (view.findViewById<TextView>(R.id.tv_select_date_text).text.toString() == "${getString(R.string.post_tv_date_time)}") {
+            if (tv_select_date_text.text.toString() == "${getString(R.string.post_tv_date_time)}") {
                 Toast.makeText(context, "날짜를 지정해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -143,7 +146,7 @@ class PostDiaryFragment : Fragment() {
             val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
             // Select 모드로 데이터 저장소 가져옴
             var database: SQLiteDatabase = dbHelper.readableDatabase
-            var sqlQuery: String = PostDiaryQuery.checkDiary(UserInfo.userID, view.findViewById<TextView>(R.id.tv_select_date_text).text.toString())
+            var sqlQuery: String = PostDiaryQuery.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
             var result: Cursor
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
@@ -153,13 +156,13 @@ class PostDiaryFragment : Fragment() {
 
 
             // 제목 공란 체크
-            if (view.findViewById<EditText>(R.id.et_input_title).text.isNullOrEmpty()) {
+            if (et_input_title.text.isNullOrEmpty()) {
                 Toast.makeText(context, "제목을 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             // 내용 공란 체크
-            if (view.findViewById<EditText>(R.id.et_input_content).text.isNullOrEmpty()) {
+            if (et_input_content.text.isNullOrEmpty()) {
                 Toast.makeText(context, "내용을 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -174,16 +177,15 @@ class PostDiaryFragment : Fragment() {
             // 1. 데이터 삽입
             database = dbHelper.writableDatabase
             sqlQuery = PostDiaryQuery.insertDiary(UserInfo.userID,
-            view.findViewById<TextView>(R.id.tv_select_date_text).text.toString(),
-            view.findViewById<EditText>(R.id.et_input_title).text.toString(),
-            view.findViewById<EditText>(R.id.et_input_content).text.toString())
+                                                  tv_select_date_text.text.toString(),
+                                                  et_input_title.text.toString(),
+                                                  et_input_content.text.toString())
 
             database.execSQL(sqlQuery)
 
             // 2. 제대로 삽입외었는지 확인
             database = dbHelper.readableDatabase
-            sqlQuery = PostDiaryQuery.checkDiary(UserInfo.userID,
-            view.findViewById<TextView>(R.id.tv_select_date_text).text.toString())
+            sqlQuery = PostDiaryQuery.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
@@ -203,9 +205,6 @@ class PostDiaryFragment : Fragment() {
             finishPosting()
         }
 
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_post_diary, container, false)
-        return view
     }
 
     override fun onAttach(context: Context) {

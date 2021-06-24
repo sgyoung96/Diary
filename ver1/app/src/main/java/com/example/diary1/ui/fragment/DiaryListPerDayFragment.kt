@@ -7,12 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.diary1.R
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DiaryListPerDayFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+// TODO : TabLayout 과 ViewPager 연결
 class DiaryListPerDayFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,5 +20,10 @@ class DiaryListPerDayFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_diary_list_per_day, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 }

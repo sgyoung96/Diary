@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
 import com.example.diary1.ui.fragment.listrecycler.*
+import kotlinx.android.synthetic.main.fragment_diary_list.*
 
 /**
  * 1. 로컬에 저장한 글쓴 목록 데이터 객체에 담기
  * 2. recyclerView 이용해 목록 뿌리기
  */
+// ColorPrimary 색상을 바꿔줘야 recyclerView 드래그했을 때 나타나는 색상이 반영된다.
 class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     var diaryListAdapter: DiaryListAdapter? = null
@@ -30,17 +32,19 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val view: View =  inflater.inflate(R.layout.fragment_diary_list, container, false)
+        return inflater.inflate(R.layout.fragment_diary_list, container, false)
+    }
 
-        view.findViewById<RecyclerView>(R.id.rv_diary_list)?.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rv_diary_list.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         diaryListAdapter = DiaryListAdapter(requireContext())
-        view.findViewById<RecyclerView>(R.id.rv_diary_list)?.adapter = diaryListAdapter
+        rv_diary_list.adapter = diaryListAdapter
 
         val diaryListPresenter = DiaryListPresenter()
         diaryListPresenter.snedView(this)
         diaryListPresenter.sendData(requireContext())
-
-        return view
     }
 
     // Presenter 로부터 데이터 넘겨받음
