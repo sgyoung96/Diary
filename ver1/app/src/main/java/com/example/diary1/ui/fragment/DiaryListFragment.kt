@@ -17,7 +17,6 @@ import com.example.diary1.ui.fragment.listrecycler.*
  * 1. 로컬에 저장한 글쓴 목록 데이터 객체에 담기
  * 2. recyclerView 이용해 목록 뿌리기
  */
-// TODO : RecyclerView 속성 카드뷰 형태로.. 둥글둥글하게
 class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     var diaryListAdapter: DiaryListAdapter? = null
