@@ -281,4 +281,21 @@ class MainPageActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * 포스팅 완료하고 화면 전환할 때 버튼 색상 바꾸기
+     */
+    fun changeColorAfterPosting() {
+        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
+        tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
+
+        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+        tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+    }
 }

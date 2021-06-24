@@ -226,6 +226,7 @@ class PostDiaryFragment : Fragment() {
                 DialogInterface.BUTTON_POSITIVE -> {
                     // DiaryListFragment 로 이동
                     mainPageActivity?.changeFragment(1)
+                    mainPageActivity?.changeColorAfterPosting()
                 }
             }
         }
