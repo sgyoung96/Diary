@@ -3,6 +3,7 @@ package com.example.diary1.ui.fragment.listrecycler
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
@@ -10,6 +11,7 @@ import com.example.diary1.R
 class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListViewHolder>() {
 
     lateinit var diaryData: MutableList<PostedDiaryInfo>
+    var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryListViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_diary_list, parent, false)
@@ -18,7 +20,7 @@ class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListView
     }
 
     override fun onBindViewHolder(holder: DiaryListViewHolder, position: Int) {
-        holder.bind(diaryData[position])
+        holder.bind(diaryData[position], listener!!)
     }
 
     override fun getItemCount(): Int {
@@ -28,5 +30,9 @@ class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListView
     fun setData(data: MutableList<PostedDiaryInfo>) {
         this.diaryData = data
         notifyDataSetChanged()
+    }
+
+    fun setOnItemClickListener(listener: ItemClickListener) {
+        this.listener = listener
     }
 }

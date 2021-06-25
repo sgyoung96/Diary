@@ -21,17 +21,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import com.example.diary1.R
-import com.example.diary1.ui.fragment.CalendarFragment
-import com.example.diary1.ui.fragment.DiaryListFragment
-import com.example.diary1.ui.fragment.PostDiaryFragment
-import com.example.diary1.ui.fragment.TestFragment
+import com.example.diary1.ui.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
-// TODO : launchScreen 디자인하여 추가
+// TODO : 뒤로가기 버튼 두 번 눌러야 앱이 종료되도록. (한 번 누르면 토스트 띄우기)
 // TODO : 앱 설치시 나타나는 제목 수정
 // TODO : 다이어리 수정 기능 추가 (상세페이지에서)
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
@@ -288,6 +285,26 @@ class MainPageActivity : AppCompatActivity() {
     fun changeColorAfterPosting() {
         iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
         tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
+
+        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
+        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
+        tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
+        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+    }
+
+    /**
+     * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
+     * 하단 버튼 색상 바꾸기
+     */
+    fun goDetailFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DetailFragment()).commit()
+
+        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
+        tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
 
         iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
         tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))

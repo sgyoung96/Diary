@@ -1,5 +1,6 @@
 package com.example.diary1.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
+import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.*
 import kotlinx.android.synthetic.main.fragment_diary_list.*
 
@@ -18,10 +20,15 @@ import kotlinx.android.synthetic.main.fragment_diary_list.*
  * 1. 로컬에 저장한 글쓴 목록 데이터 객체에 담기
  * 2. recyclerView 이용해 목록 뿌리기
  */
+// TODO : item 클릭시 상세페이지로 이동
 // ColorPrimary 색상을 바꿔줘야 recyclerView 드래그했을 때 나타나는 색상이 반영된다.
 class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     var diaryListAdapter: DiaryListAdapter? = null
+    /**
+     * 화면전환할 때 사용할 변수 (onAttach 함수에서 초기화해준다.)
+     */
+    var mainPageActivity: MainPageActivity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +52,27 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
         val diaryListPresenter = DiaryListPresenter()
         diaryListPresenter.snedView(this)
         diaryListPresenter.sendData(requireContext())
+
+        diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
+            override fun onItemClick(
+                viewHolder: DiaryListViewHolder,
+                view: View,
+                data: PostedDiaryInfo,
+                index: Int
+            ) {
+                mainPageActivity?.goDetailFragment()
+            }
+        })
     }
 
     // Presenter 로부터 데이터 넘겨받음
     override fun sendData(data: MutableList<PostedDiaryInfo>) {
         diaryListAdapter?.setData(data)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainPageActivity = activity as MainPageActivity
     }
 }
 
