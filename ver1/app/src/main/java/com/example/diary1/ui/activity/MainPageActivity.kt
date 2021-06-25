@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,14 +27,15 @@ import com.example.diary1.ui.fragment.*
 import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
-// TODO : 뒤로가기 버튼 두 번 눌러야 앱이 종료되도록. (한 번 누르면 토스트 띄우기)
+// TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
+// TODO : DiaryListFragment 에서 상세페이지 이동할 때 Activity 띄우는 것으로 바꾸기 -> 뒤로가기 버튼 눌렀을 때 액티비티 종료되도록 (원래 화면으로 돌아오도록)
 // TODO : 앱 설치시 나타나는 제목 수정
-// TODO : 다이어리 수정 기능 추가 (상세페이지에서)
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
 class MainPageActivity : AppCompatActivity() {
@@ -59,6 +61,11 @@ class MainPageActivity : AppCompatActivity() {
     val PERMISSION_STORAGE = 2
     val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
+
+    /**
+     * 뒤로가기 버튼 두 번 클릭 시 앱 종료때 사용할 변수
+     */
+    var waitTime: Long = 0
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -301,10 +308,13 @@ class MainPageActivity : AppCompatActivity() {
 
     /**
      * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
+     * 타이틀 바꾸기
      * 하단 버튼 색상 바꾸기
      */
     fun goDetailFragment(data: PostedDiaryInfo) {
         supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DetailFragment(data)).commit()
+
+        tv_title.text = getString(R.string.title_diary_detail)
 
         iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
         tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
@@ -317,5 +327,17 @@ class MainPageActivity : AppCompatActivity() {
 
         iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
         tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+    }
+
+    /**
+     * 뒤로가기 버튼을 두 번 누르면 앱 종료
+     */
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - waitTime >= 1500) {
+            waitTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show()
+        } else {
+            finish()
+        }
     }
 }

@@ -25,6 +25,12 @@ import kotlinx.android.synthetic.main.activity_register.*
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
 class LoginActivity : AppCompatActivity() {
+
+    /**
+     * 뒤로가기 버튼 두 번 클릭 시 앱 종료때 사용할 변수
+     */
+    var waitTime: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -98,6 +104,18 @@ class LoginActivity : AppCompatActivity() {
                 finish()
                 Log.d("FINISH", ">>>>>>>>>>SUCCESS")
             }
+        }
+    }
+
+    /**
+     * 뒤로가기 버튼을 두 번 누르면 앱 종료
+     */
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - waitTime >= 1500) {
+            waitTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show()
+        } else {
+            finish()
         }
     }
 }

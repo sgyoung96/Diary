@@ -11,14 +11,15 @@ import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.fragment_detail.*
 
-// TODO : 뒤로가기 버튼 눌렀을 때 종료되지 않고, DiaryListFragment 로 화면 전환되도록
+// TODO : 뒤로가기 버튼 눌렀을 때 종료되지 않고, DiaryListFragment 로 화면 전환되도록 (전환 시, 상단 타이틀 바꾸기, 하단 버튼 색 바꾸기)
+// TODO : 다이어리 수정 기능 추가 (상세페이지에서)
+// TODO : 삭제 기능 추가, 삭제 시 다이어로그 띄우고 화면 전환. 화면 전환 시, 데이터 바꼈다는 것 알려주고 다시 뿌려줘야함
 class DetailFragment(data: PostedDiaryInfo) : Fragment() {
 
     val itemdata = data
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -35,6 +36,5 @@ class DetailFragment(data: PostedDiaryInfo) : Fragment() {
         tv_detail_title.text = itemdata.postTitle
         tv_detail_date.text = itemdata.postDate
         tv_detail_content.text = itemdata.postContent
-
     }
 }
