@@ -183,7 +183,7 @@ class PostDiaryFragment : Fragment() {
 
             database.execSQL(sqlQuery)
 
-            // 2. 제대로 삽입외었는지 확인
+            // 2. 제대로 삽입되었는지 확인
             database = dbHelper.readableDatabase
             sqlQuery = PostDiaryQuery.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
 
@@ -233,5 +233,4 @@ class PostDiaryFragment : Fragment() {
 
         builder.show()
     }
-
 }

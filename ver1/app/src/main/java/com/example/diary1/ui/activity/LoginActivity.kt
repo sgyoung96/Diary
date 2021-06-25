@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.activity_register.*
  * <!-- Status bar color. -->
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
+// TODO : 로그인시 비밀번호 일치 Boolean 값 리턴하도록 수정, 비밀번호 암호화
+// TODO : companion object -> object 클래스명, data class 사용하기
 class LoginActivity : AppCompatActivity() {
 
     /**
