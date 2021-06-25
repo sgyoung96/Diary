@@ -23,7 +23,7 @@ class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
         Log.d("ViewHolderContent", ">>>>>>>>>>${data.postContent}")
 
         item.setOnClickListener {
-            listener.onItemClick(this, item, data, adapterPosition)
+            listener.onItemClick(data)
         }
     }
 }

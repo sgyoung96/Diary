@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,6 +23,8 @@ import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import com.example.diary1.R
 import com.example.diary1.ui.fragment.*
+import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
+import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -300,8 +303,8 @@ class MainPageActivity : AppCompatActivity() {
      * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
      * 하단 버튼 색상 바꾸기
      */
-    fun goDetailFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DetailFragment()).commit()
+    fun goDetailFragment(data: PostedDiaryInfo) {
+        supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DetailFragment(data)).commit()
 
         iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
         tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))

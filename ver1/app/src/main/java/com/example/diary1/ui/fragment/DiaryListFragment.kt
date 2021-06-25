@@ -54,13 +54,8 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
         diaryListPresenter.sendData(requireContext())
 
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
-            override fun onItemClick(
-                viewHolder: DiaryListViewHolder,
-                view: View,
-                data: PostedDiaryInfo,
-                index: Int
-            ) {
-                mainPageActivity?.goDetailFragment()
+            override fun onItemClick(data: PostedDiaryInfo) {
+                mainPageActivity?.goDetailFragment(data)
             }
         })
     }
