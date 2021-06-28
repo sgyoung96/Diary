@@ -13,12 +13,14 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.diary1.R
+import com.example.diary1.constants.RegisterInfo
 import com.example.diary1.datasave.PostDiaryInfo
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.query.PostDiaryQuery
 import com.example.diary1.ui.activity.MainPageActivity
+import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.text.SimpleDateFormat
@@ -63,8 +65,22 @@ class PostDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /**
+         * DB 에서 id 값으로 이름 가져오기
+         */
+        val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
+        // Select 모드로 데이터 저장소 가져옴
+        var database: SQLiteDatabase = dbHelper.readableDatabase
+        var sqlQuery: String = PostDiaryQuery.getNameQuery(UserInfo.userID)
+        var result: Cursor
+        var name = ""
+        result = database.rawQuery(sqlQuery, null)
+        if (result.moveToNext()) {
+            name = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_NAME))
+        }
+
         cv_post_calendar.visibility = View.GONE
-        tv_post_main_text.text = UserInfo.userName + "님, " + getString(R.string.post_main_text)
+        tv_post_main_text.text = name + "님, " + getString(R.string.post_main_text)
 
         /**
          * 이미지뷰 클릭시 앨범 혹은 카메라로부터 이미지 가져와서 이미지 세팅
@@ -142,12 +158,7 @@ class PostDiaryFragment : Fragment() {
             }
 
             // 날짜 중복 체크 - SQLite 사용
-            // dbHelper 초기화 (내가 생성하고 override 한 메소드가 있는 클래스)
-            val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
-            // Select 모드로 데이터 저장소 가져옴
-            var database: SQLiteDatabase = dbHelper.readableDatabase
-            var sqlQuery: String = PostDiaryQuery.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
-            var result: Cursor
+            sqlQuery = PostDiaryQuery.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
                 Toast.makeText(context, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()

@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.mindrot.jbcrypt.BCrypt
 
 object LoginQuery {
-
     /**
      * 비밀번호가 일치하면 true
      * 비밀번호가 불일치면 false
