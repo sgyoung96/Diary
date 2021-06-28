@@ -284,7 +284,14 @@ class MainPageActivity : AppCompatActivity() {
 
         iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
         tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
+        
+        iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
+        tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
 
+        iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
+        tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
+
+        tv_title.text = getString(R.string.title_daily_diary_list)
     }
 
     /**
