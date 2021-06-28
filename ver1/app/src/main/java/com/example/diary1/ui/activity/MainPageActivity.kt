@@ -79,14 +79,14 @@ class MainPageActivity : AppCompatActivity() {
         iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
         tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
-        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
         iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
         tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
 
-        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+        iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
+        tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
+
+        iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
+        tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
 
         tv_title.text = getString(R.string.title_daily_diary_list)
 
@@ -106,20 +106,20 @@ class MainPageActivity : AppCompatActivity() {
                 iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
                 tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
-                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
                 iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
                 tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
 
-                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+                iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
+                tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
+                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
             }
 
             tv_title.text = getString(R.string.title_daily_diary_list)
             supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
         }
-        bottom_btn_per_day.setOnClickListener {
+        bottom_btn_post.setOnClickListener {
             ischecked_list = false
             ischecked_per_day = true
             ischecked_post = false
@@ -128,20 +128,21 @@ class MainPageActivity : AppCompatActivity() {
                 iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
                 tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
 
-                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_on))
-                tv_bottom_per_day.setTextColor(getColor(R.color.main_text_color))
+                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_on))
+                tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
 
-                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
-                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
 
-                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+                iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
+                tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
+
+                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
+                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
             }
 
-            tv_title.text = getString(R.string.title_diary_list_per_day)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
+            tv_title.text = getString(R.string.title_post_diary)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
         }
-        bottom_btn_post.setOnClickListener {
+        bottom_btn_my.setOnClickListener {
             ischecked_list = false
             ischecked_per_day = false
             ischecked_post = true
@@ -150,42 +151,27 @@ class MainPageActivity : AppCompatActivity() {
                 iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
                 tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
 
-                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_on))
-                tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
-
-                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-                tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
-            }
-
-            tv_title.text = getString(R.string.title_post_diary)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
-        }
-        bottom_btn_calendar.setOnClickListener {
-            ischecked_list = false
-            ischecked_per_day = false
-            ischecked_post = false
-            ischecked_calendar = true
-            if (ischecked_calendar) {
-                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
-                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-                tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
                 iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
                 tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
 
-                iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_on))
-                tv_bottom_calendar.setTextColor(getColor(R.color.main_text_color))
+                iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_on))
+                tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
+
+                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
+                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
             }
 
-            tv_title.text = getString(R.string.title_calendar)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, CalendarFragment()).commitAllowingStateLoss()
+            tv_title.text = getString(R.string.title_my_diary)
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
         }
-
+        bottom_btn_setting.setOnClickListener {
+            // SettingActivity 로 화면 전환
+            val intent = Intent(this, SettingActivity::class.java)
+            // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(intent)
+        }
     }
 
     fun changeFragment(index: Int) {
@@ -296,14 +282,9 @@ class MainPageActivity : AppCompatActivity() {
         iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
         tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
-        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
         iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
         tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
 
-        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
     }
 
     /**
@@ -312,21 +293,7 @@ class MainPageActivity : AppCompatActivity() {
      * 하단 버튼 색상 바꾸기
      */
     fun goDetailFragment(data: PostedDiaryInfo) {
-        supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DetailFragment(data)).commit()
-
-        tv_title.text = getString(R.string.title_diary_detail)
-
-        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
-        tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
-
-        iv_bottom_per_day.setImageDrawable(getDrawable(R.drawable.bottom_button_per_day_off))
-        tv_bottom_per_day.setTextColor(getColor(R.color.main_sub_text_color))
-
-        iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
-        tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
-
-        iv_bottom_calendar.setImageDrawable(getDrawable(R.drawable.bottom_button_calendar_off))
-        tv_bottom_calendar.setTextColor(getColor(R.color.main_sub_text_color))
+        // DetailActivity 로 화면 전환
     }
 
     /**

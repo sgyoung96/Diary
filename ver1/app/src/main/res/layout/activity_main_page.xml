@@ -80,39 +80,6 @@
             >
 
             <ImageView
-                android:id="@+id/iv_bottom_per_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/main_background"
-                android:src="@drawable/bottom_button_per_day_off"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_bottom_per_day"
-                />
-
-            <TextView
-                android:id="@+id/tv_bottom_per_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/bottom_button_diary_per_day"
-                android:textColor="@color/main_sub_text_color"
-                android:textSize="10dp"
-                android:textStyle="normal"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/iv_bottom_per_day"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-
-            <ImageView
                 android:id="@+id/iv_bottom_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,27 +113,60 @@
             >
 
             <ImageView
-                android:id="@+id/iv_bottom_calendar"
+                android:id="@+id/iv_bottom_my"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/main_background"
-                android:src="@drawable/bottom_button_calendar_off"
-                app:layout_constraintTop_toTopOf=   "parent"
+                android:src="@drawable/bottom_button_my_off"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_bottom_calendar"
+                app:layout_constraintBottom_toTopOf="@id/tv_bottom_my"
                 />
 
             <TextView
-                android:id="@+id/tv_bottom_calendar"
+                android:id="@+id/tv_bottom_my"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bottom_button_diary_calendar"
+                android:text="@string/bottom_button_diary_my"
                 android:textColor="@color/main_sub_text_color"
                 android:textSize="10dp"
                 android:textStyle="normal"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/iv_bottom_calendar"
+                app:layout_constraintTop_toBottomOf="@id/iv_bottom_my"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <ImageView
+                android:id="@+id/iv_bottom_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_background"
+                android:src="@drawable/bottom_button_setting_off"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_bottom_setting"
+                />
+
+            <TextView
+                android:id="@+id/tv_bottom_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bottom_button_diary_setting"
+                android:textColor="@color/main_sub_text_color"
+                android:textSize="10dp"
+                android:textStyle="normal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/iv_bottom_setting"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
 
@@ -194,14 +194,6 @@
             />
 
         <Button
-            android:id="@+id/bottom_btn_per_day"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/bg_transparent"
-            />
-
-        <Button
             android:id="@+id/bottom_btn_post"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -210,7 +202,15 @@
             />
 
         <Button
-            android:id="@+id/bottom_btn_calendar"
+            android:id="@+id/bottom_btn_my"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/bg_transparent"
+            />
+
+        <Button
+            android:id="@+id/bottom_btn_setting"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

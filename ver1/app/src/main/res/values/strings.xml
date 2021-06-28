@@ -7,15 +7,13 @@
 
     <string name="title_main_page">왜 안바껴...</string>
     <string name="title_daily_diary_list">나의 일기</string>
-    <string name="title_diary_detail">이날은</string>
-    <string name="title_diary_list_per_day">그날은</string>
     <string name="title_post_diary">오늘은</string>
-    <string name="title_calendar">캘린더</string>
+    <string name="title_my_diary">기억하고 싶은 날</string>
 
     <string name="bottom_button_diary_list">일기 목록</string>
     <string name="bottom_button_diary_post">일기 쓰기</string>
-    <string name="bottom_button_diary_per_day">요일별 일기</string>
-    <string name="bottom_button_diary_calendar">캘린더</string>
+    <string name="bottom_button_diary_my">관심 사연</string>
+    <string name="bottom_button_diary_setting">설정</string>
 
     <string name="post_main_text">오늘 하루는 어땠나요?</string>
     <string name="post_tv_date_time">날짜가 바뀌어요</string>
@@ -25,18 +23,9 @@
     <string name="post_btn_submit">기록하기</string>
     <string name="post_content_hint">나는 오늘 아침에 일어나 빵을 먹고 친구와 약속이 있는 장소로 갔다. 거기서 우연히....</string>
 
-    <string name="tab_bar_monday">MON</string>
-    <string name="tab_bar_tuesday">TUE</string>
-    <string name="tab_bar_wednesday">WED</string>
-    <string name="tab_bar_thursday">THU</string>
-    <string name="tab_bar_friday">FRI</string>
-    <string name="tab_bar_saturday">SAT</string>
-    <string name="tab_bar_sunday">SUN</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_list_fragment">Hello list fragment</string>
-    <string name="hello_post_fragment">Hello post fragment</string>
-    <string name="hello_calendar_fragment">hello_calendar_fragment</string>
+    <string name="hello_setting_activity">Hello setting activity</string>
+    <string name="hello_post_activity">Hello post activity</string>
 
     <string name="recycler_diary_list_title">일기 목록 타이틀일기 목록 타이</string>
     <string name="recycler_diary_list_content">오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 다채웠다 아싸</string>

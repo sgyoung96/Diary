@@ -15,10 +15,7 @@ class RegisterUtils {
             val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
             val checkRegisterQuery = RegisterQuery.checkOneRegister(id)
             val result = readDatabase.rawQuery(checkRegisterQuery, null)
-            while (result.moveToNext()) {
-                return true
-            }
-            return false
+            return result.moveToNext()
         }
     }
 }
