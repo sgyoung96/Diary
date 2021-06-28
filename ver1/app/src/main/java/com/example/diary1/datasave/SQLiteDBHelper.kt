@@ -23,7 +23,7 @@ class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.
         super.onOpen(db)
 
         createUserInfo(db!!)
-        createDiaryContent(db!!)
+        createDiaryContent(db)
     }
 
     // 테이블이 존재하지 않는 경우 생성
@@ -32,7 +32,7 @@ class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.
                         "(" +
                         "${RegisterInfo.DB_COL_NAME} VARCHAR(10)" + "," +
                         "${RegisterInfo.DB_COL_ID} VARCHAR(10) PRIMARY KEY" + "," +
-                        "${RegisterInfo.DB_COL_PW} VARCHAR(20)" +
+                        "${RegisterInfo.DB_COL_PW} VARCHAR(60)" +
                         ")" + ";"
 
         db.execSQL(sql)

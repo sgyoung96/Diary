@@ -12,10 +12,12 @@ import com.example.diary1.constants.RegisterInfo
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
+import com.example.diary1.datasave.query.LoginQuery
 import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import org.mindrot.jbcrypt.BCrypt
 
 /**
  * 타이틀바 없애기 :
@@ -64,47 +66,32 @@ class LoginActivity : AppCompatActivity() {
                  */
                 Log.d("ID 존재 여부", ">>>>>>>>>>ID 있음")
 
-                val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
-                val database: SQLiteDatabase = dbHelper.readableDatabase
-//                val checkPWQuery: String = RegisterQuery.checkOneRegister(et_id.text.toString())
-                val result: Cursor = database.rawQuery(RegisterQuery.checkOneRegister(et_id.text.toString()), null)
-                var comparePW: String
-                while (result.moveToNext()) {
-                    Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))}")
-
-                    comparePW = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))
-
-                    if (comparePW != et_pw.text.toString()) {
-                        Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
+                val existMember = LoginQuery.checkPW(this, et_id.text.toString(), et_pw.text.toString())
+                if (!existMember) {
+                    Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
                         Toast.makeText(this, "비밀번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
+                } else {
+                    // 화면 전환
+                    val intent = Intent(this, MainPageActivity::class.java)
+                    // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+                    try {
+                        startActivity(intent) // *********** 여기서 터짐
+                        Log.d("INTENT", ">>>>>>>>>>SUCCESS")
+                    } catch (e: Exception) {
+                        Log.d("INTENT FAIL", ">>>>>>>>>>$e")
+                        // android.content.ActivityNotFoundException: Unable to find explicit activity class {com.example.diary1/com.example.diary1.ui.activity.MainPageActivity}; have you declared this activity in your AndroidManifest.xml?
+                        // -> Manifest 에 없어서 수동으로 추가해 주었다.
                     }
-                    UserInfo.userName = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_NAME))
-                    UserInfo.userID = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_ID))
-                    UserInfo.userPW = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))
+
+                    // 화면 종료
+                    finish()
+                    Log.d("FINISH", ">>>>>>>>>>SUCCESS")
+                    Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}")
                 }
-                Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}, id : ${UserInfo.userID}, pw : ${UserInfo.userPW}")
-
-                //Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-
-                // 화면 전환
-                val intent = Intent(this, MainPageActivity::class.java)
-                // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-                try {
-                    startActivity(intent) // *********** 여기서 터짐
-                    Log.d("INTENT", ">>>>>>>>>>SUCCESS")
-                } catch (e: Exception) {
-                    Log.d("INTENT FAIL", ">>>>>>>>>>$e")
-                    // android.content.ActivityNotFoundException: Unable to find explicit activity class {com.example.diary1/com.example.diary1.ui.activity.MainPageActivity}; have you declared this activity in your AndroidManifest.xml?
-                    // -> Manifest 에 없어서 수동으로 추가해 주었다.
-                }
-
-                // 화면 종료
-                finish()
-                Log.d("FINISH", ">>>>>>>>>>SUCCESS")
             }
         }
     }
@@ -113,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
      * 뒤로가기 버튼을 두 번 누르면 앱 종료
      */
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - waitTime >= 1500) {
+        if (System.currentTimeMillis() - waitTime >= 1000) {
             waitTime = System.currentTimeMillis()
             Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show()
         } else {

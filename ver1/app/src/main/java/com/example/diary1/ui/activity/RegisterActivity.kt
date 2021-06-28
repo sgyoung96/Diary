@@ -24,6 +24,7 @@ import com.example.diary1.datasave.query.RegisterQuery
 import com.example.diary1.util.RegUtils
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_register.*
+import org.mindrot.jbcrypt.BCrypt
 import java.lang.Exception
 import java.util.*
 
@@ -73,11 +74,6 @@ class RegisterActivity : AppCompatActivity() {
 /*    // SharedPrefernce 사용을 위해 선언한 변수
     var context: Context? = null
 */
-
-    /**
-     * 뒤로가기 버튼 두 번 클릭 시 앱 종료때 사용할 변수
-     */
-    var waitTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -313,7 +309,16 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), et_register_pw.text.toString())
+        /**
+         * 비밀번호를 암호화한 것을 DB 에 삽입
+         * 변수 : pw
+         * 60 byte 의 문자열이 됨
+         * 생성된 해쉬를 원래 비밀번호로 검증하는 방법. 맞을 경우 true 반환. 주로 로그인 로직에서 사용
+         * => val isValidPW = BCrypt.checkpw(et_register_pw.test.toString(), pw)
+         */
+        val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
+
+        val registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), pw)
         try {
             database.execSQL(registerQuery) // ************ 여기서 터진다
         } catch (e: Exception) {
@@ -329,8 +334,7 @@ class RegisterActivity : AppCompatActivity() {
             result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    RegisterInfo.DB_COL_ID
-                ))}")
+                    RegisterInfo.DB_COL_ID))}, pw: ${result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))}")
                 // akakak2
             }
         } catch (e: Exception) {
@@ -465,14 +469,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     /**
-     * 뒤로가기 버튼을 두 번 누르면 앱 종료
+     * 뒤로가기 버튼 누르면 이 화면 종료 (LoginActivity 로 이동)
      */
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - waitTime >= 1000) {
-            waitTime = System.currentTimeMillis()
-            Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show()
-        } else {
-            finish()
-        }
+        finish()
     }
 }
