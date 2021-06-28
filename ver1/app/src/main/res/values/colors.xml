@@ -23,5 +23,7 @@
     <color name="input_submit_button">#A4B6D5</color>
     <color name="input_submit_text">#FFFFFF</color>
 
+    <color name="item_my_on">#FB6A6A</color>
+
     <color name="bg_transparent">#00000000</color>
 </resources>

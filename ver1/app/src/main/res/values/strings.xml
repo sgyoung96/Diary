@@ -23,9 +23,11 @@
     <string name="post_btn_submit">기록하기</string>
     <string name="post_content_hint">나는 오늘 아침에 일어나 빵을 먹고 친구와 약속이 있는 장소로 갔다. 거기서 우연히....</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_setting_activity">Hello setting activity</string>
     <string name="hello_post_activity">Hello post activity</string>
+    <string name="hello_detail_activity">Hello detail activity</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="recycler_diary_list_title">일기 목록 타이틀일기 목록 타이</string>
     <string name="recycler_diary_list_content">오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 다채웠다 아싸</string>
