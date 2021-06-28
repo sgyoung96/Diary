@@ -40,4 +40,19 @@
     <string name="detail_date_sample">2021-06-25 금요일</string>
     <string name="detail_content_sample">오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 특별한 일을 적어볼까 오늘의 다채웠다 아싸</string>
 
+    <string name="setting_profile">프로필 사진을 변경해요</string>
+    <string name="setting_id_title">ID</string>
+    <string name="setting_id_contnet">dkdlel66</string>
+    <string name="setting_id_guide">아이디는 바꿀 수 없어요</string>
+    <string name="setting_name_title">Name</string>
+    <string name="setting_name_content">이름</string>
+    <string name="setting_name_guide">내 이름을 변경해요</string>
+    <string name="setting_pw_title">PW</string>
+    <string name="setting_pw_content">qlalfqjsgh1234</string>
+    <string name="setting_pw_guide">비밀번호를 변경해요</string>
+    <string name="setting_check_pw_title">Check PW</string>
+    <string name="setting_check_pw_guide">비밀번호를 확인해요</string>
+    <string name="setting_btn_edit">수정</string>
+    <string name="setting_btn_delete">탈퇴</string>
+
 </resources>
