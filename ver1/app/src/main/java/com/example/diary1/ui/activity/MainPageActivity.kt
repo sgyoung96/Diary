@@ -299,8 +299,13 @@ class MainPageActivity : AppCompatActivity() {
      * 타이틀 바꾸기
      * 하단 버튼 색상 바꾸기
      */
-    fun goDetailFragment(data: PostedDiaryInfo) {
-        // DetailActivity 로 화면 전환
+    fun goDeatilActivity(data: PostedDiaryInfo) {
+       val intent = Intent(this, DetailActivity::class.java)
+        // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.putExtra("DATA", data)
+        startActivity(intent)
     }
 
     /**
