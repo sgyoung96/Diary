@@ -33,8 +33,8 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
+// TODO : DetailActivity 에서 뒤로가기 버튼으로 이 화면이 다시 나타났을 때 (생명주기 함수 이용) 데이터 다시 바인딩(DB 연동)
 // TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
-// TODO : DiaryListFragment 에서 상세페이지 이동할 때 Activity 띄우는 것으로 바꾸기 -> 뒤로가기 버튼 눌렀을 때 액티비티 종료되도록 (원래 화면으로 돌아오도록)
 // TODO : 앱 설치시 나타나는 제목 수정
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
@@ -213,11 +213,11 @@ class MainPageActivity : AppCompatActivity() {
      * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
      */
     private fun getImage() {
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("사진 등록")
         builder.setMessage("사연과 함께 사진을 기록으로 남겨보아요")
 
-        var listener = DialogInterface.OnClickListener { _, a ->
+        val listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     openGallery()

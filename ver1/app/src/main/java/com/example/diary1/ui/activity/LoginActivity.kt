@@ -90,7 +90,6 @@ class LoginActivity : AppCompatActivity() {
                     // 화면 종료
                     finish()
                     Log.d("FINISH", ">>>>>>>>>>SUCCESS")
-                    Log.d("변수에 값 할당 확인", ">>>>>>>>>>name : ${UserInfo.userName}")
                 }
             }
         }

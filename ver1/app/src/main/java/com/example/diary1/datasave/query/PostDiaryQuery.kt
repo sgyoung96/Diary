@@ -31,7 +31,7 @@ object PostDiaryQuery {
 
     fun checkDiary(id: String, date: String): String {
         return "SELECT * FROM ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
-                "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + id + "'" +
-                "AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + date + "'" + ";"
+               "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + id + "'" +
+               "AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + date + "'" + ";"
     }
 }

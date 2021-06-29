@@ -30,11 +30,14 @@ object LoginQuery {
             val comparePW = BCrypt.checkpw(pw, result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW)))
             if (comparePW) {
                 UserInfo.userID = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_ID))
+                database.close()
                 true
             } else {
+                database.close()
                 false
             }
         } else {
+            database.close()
             false
         }
     }
