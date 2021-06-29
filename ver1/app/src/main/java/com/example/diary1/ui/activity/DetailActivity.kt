@@ -27,9 +27,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : 뒤로가기 두번 눌렀을 때 액티비티 종료 되도록
 // TODO : 이미지뷰 클릭시, 카메라와 앨범으로부터 이미지 가져오기
-// TODO : tv_detail_date 클릭시, 캘린더 팝업 뜨면서 날짜 선택 가능하도록
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     var itemData: PostedDiaryInfo? = null

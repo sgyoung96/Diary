@@ -69,6 +69,25 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
         super.onAttach(context)
         mainPageActivity = activity as MainPageActivity
     }
+
+    // fragment 가 포커스를 가지게 됐을 때 (lifecycle)
+    override fun onResume() {
+        super.onResume()
+
+        rv_diary_list.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+        diaryListAdapter = DiaryListAdapter(requireContext())
+        rv_diary_list.adapter = diaryListAdapter
+
+        val diaryListPresenter = DiaryListPresenter()
+        diaryListPresenter.snedView(this)
+        diaryListPresenter.sendData(requireContext())
+
+        diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
+            override fun onItemClick(data: PostedDiaryInfo) {
+                mainPageActivity?.goDeatilActivity(data)
+            }
+        })
+    }
 }
 
 /*
