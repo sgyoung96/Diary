@@ -55,6 +55,7 @@ import java.util.*
  * 9-3. 메인화면으로 화면 전환하기
  */
 
+// TODO : 상단 문구 - 이름 왼쪽에 이미지뷰(프로필사진) 동그랗게 추가하기
 class RegisterActivity : AppCompatActivity() {
 
     /**

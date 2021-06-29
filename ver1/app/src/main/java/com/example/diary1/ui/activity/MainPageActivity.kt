@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
-// TODO : DetailActivity 에서 뒤로가기 버튼으로 이 화면이 다시 나타났을 때 (생명주기 함수 이용) 데이터 다시 바인딩(DB 연동)
+// TODO : 이미지뷰 클릭시 카메라와 앨범으로부터 이미지 가져오는 것.. Util 공통으로 뺄 수 없나?
 // TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
 // TODO : 앱 설치시 나타나는 제목 수정
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
