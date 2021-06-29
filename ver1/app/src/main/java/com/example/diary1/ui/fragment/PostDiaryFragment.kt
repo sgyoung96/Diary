@@ -105,7 +105,7 @@ class PostDiaryFragment : Fragment() {
             }
 
             /**
-             * setInChangeListener 에 인자로 사용할 변수들
+             * setOnChangeListener 에 인자로 사용할 변수들
              * calendarView: CalendarView, year: Int, month: Int, dayOfMonth: Int
              */
             cv_post_calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->

@@ -24,9 +24,12 @@ import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO : 뒤로가기 두번 눌렀을 때 액티비티 종료 되도록
 // TODO : 이미지뷰 클릭시, 카메라와 앨범으로부터 이미지 가져오기
+// TODO : tv_detail_date 클릭시, 캘린더 팝업 뜨면서 날짜 선택 가능하도록
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     var itemData: PostedDiaryInfo? = null
@@ -41,6 +44,11 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     var database: SQLiteDatabase? = null
     var sqlQuery: String? = null
     var result: Cursor? = null
+
+    var year: Int = 0           // 년
+    var month: String = ""      // 월
+    var date: Int = 0           // 일
+    var day: String = ""        // 요일
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +67,56 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
         // 수정 off 모드
         setCloseEditMode()
+
+        // CalendarView GONE 처리
+        cv_detail_calendar.visibility = View.GONE
+
+        /**
+         * 날짜 텍스트뷰 클릭시 캘린더뷰 visible, 선택 날짜 textview 에 할당하기
+         */
+        tv_detail_date.setOnClickListener {
+            cv_detail_calendar.visibility = View.VISIBLE
+
+            // 다른 곳 클릭 시 달력 사라짐
+            view.setOnClickListener {
+                cv_detail_calendar.visibility = View.GONE
+            }
+
+            /**
+             * setOnChangeListener 에 인자로 사용할 변수들
+             * calendarView: CalendarView, year: Int, month: Int, dayOfMonth: Int
+             */
+            cv_detail_calendar.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
+                Log.d("선택했어요", ">>>>>>>>>>날짜 선택했어요")
+                // 연월일 세팅
+                this.year = year
+                // this.month 는 1달 이전꺼로 출력됨
+                // 월이 한자리 수이면 앞에 0 붙임
+                val monthPlusOne = month + 1
+                if (monthPlusOne.toString().length == 1) {
+                    this.month = "0$monthPlusOne"
+                } else {
+                    this.month = "$monthPlusOne"
+                }
+
+                this.date = dayOfMonth
+                Log.d("year, month, date", ">>>>>>>>>>${this.year}, ${this.month}, ${this.date}")
+
+                // 요일 구하기
+                val todayCalendar = Calendar.getInstance()
+                todayCalendar.set(year, month, dayOfMonth)
+                val todayDate = todayCalendar.time // time의 월은 정확한 월로 출력됨
+                Log.d("todayDate", ">>>>>>>>>>$todayDate")
+                val dateformat = SimpleDateFormat("EEEE", Locale.getDefault())
+                this.day = dateformat.format(todayDate)
+                Log.d("day", ">>>>>>>>>>${this.day}")
+
+                // 년, 월, 일, 요일 텍스트뷰에 세팅
+                tv_detail_date.text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
+
+                cv_detail_calendar.visibility = View.GONE
+            }
+        }
 
         /**
          * 수정 버튼 클릭 시,
@@ -224,7 +282,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         iv_detail_image.isClickable = false
         et_detail_content.isEnabled = false
 
-        btn_detail_complete.visibility = View.INVISIBLE
+        btn_detail_complete.visibility = View.GONE
 
         isEditMode = false
     }
