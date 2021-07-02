@@ -1,6 +1,7 @@
 package com.example.diary1.ui.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
+import com.example.diary1.ui.activity.DetailActivity
 import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.*
 import kotlinx.android.synthetic.main.fragment_diary_list.*
@@ -55,7 +57,13 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
 
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
             override fun onItemClick(data: PostedDiaryInfo) {
-                mainPageActivity?.goDeatilActivity(data)
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                intent.putExtra("DATA", data)
+                requireContext().startActivity(intent)
+                // mainPageActivity?.goDeatilActivity(data)
             }
         })
     }
@@ -73,20 +81,7 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
     // fragment 가 포커스를 가지게 됐을 때 (lifecycle)
     override fun onResume() {
         super.onResume()
-
-        rv_diary_list.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-        diaryListAdapter = DiaryListAdapter(requireContext())
-        rv_diary_list.adapter = diaryListAdapter
-
-        val diaryListPresenter = DiaryListPresenter()
-        diaryListPresenter.snedView(this)
-        diaryListPresenter.sendData(requireContext())
-
-        diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
-            override fun onItemClick(data: PostedDiaryInfo) {
-                mainPageActivity?.goDeatilActivity(data)
-            }
-        })
+        diaryListAdapter?.notifyDataSetChanged()
     }
 }
 

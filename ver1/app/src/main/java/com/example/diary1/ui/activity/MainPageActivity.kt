@@ -26,6 +26,7 @@ import com.example.diary1.R
 import com.example.diary1.ui.fragment.*
 import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
+import com.example.diary1.util.BottomBtns
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_page.*
@@ -33,20 +34,11 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 
-// TODO : 이미지뷰 클릭시 카메라와 앨범으로부터 이미지 가져오는 것.. Util 공통으로 뺄 수 없나?
 // TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
 // TODO : 앱 설치시 나타나는 제목 수정
 // TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
 class MainPageActivity : AppCompatActivity() {
-
-    /**
-     * 하단 버튼 선택에 관한 플래그
-     */
-    var ischecked_list: Boolean = true
-    var ischecked_per_day: Boolean = false
-    var ischecked_post: Boolean = false
-    var ischecked_calendar: Boolean = false
 
     /**
      * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
@@ -76,8 +68,35 @@ class MainPageActivity : AppCompatActivity() {
          * 하단 버튼 색상 초기화
          * 일기 목록이 메인 화면이므로 색상을 바꿔줌
          */
-        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
-        tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
+        setBottomInit()
+        selectBottomBtn(BottomBtns.DIARY_LIST)
+
+        /**
+         * 하단 메뉴 버튼 이벤트
+         * 1. 일기목록 2. 요일별 일기 3. 일기쓰기 4. 캘린더
+         * 클릭시 아이콘, 텍스트 색상과 타이틀 바뀌고 프레그먼트 화면 전환
+         */
+        bottom_btn_list.setOnClickListener {
+            setBottomInit()
+            selectBottomBtn(BottomBtns.DIARY_LIST)
+        }
+        bottom_btn_post.setOnClickListener {
+            setBottomInit()
+            selectBottomBtn(BottomBtns.DIARY_POST)
+        }
+        bottom_btn_my.setOnClickListener {
+            setBottomInit()
+            selectBottomBtn(BottomBtns.DIARY_MY)
+        }
+        bottom_btn_setting.setOnClickListener {
+            setBottomInit()
+            selectBottomBtn(BottomBtns.DIARY_SET)
+        }
+    }
+
+    fun setBottomInit() {
+        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
+        tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
 
         iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
         tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
@@ -87,90 +106,40 @@ class MainPageActivity : AppCompatActivity() {
 
         iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
         tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
+    }
 
-        tv_title.text = getString(R.string.title_daily_diary_list)
-
-        supportFragmentManager.beginTransaction().add(R.id.vg_fragment_container, DiaryListFragment()).commit()
-
-        /**
-         * 하단 메뉴 버튼 이벤트
-         * 1. 일기목록 2. 요일별 일기 3. 일기쓰기 4. 캘린더
-         * 클릭시 아이콘, 텍스트 색상과 타이틀 바뀌고 프레그먼트 화면 전환
-         */
-        bottom_btn_list.setOnClickListener {
-            ischecked_list = true
-            ischecked_per_day = false
-            ischecked_post = false
-            ischecked_calendar = false
-            if (ischecked_list) {
+    fun selectBottomBtn(index: Int) {
+        when(index) {
+            BottomBtns.DIARY_LIST -> {
                 iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
                 tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
-                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
-                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
-                tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
-                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
+                tv_title.text = getString(R.string.title_daily_diary_list)
+                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
             }
-
-            tv_title.text = getString(R.string.title_daily_diary_list)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
-        }
-        bottom_btn_post.setOnClickListener {
-            ischecked_list = false
-            ischecked_per_day = true
-            ischecked_post = false
-            ischecked_calendar = false
-            if (ischecked_per_day) {
-                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
-                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
-
+            BottomBtns.DIARY_POST -> {
                 iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_on))
                 tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
 
-
-                iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
-                tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
-                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
+                tv_title.text = getString(R.string.title_post_diary)
+                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
             }
-
-            tv_title.text = getString(R.string.title_post_diary)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
-        }
-        bottom_btn_my.setOnClickListener {
-            ischecked_list = false
-            ischecked_per_day = false
-            ischecked_post = true
-            ischecked_calendar = false
-            if (ischecked_post) {
-                iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_off))
-                tv_bottom_list.setTextColor(getColor(R.color.main_sub_text_color))
-
-                iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
-                tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
-
+            BottomBtns.DIARY_MY -> {
                 iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_on))
                 tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
 
-                iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
-                tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
+                tv_title.text = getString(R.string.title_my_diary)
+                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
+            }
+            BottomBtns.DIARY_SET -> {
+                // SettingActivity 로 화면 전환
+                val intent = Intent(this, SettingActivity::class.java)
+                // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                startActivity(intent)
             }
 
-            tv_title.text = getString(R.string.title_my_diary)
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
-        }
-        bottom_btn_setting.setOnClickListener {
-            // SettingActivity 로 화면 전환
-            val intent = Intent(this, SettingActivity::class.java)
-            // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(intent)
         }
     }
 
@@ -279,19 +248,8 @@ class MainPageActivity : AppCompatActivity() {
      * 포스팅 완료하고 화면 전환할 때 버튼 색상 바꾸기
      */
     fun changeColorAfterPosting() {
-        iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
-        tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
-
-        iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_off))
-        tv_bottom_post.setTextColor(getColor(R.color.main_sub_text_color))
-        
-        iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_off))
-        tv_bottom_my.setTextColor(getColor(R.color.main_sub_text_color))
-
-        iv_bottom_setting.setImageDrawable(getDrawable(R.drawable.bottom_button_setting_off))
-        tv_bottom_setting.setTextColor(getColor(R.color.main_sub_text_color))
-
-        tv_title.text = getString(R.string.title_daily_diary_list)
+        setBottomInit()
+        selectBottomBtn(BottomBtns.DIARY_LIST)
     }
 
     /**

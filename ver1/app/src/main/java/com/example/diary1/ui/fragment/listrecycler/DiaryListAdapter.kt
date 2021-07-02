@@ -20,7 +20,8 @@ class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListView
     }
 
     override fun onBindViewHolder(holder: DiaryListViewHolder, position: Int) {
-        holder.bind(diaryData[position], listener!!)
+        listener?.let { holder.bind(diaryData[position], it) }
+
     }
 
     override fun getItemCount(): Int {
