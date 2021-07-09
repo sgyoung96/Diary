@@ -27,7 +27,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : 날짜 제어 -> '일'도 한자리면 앞에 0 추가하기
 // TODO : 수정 모드 아닐 때, 텍스트뷰 클릭 되는 문제 잡기 (플래그로...?)
 // TODO : 이미지뷰 클릭시, 카메라와 앨범으로부터 이미지 가져오기
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
@@ -44,7 +43,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
     var year: Int = 0           // 년
     var month: String = ""      // 월
-    var date: String = ""           // 일
+    var date: String = ""       // 일
     var day: String = ""        // 요일
 
     override fun onCreate(savedInstanceState: Bundle?) {

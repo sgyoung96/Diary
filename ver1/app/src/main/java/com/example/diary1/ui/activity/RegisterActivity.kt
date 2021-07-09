@@ -55,7 +55,6 @@ import java.util.*
  * 9-3. 메인화면으로 화면 전환하기
  */
 
-// TODO : 날짜 제어 -> '일'도 한자리면 앞에 0 추가하기
 class RegisterActivity : AppCompatActivity() {
 
     /**
@@ -375,7 +374,7 @@ class RegisterActivity : AppCompatActivity() {
 
         var listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
-                DialogInterface.BUTTON_NEUTRAL -> {
+                DialogInterface.BUTTON_NEGATIVE -> {
                     startActivity(Intent(this, LoginActivity::class.java))
                     Log.d("화면전환", ">>>>>>>>>Success")
                     finish()
@@ -383,7 +382,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
-        builder.setNeutralButton("확인", listener)
+        builder.setNegativeButton("확인", listener)
 
         builder.show()
     }
