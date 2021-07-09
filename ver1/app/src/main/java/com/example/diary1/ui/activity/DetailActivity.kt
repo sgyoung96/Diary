@@ -44,7 +44,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
     var year: Int = 0           // 년
     var month: String = ""      // 월
-    var date: Int = 0           // 일
+    var date: String = ""           // 일
     var day: String = ""        // 요일
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +96,13 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                     this.month = "$monthPlusOne"
                 }
 
-                this.date = dayOfMonth
+                // 일이 한자리 수면 앞에 0 붙임
+                if (dayOfMonth.toString().length == 1) {
+                    this.date = "0$dayOfMonth"
+                } else {
+                    this.date = dayOfMonth.toString()
+                }
+
                 Log.d("year, month, date", ">>>>>>>>>>${this.year}, ${this.month}, ${this.date}")
 
                 // 요일 구하기

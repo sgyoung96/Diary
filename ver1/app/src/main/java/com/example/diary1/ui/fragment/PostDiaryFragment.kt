@@ -32,7 +32,6 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
-// TODO : 날짜 제어 -> '일'도 한자리면 앞에 0 추가하기
 // TODO : 상단 문구 - 이름 왼쪽에 이미지뷰(프로필사진) 동그랗게 추가하기
 // TODO : 로컬에 이미지 저장
 class PostDiaryFragment : Fragment() {
@@ -48,7 +47,7 @@ class PostDiaryFragment : Fragment() {
      */
     var year: Int? = null
     var month: String? = null
-    var date: Int? = null
+    var date: String? = null
     var day: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +121,13 @@ class PostDiaryFragment : Fragment() {
                     this.month = "$monthPlusOne"
                 }
 
-                this.date = dayOfMonth
+                // 일이 한자리 수면 앞에 0 붙임
+                if (dayOfMonth.toString().length == 1) {
+                    this.date = "0$dayOfMonth"
+                } else {
+                    this.date = dayOfMonth.toString()
+                }
+
                 Log.d("year, month, date", ">>>>>>>>>>${this.year}, ${this.month}, ${this.date}")
 
                 // 요일 구하기
@@ -166,7 +171,6 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-
             // 제목 공란 체크
             if (et_input_title.text.isNullOrEmpty()) {
                 Toast.makeText(context, "제목을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -201,14 +205,10 @@ class PostDiaryFragment : Fragment() {
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
-                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_USERID))}")
-                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_DATE))}")
-                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_TITLE))}")
-                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_CONTENT))}")
+                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_USERID))}")
+                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
+                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")
+                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))}")
             }
 
             database.close()

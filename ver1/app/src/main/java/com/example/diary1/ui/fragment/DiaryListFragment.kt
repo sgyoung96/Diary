@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_diary_list.*
  * 1. 로컬에 저장한 글쓴 목록 데이터 객체에 담기
  * 2. recyclerView 이용해 목록 뿌리기
  */
+// TODO : DetailActivity 에서 뒤로가기 버튼 눌러서 이 화면 나왔을 때 아이템리스트 갱신되도록
 // TODO : item 중, 하트 클릭시 이벤트 발생 (DB 변경, 이미지 변경, 관심목록 리스트 갱신)
 // ColorPrimary 색상을 바꿔줘야 recyclerView 드래그했을 때 나타나는 색상이 반영된다.
 class DiaryListFragment : Fragment(), DiaryListContract.View {
