@@ -6,7 +6,6 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.diary1.R
 
-// TODO : Splash screen 적용 실패 (SplashActivity, activity_splash.xml, splash_icon.xml, splash_screen.xml)
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,12 +17,5 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, 1500)
-
-        // startActivity(Intent(this, LoginActivity::class.java))
-        // finish()
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 }

@@ -36,8 +36,8 @@ import java.lang.Exception
 
 // TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
 // TODO : 앱 설치시 나타나는 제목 수정
-// TODO : BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
-// TODO : Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
+// BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
+// Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
 class MainPageActivity : AppCompatActivity() {
 
     /**

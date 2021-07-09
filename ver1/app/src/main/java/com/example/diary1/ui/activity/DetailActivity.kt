@@ -34,9 +34,6 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
     var itemData: PostedDiaryInfo? = null
 
-    // 뒤로가기 버튼 두 번 클릭 제어용 변수
-    var waitTime: Long = 0
-
     // 수정 모드 플래그
     var isEditMode = false
 

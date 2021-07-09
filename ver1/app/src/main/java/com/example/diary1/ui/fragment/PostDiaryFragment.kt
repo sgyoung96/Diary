@@ -32,6 +32,7 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
+// TODO : 날짜 제어 -> '일'도 한자리면 앞에 0 추가하기
 // TODO : 상단 문구 - 이름 왼쪽에 이미지뷰(프로필사진) 동그랗게 추가하기
 // TODO : 로컬에 이미지 저장
 class PostDiaryFragment : Fragment() {
@@ -52,7 +53,6 @@ class PostDiaryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -60,7 +60,6 @@ class PostDiaryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_post_diary, container, false)
         return inflater.inflate(R.layout.fragment_post_diary, container, false)
     }
 
