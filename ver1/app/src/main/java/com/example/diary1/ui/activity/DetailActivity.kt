@@ -1,11 +1,16 @@
 package com.example.diary1.ui.activity
 
+import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.transition.Visibility
 import android.util.Log
 import android.view.*
@@ -14,6 +19,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.diary1.R
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
@@ -22,6 +29,7 @@ import com.example.diary1.datasave.query.DetailDiaryQuery
 import com.example.diary1.datasave.query.PostDiaryQuery
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -31,20 +39,37 @@ import java.util.*
 // TODO : 이미지뷰 클릭시, 카메라와 앨범으로부터 이미지 가져오기
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
+    // DiaruListFragment - recyclerview - item 으로부터 데이터 넘겨받을 변수
     var itemData: PostedDiaryInfo? = null
 
     // 수정 모드 플래그
     var isEditMode = false
 
+    // DB 처리 관련 변수들
     var dbHelper: SQLiteDBHelper? = null
     var database: SQLiteDatabase? = null
     var sqlQuery: String? = null
     var result: Cursor? = null
 
+    // 캘린더 관련 변수들
     var year: Int = 0           // 년
     var month: String = ""      // 월
     var date: String = ""       // 일
     var day: String = ""        // 요일
+
+    /**
+     * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
+     * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
+     */
+    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+    val STORAGE_PERMISSION = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    val PERMISSION_CAMERA = 1
+    val PERMISSION_STORAGE = 2
+    val REQUEST_CAMERA = 3
+    val REQUEST_STORAGE = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +143,18 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
                 cv_detail_calendar.visibility = View.GONE
             }
+        }
+
+        /**
+         * 이미지뷰 클릭시 앨범과 카메라에서 이미지 가져와 할당하기
+         */
+        iv_detail_image.setOnClickListener {
+            /**
+             * 1. 권한 체크
+             * 2. 다이어로그 띄워서 앨범 혹은 카메라 진입
+             * 3. 이미지뷰에 이미지 세팅
+             */
+            getImage()
         }
 
         /**
@@ -291,6 +328,87 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     }
 
     /**
+     * 권한을 승인했는지 확인하는 함수
+     */
+    private fun checkPermission(permissions: Array<out String>, flag: Int): Boolean {
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions, flag)
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * 이미지뷰 클릭시 앨범과 카메라에서 이미지 삽입
+     * 1. dialog 팝업
+     * 2. 각각의 버튼을 클릭했을 때, 앨범 혹은 카메라로 이동
+     * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
+     */
+    private fun getImage() {
+        var builder = AlertDialog.Builder(this)
+        builder.setTitle("사진 등록")
+        builder.setMessage("사연과 함께 사진을 등록하세요")
+
+        var listener = DialogInterface.OnClickListener { _, a ->
+            when (a) {
+                DialogInterface.BUTTON_NEUTRAL -> {
+                    openGallery()
+                }
+                DialogInterface.BUTTON_POSITIVE -> {
+                    openCamera()
+                }
+            }
+        }
+        builder.setNeutralButton("앨범", listener)
+        builder.setPositiveButton("카메라", listener)
+
+        builder.show()
+    }
+
+    /**
+     * 앨범 열기 : openGallery
+     * 카메라 열기 : openCamera
+     */
+    private fun openGallery() {
+        if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            startActivityForResult(intent, REQUEST_STORAGE)
+        }
+    }
+
+    private fun openCamera() {
+        if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, REQUEST_CAMERA)
+        }
+    }
+
+    /**
+     * 이미지뷰에 이미지 셋팅
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("gall", ">>>>>>>>>>result code $resultCode")
+        if(data == null ) Log.d("gall", ">>>>>>>>>>data null")
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_STORAGE -> {
+                    val uri = data?.data
+                    Log.d("gall", ">>>>>>>>>>uri ${uri?.path}")
+                    iv_detail_image.setImageURI(uri)
+                }
+                REQUEST_CAMERA -> {
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    iv_detail_image.setImageBitmap(bitmap)
+                }
+            }
+        }
+    }
+
+    /**
      * 뒤로가기 버튼 클릭 시,
      * 1. 만약 수정 모드일 때, 수정 모드 종료, 초기 상태로 데이터 돌려놓기
      * 2. 수정 모드가 아닐 때, 화면 종료
@@ -302,6 +420,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             et_detail_title.setText(itemData?.postTitle)
             tv_detail_date.text = itemData?.postDate
             et_detail_content.setText(itemData?.postContent)
+            // TODO : 뒤로가기 눌러서 수정모드 종료됐을 때 itemData 로부터 넘겨받은 이미지로 되돌려 놓기 세팅 - 단, 이미지가 없으면, 기본 설정된 이미지로 바껴야 함
 
             isEditMode = false
         } else {
