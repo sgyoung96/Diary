@@ -424,6 +424,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
             isEditMode = false
         } else {
+            startActivity(Intent(this, MainPageActivity::class.java))
             finish()
         }
     }

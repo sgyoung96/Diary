@@ -254,8 +254,6 @@ class MainPageActivity : AppCompatActivity() {
 
     /**
      * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
-     * 타이틀 바꾸기
-     * 하단 버튼 색상 바꾸기
      */
     fun goDeatilActivity(data: PostedDiaryInfo) {
        val intent = Intent(this, DetailActivity::class.java)
@@ -264,6 +262,7 @@ class MainPageActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("DATA", data)
         startActivity(intent)
+        finish()
     }
 
     /**

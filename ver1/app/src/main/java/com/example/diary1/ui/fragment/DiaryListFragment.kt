@@ -58,13 +58,7 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
 
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
             override fun onItemClick(data: PostedDiaryInfo) {
-                val intent = Intent(requireContext(), DetailActivity::class.java)
-                // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                intent.putExtra("DATA", data)
-                requireContext().startActivity(intent)
-                // mainPageActivity?.goDeatilActivity(data)
+                mainPageActivity?.goDeatilActivity(data)
             }
         })
     }
@@ -77,12 +71,6 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainPageActivity = activity as MainPageActivity
-    }
-
-    // fragment 가 포커스를 가지게 됐을 때 (lifecycle)
-    override fun onResume() {
-        super.onResume()
-        diaryListAdapter?.notifyDataSetChanged()
     }
 }
 
