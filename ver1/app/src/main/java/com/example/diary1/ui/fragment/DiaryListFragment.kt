@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,6 +60,10 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
             override fun onItemClick(data: PostedDiaryInfo) {
                 mainPageActivity?.goDeatilActivity(data)
+            }
+
+            override fun onMyClick() {
+                Toast.makeText(requireContext(), "하트 클릭했어요!", Toast.LENGTH_SHORT).show()
             }
         })
     }

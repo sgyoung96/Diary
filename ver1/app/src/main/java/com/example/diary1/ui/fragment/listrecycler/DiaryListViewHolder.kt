@@ -2,16 +2,20 @@ package com.example.diary1.ui.fragment.listrecycler
 
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
 
 class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
-    var itemDate = item.findViewById<TextView>(R.id.tv_diary_list_date)
-    var itemTitle = item.findViewById<TextView>(R.id.tv_diary_list_title)
-    var itemContent = item.findViewById<TextView>(R.id.tv_diary_list_content)
+    val itemDate = item.findViewById<TextView>(R.id.tv_diary_list_date)
+    val itemTitle = item.findViewById<TextView>(R.id.tv_diary_list_title)
+    val itemContent = item.findViewById<TextView>(R.id.tv_diary_list_content)
     val item = item
+
+    // 관심목록 하트
+    val itemMy = item.findViewById<ImageView>(R.id.iv_diary_list_my)
 
     fun bind(data: PostedDiaryInfo, listener: ItemClickListener) {
         itemDate.text = data.postDate
@@ -25,14 +29,9 @@ class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
         item.setOnClickListener {
             listener.onItemClick(data)
         }
+
+        itemMy.setOnClickListener {
+            listener.onMyClick()
+        }
     }
 }
-
-/*
-item.setOnClickListener(View.OnClickListener() {
-            override fun onClick(v: View) {
-                val position = adapterPosition
-                listener.onItemClick(this, item, data, position)
-            }
-        })
-*/
