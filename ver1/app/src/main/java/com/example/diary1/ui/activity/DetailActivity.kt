@@ -304,8 +304,6 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         builder.setPositiveButton("아니오", listener)
 
         builder.show()
-
-
     }
 
     /**

@@ -26,4 +26,6 @@
     <color name="item_my_on">#FB6A6A</color>
 
     <color name="bg_transparent">#00000000</color>
+
+    <color name="setting_checked_pw">#FB6A6A</color>
 </resources>

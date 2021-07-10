@@ -40,6 +40,9 @@ import java.lang.Exception
 // Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
 class MainPageActivity : AppCompatActivity() {
 
+    // 버튼 색상 플래그
+    var btnClicked: Int? = null
+
     /**
      * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
      * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
@@ -111,6 +114,7 @@ class MainPageActivity : AppCompatActivity() {
     fun selectBottomBtn(index: Int) {
         when(index) {
             BottomBtns.DIARY_LIST -> {
+                btnClicked = BottomBtns.DIARY_LIST
                 iv_bottom_list.setImageDrawable(getDrawable(R.drawable.bottom_button_list_on))
                 tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
@@ -118,6 +122,7 @@ class MainPageActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_POST -> {
+                btnClicked = BottomBtns.DIARY_POST
                 iv_bottom_post.setImageDrawable(getDrawable(R.drawable.bottom_button_post_on))
                 tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
 
@@ -125,6 +130,7 @@ class MainPageActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_MY -> {
+                btnClicked = BottomBtns.DIARY_MY
                 iv_bottom_my.setImageDrawable(getDrawable(R.drawable.bottom_button_my_on))
                 tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
 
@@ -137,9 +143,9 @@ class MainPageActivity : AppCompatActivity() {
                 // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                intent.putExtra("btnClicked", btnClicked)
                 startActivity(intent)
             }
-
         }
     }
 
@@ -274,6 +280,18 @@ class MainPageActivity : AppCompatActivity() {
             Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show()
         } else {
             finish()
+        }
+    }
+
+    /**
+     * SettingActivity 갔다가 BackPress 로 되돌아왔을 때
+     */
+    override fun onResume() {
+        super.onResume()
+        val flag: Int? = intent.getSerializableExtra("btnClicked") as Int?
+        flag?.let {
+            setBottomInit()
+            selectBottomBtn(flag)
         }
     }
 }

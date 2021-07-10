@@ -5,6 +5,17 @@
     <string name="title_main">Diary</string>
     <string name="title_activity_test">TestActivity</string>
 
+    <string name="register_profile_text">사진을 클릭해 프로필사진을 추가해요</string>
+    <string name="register_name">Name</string>
+    <string name="register_name_hint">홍길동</string>
+    <string name="register_id">ID</string>
+    <string name="register_id_hint">6 ~ 10글자 숫자와 영소문자</string>
+    <string name="register_pw">PW</string>
+    <string name="register_pw_hint">12 ~ 20글자 숫자와 영소문자</string>
+    <string name="register_check_pw">Check PW</string>
+    <string name="register_check_pw_hint">비밀번호를 한번 더 입력하세요</string>
+    <string name="register_btn_register">회원가입</string>
+
     <string name="title_main_page">왜 안바껴...</string>
     <string name="title_daily_diary_list">나의 일기</string>
     <string name="title_post_diary">오늘은</string>
@@ -52,11 +63,12 @@
     <string name="setting_name_content">이름</string>
     <string name="setting_name_guide">내 이름을 변경해요</string>
     <string name="setting_pw_title">PW</string>
-    <string name="setting_pw_content">qlalfqjsgh1234</string>
+    <string name="setting_pw_content">12 ~ 20글자 숫자와 영소문자</string>
     <string name="setting_pw_guide">비밀번호를 변경해요</string>
     <string name="setting_check_pw_title">Check PW</string>
     <string name="setting_check_pw_guide">비밀번호를 확인해요</string>
     <string name="setting_btn_edit">수정</string>
     <string name="setting_btn_delete">탈퇴</string>
+    <string name="setting_checked_pw">비밀번호가 일치해요</string>
 
 </resources>
