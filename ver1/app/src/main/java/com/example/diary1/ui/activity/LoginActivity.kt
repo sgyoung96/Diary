@@ -27,7 +27,6 @@ import org.mindrot.jbcrypt.BCrypt
  * <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item> 속성 변경
  */
 
-// TODO : companion object -> object 클래스명, data class 사용하기
 class LoginActivity : AppCompatActivity() {
 
     /**
