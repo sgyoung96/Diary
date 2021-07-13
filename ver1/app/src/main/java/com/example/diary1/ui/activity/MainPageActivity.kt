@@ -145,6 +145,7 @@ class MainPageActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 intent.putExtra("btnClicked", btnClicked)
                 startActivity(intent)
+                finish()
             }
         }
     }
