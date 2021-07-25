@@ -1,6 +1,6 @@
-package com.example.diary1.ui.fragment.listrecycler
+package com.example.diary1.ui.fragment.myrecycler
 
-import android.view.View
+import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 
 interface ItemClickListener {
     fun onItemClick(data: PostedDiaryInfo)

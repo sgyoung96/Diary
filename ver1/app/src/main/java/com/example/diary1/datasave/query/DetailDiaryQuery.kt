@@ -1,6 +1,6 @@
 package com.example.diary1.datasave.query
 
-import com.example.diary1.datasave.PostDiaryInfo
+import com.example.diary1.constants.PostDiaryInfo
 
 object DetailDiaryQuery {
     fun saveDiary (id: String, title: String, date: String, content: String, originalDate: String): String {

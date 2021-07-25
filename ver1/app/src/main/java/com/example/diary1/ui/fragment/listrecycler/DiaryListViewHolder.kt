@@ -21,17 +21,23 @@ class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
         itemDate.text = data.postDate
         itemTitle.text = data.postTitle
         itemContent.text = data.postContent
+        if (data.postMy == "0") {
+            itemMy.setImageResource(R.drawable.item_my_off)
+        } else {
+            itemMy.setImageResource(R.drawable.item_my_on)
+        }
 
         Log.d("ViewHolderDate", ">>>>>>>>>>${data.postDate}")
         Log.d("ViewHolderTitle", ">>>>>>>>>>${data.postTitle}")
         Log.d("ViewHolderContent", ">>>>>>>>>>${data.postContent}")
+        Log.d("ViewHolderMy", ">>>>>>>>>>${data.postMy}")
 
         item.setOnClickListener {
             listener.onItemClick(data)
         }
 
         itemMy.setOnClickListener {
-            listener.onMyClick()
+            listener.onMyClick(data, adapterPosition)
         }
     }
 }

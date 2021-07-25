@@ -5,5 +5,6 @@ import java.io.Serializable
 data class PostedDiaryInfo (
     var postDate: String,
     var postTitle: String,
-    var postContent: String
+    var postContent: String,
+    var postMy: String
 ): Serializable

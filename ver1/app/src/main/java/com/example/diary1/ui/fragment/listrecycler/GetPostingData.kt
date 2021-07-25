@@ -1,15 +1,13 @@
 package com.example.diary1.ui.fragment.listrecycler
 
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
-import com.example.diary1.datasave.PostDiaryInfo
+import com.example.diary1.constants.PostDiaryInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.query.DiaryListQuery
-import com.example.diary1.ui.fragment.DiaryListFragment
 
 /**
  * 1. DB open
@@ -32,12 +30,14 @@ class GetPostingData(context: Context) {
             data.add(
                 PostedDiaryInfo(result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
                                 result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
-                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))))
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)),
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY))))
 
             Log.d("checkData1", ">>>>>>>>>>$data")
             Log.d("title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")
             Log.d("date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
             Log.d("content", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))}")
+            Log.d("my", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY))}")
         }
         Log.d("checkData2", ">>>>>>>>>>$data")
 

@@ -3,6 +3,7 @@ package com.example.diary1.datasave
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.diary1.constants.PostDiaryInfo
 import com.example.diary1.constants.RegisterInfo
 
 class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, name, factory, version) {
@@ -44,7 +45,8 @@ class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.
                 "${PostDiaryInfo.DB_COL_USERID} VARCHAR(10)" + "," +
                 "${PostDiaryInfo.DB_COL_DATE} VARCHAR(17)" + "," +
                 "${PostDiaryInfo.DB_COL_TITLE} VARCHAR(30)" + "," +
-                "${PostDiaryInfo.DB_COL_CONTENT} VARCHAR(1000)" +
+                "${PostDiaryInfo.DB_COL_CONTENT} VARCHAR(1000)" + "," +
+                "${PostDiaryInfo.DB_COL_MY} VARCHAR(1) DEFAULT '${PostDiaryInfo.POST_MY_DEFAULT}'" +
                 ")" + ";"
 
         db.execSQL(sql)

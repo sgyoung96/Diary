@@ -11,12 +11,9 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.transition.Visibility
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
 import android.widget.PopupMenu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -35,8 +32,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : 수정 모드 아닐 때, 텍스트뷰 클릭 되는 문제 잡기 (플래그로...?)
-// TODO : 이미지뷰 클릭시, 카메라와 앨범으로부터 이미지 가져오기
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     // DiaruListFragment - recyclerview - item 으로부터 데이터 넘겨받을 변수
@@ -71,6 +66,9 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
 
+    // MainPageActivity 로 전환시 화면 및 버튼 색상 초기화 할 플래그
+    var btnClicked: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -80,6 +78,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
         // 데이터 바인딩
         itemData = intent.getSerializableExtra("DATA") as PostedDiaryInfo
+        btnClicked = intent.getSerializableExtra("btnClicked") as Int
         et_detail_title.setText(itemData?.postTitle)
         tv_detail_date.text = itemData?.postDate
         et_detail_content.setText(itemData?.postContent)
@@ -422,7 +421,9 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
             isEditMode = false
         } else {
-            startActivity(Intent(this, MainPageActivity::class.java))
+            val intent = Intent(this, MainPageActivity::class.java)
+            intent.putExtra("btnClicked", btnClicked)
+            startActivity(intent)
             finish()
         }
     }

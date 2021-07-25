@@ -1,33 +1,32 @@
 package com.example.diary1.ui.fragment
 
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.diary1.R
+import com.example.diary1.constants.PostDiaryInfo
+import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.SQLiteDBHelper
+import com.example.diary1.datasave.query.MyDiaryQuery
+import com.example.diary1.ui.activity.MainPageActivity
+import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
+import com.example.diary1.ui.fragment.myrecycler.ItemClickListener
+import com.example.diary1.ui.fragment.myrecycler.MyDiaryAdapter
+import kotlinx.android.synthetic.main.fragment_my_diary.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyDiaryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyDiaryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    var data: MutableList<PostedDiaryInfo> = mutableListOf()
+    var myDiaryAdapter: MyDiaryAdapter? = null
+    var mainPageActivity: MainPageActivity? = null
+    var itemData: MutableList<PostedDiaryInfo>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -38,23 +37,46 @@ class MyDiaryFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_diary, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyDiaryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyDiaryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        myDiaryAdapter = MyDiaryAdapter(requireContext())
+
+        val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
+        val database: SQLiteDatabase = dbHelper.readableDatabase
+        val query = MyDiaryQuery.myDiaryQuery()
+        val result: Cursor = database.rawQuery(query, null)
+
+        while (result.moveToNext()) {
+            data.add(
+                PostedDiaryInfo(
+                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
+                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
+                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)),
+                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY))
+                )
+            )
+        }
+        database.close()
+
+        myDiaryAdapter?.data = data
+        itemData = data
+        rv_my_diary.adapter = myDiaryAdapter
+
+        myDiaryAdapter?.setItemListener(object : ItemClickListener {
+            override fun onItemClick(data: PostedDiaryInfo) {
+                mainPageActivity?.goDetailActivity(data)
             }
+
+            override fun onMyClick(data: PostedDiaryInfo, position: Int) {
+                val item: PostedDiaryInfo = itemData!![position]
+                MyDiaryQuery.setMyFlag(requireContext(), item.postDate)
+                mainPageActivity?.changeFragment(3)
+            }
+        })
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainPageActivity = activity as MainPageActivity
     }
 }

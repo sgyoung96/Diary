@@ -14,13 +14,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.diary1.R
 import com.example.diary1.constants.RegisterInfo
-import com.example.diary1.datasave.PostDiaryInfo
+import com.example.diary1.constants.PostDiaryInfo
 import com.example.diary1.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.query.PostDiaryQuery
 import com.example.diary1.ui.activity.MainPageActivity
-import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.text.SimpleDateFormat
@@ -205,10 +204,14 @@ class PostDiaryFragment : Fragment() {
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
-                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_USERID))}")
-                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE))}")
-                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")
-                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT))}")
+                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_USERID))}")
+                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_DATE))}")
+                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_TITLE))}")
+                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(
+                    PostDiaryInfo.DB_COL_CONTENT))}")
             }
 
             database.close()

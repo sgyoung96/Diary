@@ -178,11 +178,11 @@ class SettingActivity : AppCompatActivity() {
      * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
      */
     private fun getImage() {
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("프로필 사진 등록")
         builder.setMessage("프로필 사진을 등록하세요")
 
-        var listener = DialogInterface.OnClickListener { _, a ->
+        val listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     openGallery()

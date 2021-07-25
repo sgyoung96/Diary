@@ -73,6 +73,7 @@ class MainPageActivity : AppCompatActivity() {
          */
         setBottomInit()
         selectBottomBtn(BottomBtns.DIARY_LIST)
+        btnClicked = BottomBtns.DIARY_LIST
 
         /**
          * 하단 메뉴 버튼 이벤트
@@ -135,7 +136,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_my_diary)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, TestFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, MyDiaryFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_SET -> {
                 // SettingActivity 로 화면 전환
@@ -145,6 +146,7 @@ class MainPageActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 intent.putExtra("btnClicked", btnClicked)
                 startActivity(intent)
+                finish()
             }
         }
     }
@@ -158,6 +160,11 @@ class MainPageActivity : AppCompatActivity() {
                 // FragmentManager has not been attached to a host.
                 // -> fragment 에서 onAttach 함수에서 이 액티비티를 가져와야 한다.
             }
+        }
+        if (index == 3) {
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, MyDiaryFragment()).commit()
+            setBottomInit()
+            selectBottomBtn(BottomBtns.DIARY_MY)
         }
     }
 
@@ -261,12 +268,13 @@ class MainPageActivity : AppCompatActivity() {
     /**
      * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
      */
-    fun goDeatilActivity(data: PostedDiaryInfo) {
+    fun goDetailActivity(data: PostedDiaryInfo) {
        val intent = Intent(this, DetailActivity::class.java)
         // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("DATA", data)
+        intent.putExtra("btnClicked", btnClicked)
         startActivity(intent)
         finish()
     }

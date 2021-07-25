@@ -1,20 +1,16 @@
 package com.example.diary1.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
-import com.example.diary1.ui.activity.DetailActivity
+import com.example.diary1.datasave.query.MyDiaryQuery
 import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.*
 import kotlinx.android.synthetic.main.fragment_diary_list.*
@@ -23,11 +19,11 @@ import kotlinx.android.synthetic.main.fragment_diary_list.*
  * 1. 로컬에 저장한 글쓴 목록 데이터 객체에 담기
  * 2. recyclerView 이용해 목록 뿌리기
  */
-// TODO : DetailActivity 에서 뒤로가기 버튼 눌러서 이 화면 나왔을 때 아이템리스트 갱신되도록
 // TODO : item 중, 하트 클릭시 이벤트 발생 (DB 변경, 이미지 변경, 관심목록 리스트 갱신)
 // ColorPrimary 색상을 바꿔줘야 recyclerView 드래그했을 때 나타나는 색상이 반영된다.
 class DiaryListFragment : Fragment(), DiaryListContract.View {
 
+    var itemData: MutableList<PostedDiaryInfo>? = null
     var diaryListAdapter: DiaryListAdapter? = null
     /**
      * 화면전환할 때 사용할 변수 (onAttach 함수에서 초기화해준다.)
@@ -59,17 +55,21 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
 
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
             override fun onItemClick(data: PostedDiaryInfo) {
-                mainPageActivity?.goDeatilActivity(data)
+                mainPageActivity?.goDetailActivity(data)
             }
 
-            override fun onMyClick() {
-                Toast.makeText(requireContext(), "하트 클릭했어요!", Toast.LENGTH_SHORT).show()
+            override fun onMyClick(data: PostedDiaryInfo, position: Int) {
+                val item: PostedDiaryInfo = itemData!![position]
+                Log.d("item", ">>>>>>>>>>$item")
+                MyDiaryQuery.setMyFlag(requireContext(), item.postDate)
+                mainPageActivity?.changeFragment(1)
             }
         })
     }
 
     // Presenter 로부터 데이터 넘겨받음
     override fun sendData(data: MutableList<PostedDiaryInfo>) {
+        itemData = data
         diaryListAdapter?.setData(data)
     }
 

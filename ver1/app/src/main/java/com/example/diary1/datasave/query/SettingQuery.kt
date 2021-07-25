@@ -2,7 +2,7 @@ package com.example.diary1.datasave.query
 
 import com.example.diary1.constants.RegisterInfo
 import com.example.diary1.constants.UserInfo
-import com.example.diary1.datasave.PostDiaryInfo
+import com.example.diary1.constants.PostDiaryInfo
 
 object SettingQuery {
     /**

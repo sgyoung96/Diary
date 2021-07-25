@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
+import com.example.diary1.datasave.query.MyDiaryQuery
 
 class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListViewHolder>() {
 
@@ -21,7 +22,6 @@ class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListView
 
     override fun onBindViewHolder(holder: DiaryListViewHolder, position: Int) {
         listener?.let { holder.bind(diaryData[position], it) }
-
     }
 
     override fun getItemCount(): Int {
