@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.diary1.constants.UserInfo
+import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.RegisterInfo
@@ -31,7 +31,7 @@ object ExecQuery {
             // -> 앱 삭제 후 재설치시 기존 정보 다 날아감
             val comparePW = BCrypt.checkpw(pw, result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW)))
             if (comparePW) {
-                UserInfo.userID = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_ID))
+                Constants.userID = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_ID))
                 database.close()
                 true
             } else {
@@ -49,7 +49,7 @@ object ExecQuery {
         var database: SQLiteDatabase = dbHelper.readableDatabase
         var query = "SELECT ${PostDiaryInfo.DB_COL_MY}" + " " +
                 "FROM ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
-                "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${UserInfo.userID}'" + " " +
+                "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${Constants.userID}'" + " " +
                 "AND ${PostDiaryInfo.DB_COL_DATE} = '$date'" + ";"
         val result: Cursor = database.rawQuery(query, null)
         var myFlag: String = ""
@@ -62,13 +62,13 @@ object ExecQuery {
             query = "UPDATE ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
                     "SET " +
                     "${PostDiaryInfo.DB_COL_MY} = '1'" + " " +
-                    "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${UserInfo.userID}'" + " " +
+                    "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${Constants.userID}'" + " " +
                     "AND ${PostDiaryInfo.DB_COL_DATE} = '$date'" + ";"
         } else {
             query = "UPDATE ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
                     "SET " +
                     "${PostDiaryInfo.DB_COL_MY} = '0'" + " " +
-                    "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${UserInfo.userID}'" + " " +
+                    "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${Constants.userID}'" + " " +
                     "AND ${PostDiaryInfo.DB_COL_DATE} = '$date'" + ";"
         }
 

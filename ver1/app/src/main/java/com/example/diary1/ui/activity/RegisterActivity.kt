@@ -7,16 +7,29 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.example.diary1.R
+import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.datasave.SQLiteDBHelper
@@ -24,8 +37,13 @@ import com.example.diary1.datasave.queries.Query
 import com.example.diary1.util.RegUtils
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_register.*
+import org.json.JSONObject
 import org.mindrot.jbcrypt.BCrypt
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -55,6 +73,7 @@ import java.util.*
  * 9-3. 메인화면으로 화면 전환하기
  */
 
+// TODO: 프로필사진 예외 처리
 class RegisterActivity : AppCompatActivity() {
 
     /**
@@ -68,28 +87,43 @@ class RegisterActivity : AppCompatActivity() {
     )
     val PERMISSION_CAMERA = 1
     val PERMISSION_STORAGE = 2
-    val REQUEST_CAMERA = 3
+    // val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
+    val REQUEST_CAMERA = 1
 
-/*    // SharedPrefernce 사용을 위해 선언한 변수
-    var context: Context? = null
-*/
+    var mCurrentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-/*
-        context = this
-*/
-
         // 이미지뷰 클릭시 앨범과 카메라에서 이미지 삽입
-        // TODO: 이미지 로컬에 저장.
         iv_register_image.setOnClickListener {
             getImage()
         }
 
         btn_register_submit.setOnClickListener {
+            // 기본 이미지 bitmap 변환
+            // val defaultImage = (resources.getDrawable(R.drawable.ic_launcher_foreground) as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
+            var defaultImage: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground)
+            // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //     defaultImage = (DrawableCompat.wrap(defaultImage!!)).mutate()
+            // }
+            // // val bitmapDefault: Bitmap = Bitmap.createBitmap(defaultImage!!.intrinsicWidth, defaultImage.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val bitmapDefault: Bitmap = Bitmap.createScaledBitmap((defaultImage as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888), iv_register_image.width, iv_register_image.height, true)
+            val defaultByteArray = ByteArrayOutputStream()
+            bitmapDefault.compress(Bitmap.CompressFormat.PNG, 70, defaultByteArray)
+            val defaultByte: ByteArray = defaultByteArray.toByteArray()
+            val defaultString: String = Base64.encodeToString(defaultByte, Base64.DEFAULT)
+
+            val compareImage = (iv_register_image.drawable as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
+            val compareByteArray = ByteArrayOutputStream()
+            compareImage.compress(Bitmap.CompressFormat.PNG, 70, compareByteArray)
+            val compareByte: ByteArray = compareByteArray.toByteArray()
+            val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
+
+            // 이미지뷰 리소스 bitmap 변환
+
             /**
              * 예외처리 (입력 양식)
              */
@@ -99,13 +133,14 @@ class RegisterActivity : AppCompatActivity() {
                 et_register_pw.text.isNullOrEmpty() ||
                 et_register_pw2.text.isNullOrEmpty()) {
                 Toast.makeText(this, "양식을 다 채워주세요", Toast.LENGTH_SHORT).show()
+            } else if (compareString == defaultString) {
+                Toast.makeText(this, "프로필 사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
             } else {
                 /**
                  * 1. 입력양식 예외처리
                  * 2. 데이터 저장
                  * 3. 화면 전환 및 종료
                  */
-
                 // 공백이 포함되면 안내 메시지 띄우고 return
                 if (et_register_name.text.toString().contains(" ") ||
                     et_register_id.text.toString().contains(" ") ||
@@ -151,55 +186,6 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "비밀번호가 일치하지 않아요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-/*
-//                // 이미지뷰에 있는 이미지 비트맵 변환
-//                var uploadImage = drawableToBitmap(iv_register_image.drawable)
-//                // drawable 에 있는 기본 이미지 비트맵 변환 (.xml 파일을 drawable로 변환 먼저!)
-////                var compareImage: Drawable? = null
-////                var compareImage = drawableToBitmap(R.drawable.ic_launcher_foreground as Drawable)
-////                var compareImage = drawableToBitmap(R.drawable.ic_launcher_foreground.toDrawable().mutate())
-////                var compareImage: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_foreground)
-////                compareImage = drawableToBitmap(R.drawable.ic_launcher_foreground.toDrawable()) // found : Bitmap, required: Drawable
-//                var compareImage: Bitmap? = null
-//
-//                try {
-//                    compareImage = drawableToBitmap(R.drawable.ic_launcher_foreground.toDrawable()) // compareImage = null, e = java.lang.IllegalArgumentException: width and height must be > 0
-//                } catch (e: Exception) {
-//                    Toast.makeText(this, "$e", Toast.LENGTH_LONG).show()
-//                }
-//
-////                var drawableUri: String? = null
-//
-////                try {
-////                    drawableUri = R.drawable.ic_launcher_foreground.getResourceUri(this)
-////                } catch (e: Exception) {
-////                    Toast.makeText(this, "$e", Toast.LENGTH_LONG).show()
-////                }
-//
-////                try {
-////                    compareImage = drawableToDrawble(drawableUri!!) // compareImage = null, drawableUri = "android.resource://com.example.diary1/drawable/ic_launcher_foreground"
-////                } catch (e: Exception) {
-////                    Toast.makeText(this, "$e", Toast.LENGTH_LONG).show()
-////                }
-//
-//
-//
-//                // 비트맵 변환한 이미지를 비교
-//                if (!sameAs(uploadImage, compareImage!!)) {
-//                    Toast.makeText(this, "프로필사진을 추가해 주세요", Toast.LENGTH_SHORT).show()
-//                }
-
-//                var temp = iv_register_image.resources.toString() // android.content.res.Resources@f780ff5
-//                var temp2 = R.drawable.ic_launcher_foreground.toString() // 2131165289
-
-//                var tempDrawable = iv_register_image.drawable.current // {VectorDrawable@11449}
-
-//                var tempDrawable2 = R.drawable.ic_launcher_foreground.toDrawable() // {ColorDrawable@11451}
-//
-//                if ( /* 변환 없이 imageView 에 쓴 리소스 파일과 drawable 에 있는 파일을 비교해 볼까? */ ) {
-//                    Toast.makeText(this, "프로필사진을 추가해 주세요", Toast.LENGTH_SHORT).show()
-//                } // -----> 안된다.
-*/
 
                 Log.d("PASS", ">>>>>>>>>>PASS")
 
@@ -212,85 +198,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-/*
-//    // 이미지 비트맵 변환
-//    companion object fun drawableToBitmap(drawable: Drawable): Bitmap {
-//        if (drawable is BitmapDrawable) {
-//            return (drawable as BitmapDrawable).bitmap
-//        }
-//
-//        var bitmap: Bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-//        var canvas: Canvas = Canvas(bitmap)
-//        drawable.setBounds(0, 0, canvas.width, canvas.height)
-//        drawable.draw(canvas)
-//
-//        return bitmap
-//    }
-
-//    // 이미지 비교
-//    fun sameAs(bitmap1: Bitmap, bitmap2: Bitmap): Boolean {
-//        var buffer1: ByteBuffer = ByteBuffer.allocate(bitmap1.height * bitmap1.rowBytes)
-//        bitmap1.copyPixelsToBuffer(buffer1)
-//
-//        var buffer2: ByteBuffer = ByteBuffer.allocate(bitmap2.height * bitmap2.rowBytes)
-//        bitmap2.copyPixelsToBuffer(buffer2)
-//
-//        return Arrays.equals(buffer1.array(), buffer2.array())
-//    }
-//
-//    // drawable 폴더의 파일 url 경로 얻기
-//    fun Int.getResourceUri(context: Context): String {
-//        return context.resources.let {
-//            Uri.Builder()
-//                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-//                .authority(it.getResourcePackageName(this))
-//                .appendPath(it.getResourceTypeName(this))
-//                .appendPath(it.getResourceEntryName(this))
-//                .build()
-//                .toString()
-//        }
-//    }
-//
-    // drawable 폴더의 파일 drawable 타입으로 변환
-//    fun drawableToDrawble(url: String): Drawable {
-//        var x: Bitmap? = null
-//        var connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
-//
-//        var input: InputStream = connection.inputStream
-//        x = BitmapFactory.decodeStream(input)
-//
-//        return BitmapDrawable(resources, x)
-//    }
-
-    // URi 를 Drawable 파일로 변환
-*/
-
-    /**
-     * 입력한 텍스트 값을 묶어서 로컬에 저장
-     * 1. SharedPreference 사용
-     * 2. SQLite 사용
-     * 3. Room 사용 (SQLite)
-     * 4. Realm 사용
-     */
-
-/*    // [1] : SharedPreference
-    fun saveUserInfo() {
-        // Test
-        SharedPreferenceManager.setStringSet(context!!, "1", setOf("name", "id", "pw"))
-        var getFirstSet: Set<String>? = SharedPreferenceManager.getStringSet(context!!, "1")
-        if (getFirstSet.isNullOrEmpty()) {
-            SharedPreferenceManager.setStringSet(
-                context!!,
-                RegisterInfo.REGISTER_SEQ.toString(),
-                setOf(et_register_name.text.toString(),
-                    et_register_id.text.toString(),
-                    et_register_pw.text.toString())
-            )
-        }
-    }
-*/
-
-    // [2] : SQLite
     private fun saveData() {
         // dbHelper 초기화 (내가 생성하고 override 한 메소드가 있는 클래스)
         val dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
@@ -310,21 +217,26 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         /**
+         * [1]
          * 비밀번호를 암호화한 것을 DB 에 삽입
          * 변수 : pw
          * 60 byte 의 문자열이 됨
          * 생성된 해쉬를 원래 비밀번호로 검증하는 방법. 맞을 경우 true 반환. 주로 로그인 로직에서 사용
          * => val isValidPW = BCrypt.checkpw(et_register_pw.test.toString(), pw)
+         * [2]
+         * ImageView image -> blob
          */
         val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
+        val registerQuery = Query.register(et_register_name.text.toString(), et_register_id.text.toString(), pw, "?")
+        val resizedImage: Bitmap = Bitmap.createScaledBitmap((iv_register_image.drawable as BitmapDrawable).bitmap, iv_register_image.width, iv_register_image.height, true)
+        val stream = ByteArrayOutputStream()
+        resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val convertedImage: ByteArray = stream.toByteArray()
 
-        val registerQuery = Query.register(et_register_name.text.toString(), et_register_id.text.toString(), pw)
-        try {
-            database.execSQL(registerQuery) // ************ 여기서 터진다
-        } catch (e: Exception) {
-            Log.d("INSERT EXCEPTION", ">>>>>>>>>>$e")
-            // android.database.sqlite.SQLiteException: no such table: USERINFO (code 1 SQLITE_ERROR[1]): , while compiling: INSERT INTO USERINFO(USERNAME,USERID,USERPW)VALUES('가','rkrkrk1','rkrkrkrkrkrk1');
-        }
+        val sqlStatement: SQLiteStatement = database.compileStatement(registerQuery)
+        sqlStatement.bindBlob(1, convertedImage)
+        sqlStatement.execute()
+        // database.execSQL(registerQuery) // ************ 여기서 터진다
 
         // 제대로 삽입됐는지 확인 (Select)
         database = dbHelper.readableDatabase
@@ -359,7 +271,6 @@ class RegisterActivity : AppCompatActivity() {
 
         // DB 닫기
         database.close()
-
         finishRegister()
     }
 
@@ -408,11 +319,11 @@ class RegisterActivity : AppCompatActivity() {
      * 3. 선택 혹은 촬영한 이미지 이미지뷰에 박음
      */
     private fun getImage() {
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("프로필 사진 등록")
         builder.setMessage("프로필 사진을 등록하세요")
 
-        var listener = DialogInterface.OnClickListener { _, a ->
+        val listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     openGallery()
@@ -443,9 +354,48 @@ class RegisterActivity : AppCompatActivity() {
     private fun openCamera() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(packageManager) != null) {
+                var photoFile: File? = createImageFile()
+
+                if (photoFile != null) { // getUriForFile의 두 번째 인자는 Manifest provier의 authorites와 일치해야 함
+                    val providerURI = FileProvider.getUriForFile(this, packageName, photoFile)
+                    // 인텐트에 전달할 때는 FileProvier의 Return값인 content://로만!!, providerURI의 값에 카메라 데이터를 넣어 보냄
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
+                }
+            }
             startActivityForResult(intent, REQUEST_CAMERA)
         }
     }
+
+    // 사진을 찍기 전, 사진이 저장되는 임시 파일 생성. 파일의 형식 지정
+    @Throws(IOException::class)
+    fun createImageFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_$timeStamp.jpg"
+        var imageFile: File? = null
+        val storageDir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures", "${Constants.appName}")
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+        imageFile = File(storageDir, imageFileName)
+        mCurrentPhotoPath = imageFile.absolutePath
+        return imageFile
+    }
+
+    // 이미지를 로컬 폴더에 저장
+    fun galleryAddPic() {
+        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val file = File(mCurrentPhotoPath)
+        val contentUri: Uri = Uri.fromFile(file)
+        intent.setData(contentUri)
+        sendBroadcast(intent)
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로컬에 저장한 이미지 이미지뷰에 세팅
+        iv_register_image.setImageURI(contentUri)
+    }
+
 
     /**
      * 이미지뷰에 이미지 셋팅
@@ -462,8 +412,9 @@ class RegisterActivity : AppCompatActivity() {
                     iv_register_image.setImageURI(uri)
                 }
                 REQUEST_CAMERA -> {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    iv_register_image.setImageBitmap(bitmap)
+                    // val bitmap = data?.extras?.get("data") as Bitmap
+                    // iv_register_image.setImageBitmap(bitmap)
+                    galleryAddPic()
                 }
             }
         }

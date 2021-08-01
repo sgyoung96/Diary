@@ -7,6 +7,7 @@ object PostDiaryInfo {
     const val DB_COL_TITLE = "POST_TITLE"
     const val DB_COL_CONTENT = "POST_CONTENT"
     const val DB_COL_MY = "POST_MY"
+    const val DB_COL_IMAGE = "POST_IMAGE"
 
     const val POST_MY_DEFAULT = "0"
 }

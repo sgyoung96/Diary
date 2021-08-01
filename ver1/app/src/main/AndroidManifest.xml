@@ -29,7 +29,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.diary1.fileprovider"
+            android:authorities="com.example.diary1"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

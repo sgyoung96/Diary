@@ -7,4 +7,5 @@ object RegisterInfo {
     const val DB_COL_NAME = "USERNAME"
     const val DB_COL_ID = "USERID"
     const val DB_COL_PW = "USERPW"
+    const val DB_COLE_IMAGE = "USERIMAGE"
 }

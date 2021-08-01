@@ -6,7 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.RegisterInfo
 
-class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, name, factory, version) {
+class SQLiteDBHelper(
+    context: Context?,
+    name: String?,
+    factory: SQLiteDatabase.CursorFactory?,
+    version: Int
+) : SQLiteOpenHelper(context, name, factory, version) {
 
     // DB 가 생성될 시점에 최초 1회 실행
     override fun onCreate(db: SQLiteDatabase) {
@@ -29,25 +34,27 @@ class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.
 
     // 테이블이 존재하지 않는 경우 생성
     fun createUserInfo(db: SQLiteDatabase) {
-        val sql: String = "CREATE TABLE if not exists ${RegisterInfo.DB_TABLE_NAME}" +
-                        "(" +
-                        "${RegisterInfo.DB_COL_NAME} VARCHAR(10)" + "," +
-                        "${RegisterInfo.DB_COL_ID} VARCHAR(10) PRIMARY KEY" + "," +
-                        "${RegisterInfo.DB_COL_PW} VARCHAR(60)" +
-                        ")" + ";"
+        val sql = "CREATE TABLE if not exists ${RegisterInfo.DB_TABLE_NAME}" +
+                  "(" +
+                  "${RegisterInfo.DB_COL_NAME} VARCHAR(10)" + "," +
+                  "${RegisterInfo.DB_COL_ID} VARCHAR(10) PRIMARY KEY" + "," +
+                  "${RegisterInfo.DB_COL_PW} VARCHAR(60)" + "," +
+                  "${RegisterInfo.DB_COLE_IMAGE} BLOB" +
+                  ")"
 
         db.execSQL(sql)
     }
 
     fun createDiaryContent(db: SQLiteDatabase) {
-        val sql: String = "CREATE TABLE if not exists ${PostDiaryInfo.DB_TABLE_NAME}" +
-                "(" +
-                "${PostDiaryInfo.DB_COL_USERID} VARCHAR(10)" + "," +
-                "${PostDiaryInfo.DB_COL_DATE} VARCHAR(17)" + "," +
-                "${PostDiaryInfo.DB_COL_TITLE} VARCHAR(30)" + "," +
-                "${PostDiaryInfo.DB_COL_CONTENT} VARCHAR(1000)" + "," +
-                "${PostDiaryInfo.DB_COL_MY} VARCHAR(1) DEFAULT '${PostDiaryInfo.POST_MY_DEFAULT}'" +
-                ")" + ";"
+        val sql = "CREATE TABLE if not exists ${PostDiaryInfo.DB_TABLE_NAME}" +
+                  "(" +
+                  "${PostDiaryInfo.DB_COL_USERID} VARCHAR(10)" + "," +
+                  "${PostDiaryInfo.DB_COL_DATE} VARCHAR(17)" + "," +
+                  "${PostDiaryInfo.DB_COL_TITLE} VARCHAR(30)" + "," +
+                  "${PostDiaryInfo.DB_COL_CONTENT} VARCHAR(1000)" + "," +
+                  "${PostDiaryInfo.DB_COL_MY} VARCHAR(1) DEFAULT '${PostDiaryInfo.POST_MY_DEFAULT}'" + "," +
+                  "${PostDiaryInfo.DB_COL_IMAGE} BLOB" +
+                  ")"
 
         db.execSQL(sql)
     }

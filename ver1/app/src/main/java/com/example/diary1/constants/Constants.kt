@@ -1,5 +1,6 @@
 package com.example.diary1.constants
 
-object UserInfo {
+object Constants {
     var userID: String = ""
+    const val appName: String = "Diary1"
 }

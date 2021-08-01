@@ -5,22 +5,29 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import com.example.diary1.R
 import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
-import com.example.diary1.constants.UserInfo
+import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
 import com.example.diary1.util.RegUtils
@@ -28,6 +35,11 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_setting.*
 import org.mindrot.jbcrypt.BCrypt
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SettingActivity : AppCompatActivity() {
 
@@ -53,8 +65,11 @@ class SettingActivity : AppCompatActivity() {
     )
     val PERMISSION_CAMERA = 1
     val PERMISSION_STORAGE = 2
-    val REQUEST_CAMERA = 3
+    // val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
+    val REQUEST_CAMERA = 1
+
+    var mCurrentPhotoPath: String = ""
 
     /**
      * 초기화 : 아이디, 이름, 프로필 사진
@@ -138,23 +153,38 @@ class SettingActivity : AppCompatActivity() {
     // TODO: 2. DB open, id 를 where 절로 조회하여 해당 유저 정보 중 프로필사진 정보 가져와 이미지뷰에 넣기
     fun init() {
         et_setting_id.isEnabled = false
-        et_setting_id.setText(UserInfo.userID)
+        et_setting_id.setText(Constants.userID)
 
         /**
-         * 이름 구하기
+         * 이름과 이미지 세팅하기
          */
         var name = ""
+        var bitmapImage: Bitmap? = null
         database = dbHelper?.readableDatabase
-        sqlQuery = Query.getNameQuery(UserInfo.userID)
+        sqlQuery = Query.getDefaultQuery(Constants.userID)
         result = database?.rawQuery(sqlQuery, null)
         if (result!!.moveToNext()) {
             name = result!!.getString(result!!.getColumnIndex(RegisterInfo.DB_COL_NAME))
+            val imageFromDB = result!!.getBlob(result!!.getColumnIndex(RegisterInfo.DB_COLE_IMAGE))
+            bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)
         }
+        val centerCropImage: Bitmap
+        if (bitmapImage!!.width >= bitmapImage.height) {
+            centerCropImage = Bitmap.createBitmap(bitmapImage, bitmapImage.width/2 - bitmapImage.height/2, 0, bitmapImage.height, bitmapImage.height)
+        } else {
+            centerCropImage = Bitmap.createBitmap(bitmapImage, 0, bitmapImage.height/2 - bitmapImage.width/2, bitmapImage.width, bitmapImage.width)
+        }
+
+
         et_setting_name.setText(name)
         et_setting_name.hint = name
+        iv_setting_profile.setImageBitmap(centerCropImage)
 
         et_setting_pw.setText("")
         et_setting_check_pw.setText("")
+
+        tv_setting_pw_check_guide.text = getString(R.string.setting_check_pw_guide)
+        tv_setting_pw_check_guide.setTextColor(getColor(R.color.main_sub_text_color))
     }
 
     /**
@@ -212,8 +242,29 @@ class SettingActivity : AppCompatActivity() {
     private fun openCamera() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(packageManager) != null) {
+                val photoFile = createImageFile()
+                if (photoFile != null) {
+                    val providerURI = FileProvider.getUriForFile(this, packageName, photoFile)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
+                }
+            }
             startActivityForResult(intent, REQUEST_CAMERA)
         }
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_$timeStamp.jpg"
+        var imageFile: File? = null
+        val storageDir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures", "${Constants.appName}")
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+        imageFile = File(storageDir, imageFileName)
+        mCurrentPhotoPath = imageFile.absolutePath
+        return imageFile
     }
 
     /**
@@ -231,11 +282,25 @@ class SettingActivity : AppCompatActivity() {
                     iv_setting_profile.setImageURI(uri)
                 }
                 REQUEST_CAMERA -> {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    iv_setting_profile.setImageBitmap(bitmap)
+                    // val bitmap = data?.extras?.get("data") as Bitmap
+                    // iv_setting_profile.setImageBitmap(bitmap)
+                    galleryAddPic()
                 }
             }
         }
+    }
+
+    fun galleryAddPic() {
+        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val file = File(mCurrentPhotoPath)
+        val contentUri: Uri = Uri.fromFile(file)
+        intent.setData(contentUri)
+        sendBroadcast(intent)
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로컬에 저장한 이미지 이미지뷰에 세팅
+        iv_setting_profile.setImageURI(contentUri)
     }
 
     /**
@@ -248,10 +313,18 @@ class SettingActivity : AppCompatActivity() {
     fun saveSettings() {
         // 입력된 비밀번호값 암호화
         val pw: String = BCrypt.hashpw(et_setting_pw.text.toString(), BCrypt.gensalt(10))
+        val bitmapImage: Bitmap = (iv_setting_profile.drawable as BitmapDrawable).bitmap
+        val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_setting_profile.width, iv_setting_profile.height, true)
+        val stream = ByteArrayOutputStream()
+        resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val convertedImage: ByteArray = stream.toByteArray()
 
         database = dbHelper?.writableDatabase
-        sqlQuery = Query.saveSettingQuery(et_setting_name.text.toString(), pw)
-        database?.execSQL(sqlQuery)
+        sqlQuery = Query.saveSettingQuery(et_setting_name.text.toString(), pw, "?")
+        val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
+        sqliteStatement.bindBlob(1, convertedImage)
+        sqliteStatement.execute()
+        // database?.execSQL(sqlQuery)
 
         // 변경사항이 모두 저장되었습니다 다이어로그
         val builder = AlertDialog.Builder(this)

@@ -16,7 +16,7 @@ import com.example.diary1.R
 import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
-import com.example.diary1.constants.UserInfo
+import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.activity.MainPageActivity
@@ -70,7 +70,7 @@ class PostDiaryFragment : Fragment() {
         val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
         // Select 모드로 데이터 저장소 가져옴
         var database: SQLiteDatabase = dbHelper.readableDatabase
-        var sqlQuery: String = Query.getNameQuery(UserInfo.userID)
+        var sqlQuery: String = Query.getDefaultQuery(Constants.userID)
         var result: Cursor
         var name = ""
         result = database.rawQuery(sqlQuery, null)
@@ -163,7 +163,7 @@ class PostDiaryFragment : Fragment() {
             }
 
             // 날짜 중복 체크 - SQLite 사용
-            sqlQuery = Query.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
+            sqlQuery = Query.checkDiary(Constants.userID, tv_select_date_text.text.toString())
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
                 Toast.makeText(context, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
@@ -191,7 +191,7 @@ class PostDiaryFragment : Fragment() {
             // Toast.makeText(context, "통과", Toast.LENGTH_SHORT).show()
             // 1. 데이터 삽입
             database = dbHelper.writableDatabase
-            sqlQuery = Query.insertDiary(UserInfo.userID,
+            sqlQuery = Query.insertDiary(Constants.userID,
                                                   tv_select_date_text.text.toString(),
                                                   et_input_title.text.toString(),
                                                   et_input_content.text.toString())
@@ -200,7 +200,7 @@ class PostDiaryFragment : Fragment() {
 
             // 2. 제대로 삽입되었는지 확인
             database = dbHelper.readableDatabase
-            sqlQuery = Query.checkDiary(UserInfo.userID, tv_select_date_text.text.toString())
+            sqlQuery = Query.checkDiary(Constants.userID, tv_select_date_text.text.toString())
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
