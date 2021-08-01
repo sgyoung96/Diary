@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diary1.R
-import com.example.diary1.datasave.query.MyDiaryQuery
+import com.example.diary1.datasave.execsql.ExecQuery
 import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.*
 import kotlinx.android.synthetic.main.fragment_diary_list.*
@@ -61,7 +61,7 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
             override fun onMyClick(data: PostedDiaryInfo, position: Int) {
                 val item: PostedDiaryInfo = itemData!![position]
                 Log.d("item", ">>>>>>>>>>$item")
-                MyDiaryQuery.setMyFlag(requireContext(), item.postDate)
+                ExecQuery.setMyFlag(requireContext(), item.postDate)
                 mainPageActivity?.changeFragment(1)
             }
         })

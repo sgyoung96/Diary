@@ -19,11 +19,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.diary1.R
-import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.DetailDiaryQuery
-import com.example.diary1.datasave.query.PostDiaryQuery
+import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -184,7 +183,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
              */
             if (tv_detail_date.text.toString() != originalDate) { // 날짜를 변경했을 시
                 try {
-                    sqlQuery = PostDiaryQuery.checkDiary(UserInfo.userID, tv_detail_date.text.toString())
+                    sqlQuery = Query.checkDiary(UserInfo.userID, tv_detail_date.text.toString())
                     result = database?.rawQuery(sqlQuery, null)
                     if (result!!.moveToNext()) {
                         Toast.makeText(this, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
@@ -199,7 +198,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             // 데이터 삽입
             try {
                 database = dbHelper?.writableDatabase
-                sqlQuery = DetailDiaryQuery.saveDiary(UserInfo.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!)
+                sqlQuery = Query.saveDiary(UserInfo.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!)
                 database?.execSQL(sqlQuery)
             } catch (e: Exception) {
                 Log.d("update diary exception", ">>>>>>>>>>$e")
@@ -269,7 +268,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     database = dbHelper?.writableDatabase
-                    sqlQuery = DetailDiaryQuery.deleteQuery(UserInfo.userID, et_detail_title.text.toString(), tv_detail_date.text.toString())
+                    sqlQuery = Query.deleteQuery(UserInfo.userID, et_detail_title.text.toString(), tv_detail_date.text.toString())
                     database?.execSQL(sqlQuery)
                     database?.close()
 

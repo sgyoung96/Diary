@@ -1,4 +1,4 @@
-package com.example.diary1.constants
+package com.example.diary1.datasave.constants
 
 import android.provider.BaseColumns
 

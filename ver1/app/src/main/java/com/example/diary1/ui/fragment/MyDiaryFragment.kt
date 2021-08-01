@@ -9,10 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.diary1.R
-import com.example.diary1.constants.PostDiaryInfo
-import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.constants.PostDiaryInfo
+import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.MyDiaryQuery
+import com.example.diary1.datasave.execsql.ExecQuery
+import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import com.example.diary1.ui.fragment.myrecycler.ItemClickListener
@@ -43,7 +44,7 @@ class MyDiaryFragment : Fragment() {
 
         val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
         val database: SQLiteDatabase = dbHelper.readableDatabase
-        val query = MyDiaryQuery.myDiaryQuery()
+        val query = Query.myDiaryQuery()
         val result: Cursor = database.rawQuery(query, null)
 
         while (result.moveToNext()) {
@@ -69,7 +70,7 @@ class MyDiaryFragment : Fragment() {
 
             override fun onMyClick(data: PostedDiaryInfo, position: Int) {
                 val item: PostedDiaryInfo = itemData!![position]
-                MyDiaryQuery.setMyFlag(requireContext(), item.postDate)
+                ExecQuery.setMyFlag(requireContext(), item.postDate)
                 mainPageActivity?.changeFragment(3)
             }
         })

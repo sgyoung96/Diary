@@ -17,10 +17,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.diary1.R
-import com.example.diary1.constants.RegisterInfo
-import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.constants.RegisterInfo
+import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.RegisterQuery
+import com.example.diary1.datasave.queries.Query
 import com.example.diary1.util.RegUtils
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_register.*
@@ -318,7 +318,7 @@ class RegisterActivity : AppCompatActivity() {
          */
         val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
 
-        val registerQuery = RegisterQuery.register(et_register_name.text.toString(), et_register_id.text.toString(), pw)
+        val registerQuery = Query.register(et_register_name.text.toString(), et_register_id.text.toString(), pw)
         try {
             database.execSQL(registerQuery) // ************ 여기서 터진다
         } catch (e: Exception) {
@@ -330,11 +330,12 @@ class RegisterActivity : AppCompatActivity() {
         database = dbHelper.readableDatabase
         // 1. 직전에 회원가입한 정보 확인
         try{
-            checkRegisterQuery = RegisterQuery.checkOneRegister(et_register_id.text.toString())
+            checkRegisterQuery = Query.checkOneRegister(et_register_id.text.toString())
             result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 Log.d("SHOW ONE REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    RegisterInfo.DB_COL_ID))}, pw: ${result.getString(result.getColumnIndex(RegisterInfo.DB_COL_PW))}")
+                    RegisterInfo.DB_COL_ID))}, pw: ${result.getString(result.getColumnIndex(
+                    RegisterInfo.DB_COL_PW))}")
                 // akakak2
             }
         } catch (e: Exception) {
@@ -344,7 +345,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // 2. 지금까지 회원가입한 모든 정보 확인
         try {
-            checkRegisterQuery = RegisterQuery.checkAllRegister()
+            checkRegisterQuery = Query.checkAllRegister()
             result = database.rawQuery(checkRegisterQuery, null)
             while (result.moveToNext()) {
                 Log.d("SHOW ALL REGISTER INFO", ">>>>>>>>>>${result.getString(result.getColumnIndex(

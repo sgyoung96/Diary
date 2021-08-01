@@ -1,23 +1,15 @@
 package com.example.diary1.ui.activity
 
 import android.content.Intent
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.diary1.R
-import com.example.diary1.constants.RegisterInfo
-import com.example.diary1.constants.SQLiteDBInfo
-import com.example.diary1.constants.UserInfo
-import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.LoginQuery
-import com.example.diary1.datasave.query.RegisterQuery
+import com.example.diary1.datasave.execsql.ExecQuery
 import com.example.diary1.util.RegisterUtils
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
-import org.mindrot.jbcrypt.BCrypt
 
 /**
  * 타이틀바 없애기 :
@@ -65,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
                  */
                 Log.d("ID 존재 여부", ">>>>>>>>>>ID 있음")
 
-                val existMember = LoginQuery.checkPW(this, et_id.text.toString(), et_pw.text.toString())
+                val existMember = ExecQuery.checkPW(this, et_id.text.toString(), et_pw.text.toString())
                 if (!existMember) {
                     Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
                         Toast.makeText(this, "비밀번호를 확인해 주세요", Toast.LENGTH_SHORT).show()

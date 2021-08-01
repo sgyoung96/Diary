@@ -3,8 +3,8 @@ package com.example.diary1.datasave
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.diary1.constants.PostDiaryInfo
-import com.example.diary1.constants.RegisterInfo
+import com.example.diary1.datasave.constants.PostDiaryInfo
+import com.example.diary1.datasave.constants.RegisterInfo
 
 class SQLiteDBHelper (context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, name, factory, version) {
 

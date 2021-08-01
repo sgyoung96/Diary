@@ -18,12 +18,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.example.diary1.R
-import com.example.diary1.constants.RegisterInfo
-import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.constants.RegisterInfo
+import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.PostDiaryQuery
-import com.example.diary1.datasave.query.SettingQuery
+import com.example.diary1.datasave.queries.Query
 import com.example.diary1.util.RegUtils
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -146,7 +145,7 @@ class SettingActivity : AppCompatActivity() {
          */
         var name = ""
         database = dbHelper?.readableDatabase
-        sqlQuery = PostDiaryQuery.getNameQuery(UserInfo.userID)
+        sqlQuery = Query.getNameQuery(UserInfo.userID)
         result = database?.rawQuery(sqlQuery, null)
         if (result!!.moveToNext()) {
             name = result!!.getString(result!!.getColumnIndex(RegisterInfo.DB_COL_NAME))
@@ -251,7 +250,7 @@ class SettingActivity : AppCompatActivity() {
         val pw: String = BCrypt.hashpw(et_setting_pw.text.toString(), BCrypt.gensalt(10))
 
         database = dbHelper?.writableDatabase
-        sqlQuery = SettingQuery.saveSettingQuery(et_setting_name.text.toString(), pw)
+        sqlQuery = Query.saveSettingQuery(et_setting_name.text.toString(), pw)
         database?.execSQL(sqlQuery)
 
         // 변경사항이 모두 저장되었습니다 다이어로그
@@ -287,7 +286,7 @@ class SettingActivity : AppCompatActivity() {
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     database = dbHelper?.writableDatabase
-                    sqlQuery = SettingQuery.deleteAllQuery()
+                    sqlQuery = Query.deleteAllQuery()
                     database?.execSQL(sqlQuery)
 
                     // 삭제가 완료 되었습니다 다이어로그

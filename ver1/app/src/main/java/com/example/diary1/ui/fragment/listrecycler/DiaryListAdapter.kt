@@ -1,13 +1,10 @@
 package com.example.diary1.ui.fragment.listrecycler
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
-import com.example.diary1.datasave.query.MyDiaryQuery
 
 class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListViewHolder>() {
 

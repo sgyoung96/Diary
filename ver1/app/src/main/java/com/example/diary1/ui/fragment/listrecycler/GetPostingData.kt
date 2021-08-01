@@ -3,11 +3,11 @@ package com.example.diary1.ui.fragment.listrecycler
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.diary1.constants.SQLiteDBInfo
+import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.UserInfo
-import com.example.diary1.constants.PostDiaryInfo
+import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.query.DiaryListQuery
+import com.example.diary1.datasave.queries.Query
 
 /**
  * 1. DB open
@@ -22,7 +22,7 @@ class GetPostingData(context: Context) {
 
     val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
     val database: SQLiteDatabase = dbHelper.readableDatabase
-    val sqlQuery: String = DiaryListQuery.getListFromId(UserInfo.userID)
+    val sqlQuery: String = Query.getListFromId(UserInfo.userID)
     val result = database.rawQuery(sqlQuery, null)
 
     fun getData(view: DiaryListContract.View) {
