@@ -31,7 +31,8 @@ class GetPostingData(context: Context) {
                 PostedDiaryInfo(result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
                                 result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
                                 result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)),
-                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY))))
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY)),
+                                result.getBlob(result.getColumnIndex(PostDiaryInfo.DB_COL_IMAGE))))
 
             Log.d("checkData1", ">>>>>>>>>>$data")
             Log.d("title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")

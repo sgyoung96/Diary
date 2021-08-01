@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteStatement
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -22,6 +25,7 @@ import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.activity.MainPageActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,8 +35,7 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
-// TODO : 상단 문구 - 이름 왼쪽에 이미지뷰(프로필사진) 동그랗게 추가하기
-// TODO : 로컬에 이미지 저장
+// TODO : 이미지 아무것도 세팅 안했을 때 예외 추가 (RegisterActivity 참고)
 class PostDiaryFragment : Fragment() {
 
     /**
@@ -95,7 +98,7 @@ class PostDiaryFragment : Fragment() {
          * 2. 빈 공간 터치시 캘린더 뷰 GONE 처리 한다.
          * 3. 달력에서 날짜 선택 시 캘린더 뷰 GONE 처리 -> 텍스트뷰에 날짜 박힌다.
          */
-        tv_select_date_click.setOnClickListener {
+        tv_select_date_text.setOnClickListener {
             cv_post_calendar.visibility = View.VISIBLE
             Log.d("calendar", ">>>>>>>>>>클릭했어요")
 
@@ -192,11 +195,19 @@ class PostDiaryFragment : Fragment() {
             // 1. 데이터 삽입
             database = dbHelper.writableDatabase
             sqlQuery = Query.insertDiary(Constants.userID,
-                                                  tv_select_date_text.text.toString(),
-                                                  et_input_title.text.toString(),
-                                                  et_input_content.text.toString())
-
-            database.execSQL(sqlQuery)
+                                         tv_select_date_text.text.toString(),
+                                         et_input_title.text.toString(),
+                                         et_input_content.text.toString(),
+                                         "?")
+            val bitmapImage: Bitmap = (iv_post_image.drawable as BitmapDrawable).bitmap
+            val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_post_image.width, iv_post_image.height, true)
+            val stream = ByteArrayOutputStream()
+            resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val convertedImage: ByteArray = stream.toByteArray()
+            val sqliteStatement: SQLiteStatement = database.compileStatement(sqlQuery)
+            sqliteStatement.bindBlob(1, convertedImage)
+            sqliteStatement.execute()
+            // database.execSQL(sqlQuery)
 
             // 2. 제대로 삽입되었는지 확인
             database = dbHelper.readableDatabase

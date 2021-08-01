@@ -39,20 +39,22 @@ object Query {
                 "WHERE ${RegisterInfo.DB_COL_ID} = " + "'" + id + "'" + ";"
     }
 
-    fun insertDiary(id: String, date: String, title: String, content: String): String {
+    fun insertDiary(id: String, date: String, title: String, content: String, image: String): String {
         return "INSERT INTO ${PostDiaryInfo.DB_TABLE_NAME}" +
                 "(" +
                 PostDiaryInfo.DB_COL_USERID + "," +
                 PostDiaryInfo.DB_COL_DATE + "," +
                 PostDiaryInfo.DB_COL_TITLE + "," +
-                PostDiaryInfo.DB_COL_CONTENT +
+                PostDiaryInfo.DB_COL_CONTENT + "," +
+                PostDiaryInfo.DB_COL_IMAGE +
                 ")" +
                 "VALUES" +
                 "(" +
                 "'" + id + "'" + "," +
                 "'" + date + "'" + "," +
                 "'" + title + "'" + "," +
-                "'" + content + "'" +
+                "'" + content + "'" + "," +
+                image +
                 ")" + ";"
     }
 
@@ -78,12 +80,13 @@ object Query {
                 "ORDER BY ${PostDiaryInfo.DB_COL_DATE} DESC" + ";"
     }
 
-    fun saveDiary (id: String, title: String, date: String, content: String, originalDate: String): String {
+    fun saveDiary (id: String, title: String, date: String, content: String, originalDate: String, image: String): String {
         return "UPDATE ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
                 "SET" + " " +
                 PostDiaryInfo.DB_COL_TITLE + " = " + "'" + title + "'" + "," + " " +
                 PostDiaryInfo.DB_COL_DATE + " = " + "'" + date + "'" + "," + " " +
                 PostDiaryInfo.DB_COL_CONTENT + " = " + "'" + content + "'" + " " +
+                PostDiaryInfo.DB_COL_IMAGE + " = " + image +
                 "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + id + "'" +
                 "  AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + originalDate + "'" + ";"
     }

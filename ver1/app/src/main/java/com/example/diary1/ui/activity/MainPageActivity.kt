@@ -10,8 +10,10 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
@@ -20,9 +22,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import com.example.diary1.R
+import com.example.diary1.constants.Constants
 import com.example.diary1.ui.fragment.*
 import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
@@ -32,7 +36,11 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
+import java.io.File
+import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
 // TODO : 앱 설치시 나타나는 제목 수정
@@ -54,8 +62,11 @@ class MainPageActivity : AppCompatActivity() {
     )
     val PERMISSION_CAMERA = 1
     val PERMISSION_STORAGE = 2
-    val REQUEST_CAMERA = 3
+    // val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
+    val REQUEST_CAMERA = 1
+
+    var mCurrentPhotoPath: String = ""
 
     /**
      * 뒤로가기 버튼 두 번 클릭 시 앱 종료때 사용할 변수
@@ -230,8 +241,32 @@ class MainPageActivity : AppCompatActivity() {
     private fun openCamera() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(packageManager) != null) {
+                var photoFile: File? = null
+                photoFile = createImageFile()
+                if (photoFile != null) {
+                    val providerURI = FileProvider.getUriForFile(this, packageName, photoFile)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
+                }
+            }
             startActivityForResult(intent, REQUEST_CAMERA)
         }
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_$timeStamp.jpg"
+        var imageFile: File? = null
+        val storageDir =
+            File(Environment.getExternalStorageDirectory().toString() + "/Pictures", "${Constants.appName}")
+        if (!storageDir.exists()) {
+            Log.i("mCurrentPhotoPath1", storageDir.toString())
+            storageDir.mkdirs()
+        }
+        imageFile = File(storageDir, imageFileName)
+        mCurrentPhotoPath = imageFile.absolutePath
+        return imageFile
     }
 
     /**
@@ -250,11 +285,25 @@ class MainPageActivity : AppCompatActivity() {
                     }
                 }
                 REQUEST_CAMERA -> {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    iv_post_image.setImageBitmap(bitmap)
+                    // val bitmap = data?.extras?.get("data") as Bitmap
+                    // iv_post_image.setImageBitmap(bitmap)
+                    galleryAddPic()
                 }
             }
         }
+    }
+
+    fun galleryAddPic() {
+        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val file = File(mCurrentPhotoPath)
+        val contentUri: Uri = Uri.fromFile(file)
+        intent.setData(contentUri)
+        sendBroadcast(intent)
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로컬에 저장한 이미지 이미지뷰에 세팅
+        iv_post_image.setImageURI(contentUri)
     }
 
     /**
@@ -275,7 +324,7 @@ class MainPageActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("DATA", data)
         intent.putExtra("btnClicked", btnClicked)
-        startActivity(intent)
+        startActivity(intent) // TODO : 왜 여기서 바로 finish() 로 가서 종료되는지 모르겠다. 에러도 안 난다.
         finish()
     }
 

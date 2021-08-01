@@ -7,9 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -18,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.diary1.R
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
@@ -27,6 +32,9 @@ import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,8 +70,11 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     )
     val PERMISSION_CAMERA = 1
     val PERMISSION_STORAGE = 2
-    val REQUEST_CAMERA = 3
+    // val REQUEST_CAMERA = 3
     val REQUEST_STORAGE = 4
+    val REQUEST_CAMERA = 1
+
+    var mCurrentPhotoPath: String = ""
 
     // MainPageActivity 로 전환시 화면 및 버튼 색상 초기화 할 플래그
     var btnClicked: Int? = null
@@ -198,8 +209,16 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             // 데이터 삽입
             try {
                 database = dbHelper?.writableDatabase
-                sqlQuery = Query.saveDiary(Constants.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!)
-                database?.execSQL(sqlQuery)
+                sqlQuery = Query.saveDiary(Constants.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!, "?")
+                val bitmapImage: Bitmap = (iv_detail_image.drawable as BitmapDrawable).bitmap
+                val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_detail_image.width, iv_detail_image.height, true)
+                val stream = ByteArrayOutputStream()
+                resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val convertedImage: ByteArray = stream.toByteArray()
+                val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
+                sqliteStatement.bindBlob(1, convertedImage)
+                sqliteStatement.execute()
+                // database?.execSQL(sqlQuery)
             } catch (e: Exception) {
                 Log.d("update diary exception", ">>>>>>>>>>$e")
                 Toast.makeText(this, "일기를 저장 중에 오류가 발생했어요", Toast.LENGTH_SHORT).show()
@@ -378,8 +397,32 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     private fun openCamera() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(packageManager) != null) {
+                var photoFile: File? = null
+                photoFile = createImageFile()
+                if (photoFile != null) {
+                    val providerURI = FileProvider.getUriForFile(this, packageName, photoFile)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
+                }
+            }
             startActivityForResult(intent, REQUEST_CAMERA)
         }
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_$timeStamp.jpg"
+        var imageFile: File? = null
+        val storageDir =
+            File(Environment.getExternalStorageDirectory().toString() + "/Pictures", "${Constants.appName}")
+        if (!storageDir.exists()) {
+            Log.i("mCurrentPhotoPath1", storageDir.toString())
+            storageDir.mkdirs()
+        }
+        imageFile = File(storageDir, imageFileName)
+        mCurrentPhotoPath = imageFile.absolutePath
+        return imageFile
     }
 
     /**
@@ -397,11 +440,26 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                     iv_detail_image.setImageURI(uri)
                 }
                 REQUEST_CAMERA -> {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    iv_detail_image.setImageBitmap(bitmap)
+                    // val bitmap = data?.extras?.get("data") as Bitmap
+                    // iv_detail_image.setImageBitmap(bitmap)
+                    galleryAddPic()
                 }
             }
         }
+    }
+
+    fun galleryAddPic() {
+        Log.i("galleryAddPic", "Call");
+        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
+        val file = File(mCurrentPhotoPath)
+        val contentUri: Uri = Uri.fromFile(file)
+        intent.setData(contentUri)
+        sendBroadcast(intent)
+        Toast.makeText(this, "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로컬에 저장한 이미지 이미지뷰에 세팅
+        iv_detail_image.setImageURI(contentUri)
     }
 
     /**

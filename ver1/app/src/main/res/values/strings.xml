@@ -27,9 +27,7 @@
     <string name="bottom_button_diary_setting">설정</string>
 
     <string name="post_main_text">오늘 하루는 어땠나요?</string>
-    <string name="post_tv_date_time">날짜가 바뀌어요</string>
-    <string name="post_tv_select_date">Select</string>
-    <string name="post_input_title">Title</string>
+    <string name="post_tv_date_time">클릭해 날짜를 변경해요</string>
     <string name="post_input_content">특별했던 오늘을 남겨 보아요</string>
     <string name="post_btn_submit">기록하기</string>
     <string name="post_content_hint">나는 오늘 아침에 일어나 빵을 먹고 친구와 약속이 있는 장소로 갔다. 거기서 우연히....</string>

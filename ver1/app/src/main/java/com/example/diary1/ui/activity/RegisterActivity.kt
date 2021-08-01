@@ -355,7 +355,7 @@ class RegisterActivity : AppCompatActivity() {
         if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(packageManager) != null) {
-                var photoFile: File? = createImageFile()
+                val photoFile: File? = createImageFile()
 
                 if (photoFile != null) { // getUriForFile의 두 번째 인자는 Manifest provier의 authorites와 일치해야 함
                     val providerURI = FileProvider.getUriForFile(this, packageName, photoFile)

@@ -1,5 +1,7 @@
 package com.example.diary1.ui.fragment.listrecycler
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +23,7 @@ class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
         itemDate.text = data.postDate
         itemTitle.text = data.postTitle
         itemContent.text = data.postContent
+
         if (data.postMy == "0") {
             itemMy.setImageResource(R.drawable.item_my_off)
         } else {
