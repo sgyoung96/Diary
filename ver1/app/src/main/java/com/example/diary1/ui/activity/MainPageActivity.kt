@@ -42,7 +42,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : Activity 띄울 때 overridePendingTransition(R.anim.act_up, 0) 함수로 애니메이션 추가해주기
 // TODO : 앱 설치시 나타나는 제목 수정
 // BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
@@ -131,7 +130,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_daily_diary_list)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_POST -> {
                 btnClicked = BottomBtns.DIARY_POST
@@ -139,7 +138,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_post_diary)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_MY -> {
                 btnClicked = BottomBtns.DIARY_MY
@@ -147,7 +146,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_my_diary)
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, MyDiaryFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, MyDiaryFragment()).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_SET -> {
                 // SettingActivity 로 화면 전환
@@ -157,6 +156,7 @@ class MainPageActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 intent.putExtra("btnClicked", btnClicked)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, 0)
                 finish()
             }
         }
@@ -324,7 +324,8 @@ class MainPageActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("DATA", data)
         intent.putExtra("btnClicked", btnClicked)
-        startActivity(intent) // TODO : 왜 여기서 바로 finish() 로 가서 종료되는지 모르겠다. 에러도 안 난다.
+        startActivity(intent)
+        overridePendingTransition(R.anim.act_up, 0)
         finish()
     }
 

@@ -150,7 +150,6 @@ class SettingActivity : AppCompatActivity() {
      * 4. DB open, id 를 where 절로 조회하여 해당 유저 정보 중 프로필사진 정보 가져와 이미지뷰에 넣기
      *    단, 프로필 사진을 지정하지 않았다면 초기화하지 않음 (xml 에 설정한 src 그대로 나타냄)
      */
-    // TODO: 2. DB open, id 를 where 절로 조회하여 해당 유저 정보 중 프로필사진 정보 가져와 이미지뷰에 넣기
     fun init() {
         et_setting_id.isEnabled = false
         et_setting_id.setText(Constants.userID)
@@ -403,6 +402,7 @@ class SettingActivity : AppCompatActivity() {
         val intent = Intent(this, MainPageActivity::class.java)
         intent.putExtra("btnClicked", btnClicked)
         startActivity(intent)
+        overridePendingTransition(R.anim.act_up, 0)
         finish()
     }
 }

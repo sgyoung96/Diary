@@ -417,5 +417,6 @@ class RegisterActivity : AppCompatActivity() {
      */
     override fun onBackPressed() {
         finish()
+        overridePendingTransition(R.anim.right_in, 0)
     }
 }

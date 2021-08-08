@@ -330,11 +330,17 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                     val listener = DialogInterface.OnClickListener { _, a ->
                         when (a) {
                             DialogInterface.BUTTON_NEUTRAL -> {
-                                startActivity(Intent(this, MainPageActivity::class.java))
+                                val intent = Intent(this, MainPageActivity::class.java)
+                                intent.putExtra("btnClicked", btnClicked)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.act_up, 0)
                                 finish()
                             }
                             DialogInterface.BUTTON_POSITIVE -> {
-                                startActivity(Intent(this, MainPageActivity::class.java))
+                                val intent = Intent(this, MainPageActivity::class.java)
+                                intent.putExtra("btnClicked", btnClicked)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.act_up, 0)
                                 finish()
                             }
                         }
@@ -508,6 +514,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             val intent = Intent(this, MainPageActivity::class.java)
             intent.putExtra("btnClicked", btnClicked)
             startActivity(intent)
+            overridePendingTransition(R.anim.act_up, 0)
             finish()
         }
     }

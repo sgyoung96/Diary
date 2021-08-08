@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, 0)
         }
 
         /**
@@ -71,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
                     try {
                         startActivity(intent) // *********** 여기서 터짐
+                        overridePendingTransition(R.anim.act_up, 0)
                         Log.d("INTENT", ">>>>>>>>>>SUCCESS")
                     } catch (e: Exception) {
                         Log.d("INTENT FAIL", ">>>>>>>>>>$e")

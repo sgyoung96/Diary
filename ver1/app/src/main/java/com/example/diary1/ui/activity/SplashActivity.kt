@@ -15,6 +15,7 @@ class SplashActivity : AppCompatActivity() {
         handler.postDelayed({
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.left_in, 0)
             finish()
         }, 1500)
     }

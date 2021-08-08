@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary1">
         <activity android:name=".ui.activity.DetailActivity"></activity>
-        <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.SettingActivity"
+                  android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +40,7 @@
 
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize"/>
+                  android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.MainPageActivity" />
     </application>
 
