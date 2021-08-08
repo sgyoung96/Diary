@@ -30,7 +30,7 @@ import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
-import com.example.diary1.util.RegUtils
+import com.example.diary1.util.Utils
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -116,7 +116,7 @@ class SettingActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (!RegUtils.checkName(et_setting_name.text.toString())) {
+            if (!Utils.checkName(et_setting_name.text.toString())) {
                 Toast.makeText(this, "한글 이름을 정확히 써주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -127,7 +127,7 @@ class SettingActivity : AppCompatActivity() {
             }
 
             // true || false
-            if(RegUtils.checkLetter(et_setting_pw.text.toString()) || RegUtils.checkNumber(et_setting_pw.text.toString())) {
+            if(Utils.checkLetter(et_setting_pw.text.toString()) || Utils.checkNumber(et_setting_pw.text.toString())) {
                 Toast.makeText(this, "비밀번호는 영소문자와 숫자의 조합으로 이루어져야 해요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -161,7 +161,7 @@ class SettingActivity : AppCompatActivity() {
         var name = ""
         var bitmapImage: Bitmap? = null
         database = dbHelper?.readableDatabase
-        sqlQuery = Query.getDefaultQuery(Constants.userID)
+        sqlQuery = Query.getDefaultQuery()
         result = database?.rawQuery(sqlQuery, null)
         if (result!!.moveToNext()) {
             name = result!!.getString(result!!.getColumnIndex(RegisterInfo.DB_COL_NAME))

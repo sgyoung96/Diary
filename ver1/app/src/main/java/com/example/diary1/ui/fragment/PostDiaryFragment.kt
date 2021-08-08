@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.example.diary1.R
 import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.PostDiaryInfo
@@ -35,7 +39,6 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
-// TODO : 이미지 아무것도 세팅 안했을 때 예외 추가 (RegisterActivity 참고)
 class PostDiaryFragment : Fragment() {
 
     /**
@@ -73,7 +76,7 @@ class PostDiaryFragment : Fragment() {
         val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
         // Select 모드로 데이터 저장소 가져옴
         var database: SQLiteDatabase = dbHelper.readableDatabase
-        var sqlQuery: String = Query.getDefaultQuery(Constants.userID)
+        var sqlQuery: String = Query.getDefaultQuery()
         var result: Cursor
         var name = ""
         result = database.rawQuery(sqlQuery, null)
@@ -158,6 +161,7 @@ class PostDiaryFragment : Fragment() {
              * 2. 날짜 중복 체크 - 해당 날짜에 이미 정보가 있으면 return, Toast 띄우기
              * 3. 제목 공란 체크 (글자 수 제한은 xml 에서 처리함)
              * 4. 내용 공란 체크 (글자 수 제한은 xml 에서 처리함)
+             * 5. 이미지 지정 안 한 것 체크
              */
             // 날짜 지정 안 한 것 체크
             if (tv_select_date_text.text.toString() == "${getString(R.string.post_tv_date_time)}") {
@@ -166,7 +170,7 @@ class PostDiaryFragment : Fragment() {
             }
 
             // 날짜 중복 체크 - SQLite 사용
-            sqlQuery = Query.checkDiary(Constants.userID, tv_select_date_text.text.toString())
+            sqlQuery = Query.checkDiary(tv_select_date_text.text.toString())
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {
                 Toast.makeText(context, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
@@ -185,6 +189,26 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            // 이미지 지정 안 한 것 체크
+            // 기본 이미지 bitmap 변환
+            var defaultImage: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_launcher_foreground)
+            val bitmapDefault: Bitmap = Bitmap.createScaledBitmap((defaultImage as Drawable).toBitmap(iv_post_image.width, iv_post_image.height, Bitmap.Config.ARGB_8888), iv_post_image.width, iv_post_image.height, true)
+            val defaultByteArray = ByteArrayOutputStream()
+            bitmapDefault.compress(Bitmap.CompressFormat.PNG, 70, defaultByteArray)
+            val defaultByte: ByteArray = defaultByteArray.toByteArray()
+            val defaultString: String = Base64.encodeToString(defaultByte, Base64.DEFAULT)
+
+            val compareImage = (iv_post_image.drawable as Drawable).toBitmap(iv_post_image.width, iv_post_image.height, Bitmap.Config.ARGB_8888)
+            val compareByteArray = ByteArrayOutputStream()
+            compareImage.compress(Bitmap.CompressFormat.PNG, 70, compareByteArray)
+            val compareByte: ByteArray = compareByteArray.toByteArray()
+            val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
+
+            if (defaultString == compareString) {
+                Toast.makeText(requireContext(), "사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             /**
              * SQLite 저장 처리
              * 1. 데이터 삽입
@@ -194,8 +218,7 @@ class PostDiaryFragment : Fragment() {
             // Toast.makeText(context, "통과", Toast.LENGTH_SHORT).show()
             // 1. 데이터 삽입
             database = dbHelper.writableDatabase
-            sqlQuery = Query.insertDiary(Constants.userID,
-                                         tv_select_date_text.text.toString(),
+            sqlQuery = Query.insertDiary(tv_select_date_text.text.toString(),
                                          et_input_title.text.toString(),
                                          et_input_content.text.toString(),
                                          "?")
@@ -211,7 +234,7 @@ class PostDiaryFragment : Fragment() {
 
             // 2. 제대로 삽입되었는지 확인
             database = dbHelper.readableDatabase
-            sqlQuery = Query.checkDiary(Constants.userID, tv_select_date_text.text.toString())
+            sqlQuery = Query.checkDiary(tv_select_date_text.text.toString())
 
             result = database.rawQuery(sqlQuery, null)
             while (result.moveToNext()) {

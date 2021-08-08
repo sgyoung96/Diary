@@ -22,7 +22,7 @@ class GetPostingData(context: Context) {
 
     val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
     val database: SQLiteDatabase = dbHelper.readableDatabase
-    val sqlQuery: String = Query.getListFromId(Constants.userID)
+    val sqlQuery: String = Query.getListFromId()
     val result = database.rawQuery(sqlQuery, null)
 
     fun getData(view: DiaryListContract.View) {
@@ -31,8 +31,7 @@ class GetPostingData(context: Context) {
                 PostedDiaryInfo(result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
                                 result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
                                 result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)),
-                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY)),
-                                result.getBlob(result.getColumnIndex(PostDiaryInfo.DB_COL_IMAGE))))
+                                result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY))))
 
             Log.d("checkData1", ">>>>>>>>>>$data")
             Log.d("title", ">>>>>>>>>>${result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE))}")

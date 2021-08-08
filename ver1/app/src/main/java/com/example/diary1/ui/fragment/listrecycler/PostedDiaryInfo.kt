@@ -7,6 +7,5 @@ data class PostedDiaryInfo (
     var postDate: String,
     var postTitle: String,
     var postContent: String,
-    var postMy: String,
-    var postImage: ByteArray
+    var postMy: String
 ): Serializable

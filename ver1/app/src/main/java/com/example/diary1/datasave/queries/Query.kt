@@ -5,6 +5,9 @@ import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.RegisterInfo
 
 object Query {
+    /**
+     * 회원가입 쿼리
+     */
     fun register(name: String, id: String, pw: String, image: String): String {
         return "INSERT INTO ${RegisterInfo.DB_TABLE_NAME}" +
                 "(" +
@@ -22,24 +25,33 @@ object Query {
                 ")" + ";"
     }
 
+    /**
+     * 회원가입 이력이 있는지 확인
+     */
     fun checkOneRegister(id: String): String {
         return "SELECT * FROM ${RegisterInfo.DB_TABLE_NAME}" + " " +
                 "WHERE ${RegisterInfo.DB_COL_ID} = '$id'" + ";"
     }
 
+    /**
+     * 가입한 모든 회원 목록 조회 - 코드에서 가입한 목록 확인할 때만 사용하는 쿼리
+     */
     fun checkAllRegister(): String {
         return "SELECT * FROM ${RegisterInfo.DB_TABLE_NAME}" + ";"
     }
 
     /**
-     * post 화면 진입 시, 등록한 이름 뿌려줄 쿼리
+     * post 화면 진입 시, 등록한 이름과 프로필 사진 뿌려줄 쿼리
      */
-    fun getDefaultQuery(id: String): String {
+    fun getDefaultQuery(): String {
         return "SELECT ${RegisterInfo.DB_COL_NAME}, ${RegisterInfo.DB_COLE_IMAGE} FROM ${RegisterInfo.DB_TABLE_NAME}" + " " +
-                "WHERE ${RegisterInfo.DB_COL_ID} = " + "'" + id + "'" + ";"
+                "WHERE ${RegisterInfo.DB_COL_ID} = " + "'" + Constants.userID + "'" + ";"
     }
 
-    fun insertDiary(id: String, date: String, title: String, content: String, image: String): String {
+    /**
+     * 다이어리 추가
+     */
+    fun insertDiary(date: String, title: String, content: String, image: String): String {
         return "INSERT INTO ${PostDiaryInfo.DB_TABLE_NAME}" +
                 "(" +
                 PostDiaryInfo.DB_COL_USERID + "," +
@@ -50,7 +62,7 @@ object Query {
                 ")" +
                 "VALUES" +
                 "(" +
-                "'" + id + "'" + "," +
+                "'" + Constants.userID + "'" + "," +
                 "'" + date + "'" + "," +
                 "'" + title + "'" + "," +
                 "'" + content + "'" + "," +
@@ -58,20 +70,29 @@ object Query {
                 ")" + ";"
     }
 
-    fun checkDiary(id: String, date: String): String {
+    /**
+     * 해당 날짜에 등록된 목록이 있는지 체크
+     */
+    fun checkDiary(date: String): String {
         return "SELECT * FROM ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
-                "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + id + "'" +
+                "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + Constants.userID + "'" +
                 "AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + date + "'" + ";"
     }
 
-    fun getListFromId(id: String): String {
+    /**
+     * 다이어리 목록 뿌려주기 위한 쿼리
+     */
+    fun getListFromId(): String {
         return "SELECT B.*" + " " +
                 "FROM ${RegisterInfo.DB_TABLE_NAME} A, ${PostDiaryInfo.DB_TABLE_NAME} B" + " " +
                 "WHERE A.${RegisterInfo.DB_COL_ID} = B.${PostDiaryInfo.DB_COL_USERID}" + " " +
-                "AND A.${RegisterInfo.DB_COL_ID} = " + "'" + id + "'" + " " +
+                "AND A.${RegisterInfo.DB_COL_ID} = " + "'" + Constants.userID + "'" + " " +
                 "ORDER BY B.${PostDiaryInfo.DB_COL_DATE} DESC" + ";"
     }
 
+    /**
+     * 관심목록 추가한 목록 뿌려주기
+     */
     fun myDiaryQuery(): String {
         return "SELECT *" + " " +
                 "FROM ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
@@ -80,25 +101,41 @@ object Query {
                 "ORDER BY ${PostDiaryInfo.DB_COL_DATE} DESC" + ";"
     }
 
-    fun saveDiary (id: String, title: String, date: String, content: String, originalDate: String, image: String): String {
+    /**
+     * DtailActivity - 수정
+     */
+    fun saveDiary (title: String, date: String, content: String, originalDate: String, image: String): String {
         return "UPDATE ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
                 "SET" + " " +
                 PostDiaryInfo.DB_COL_TITLE + " = " + "'" + title + "'" + "," + " " +
                 PostDiaryInfo.DB_COL_DATE + " = " + "'" + date + "'" + "," + " " +
                 PostDiaryInfo.DB_COL_CONTENT + " = " + "'" + content + "'" + " " +
                 PostDiaryInfo.DB_COL_IMAGE + " = " + image +
-                "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + id + "'" +
+                "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + Constants.userID + "'" +
                 "  AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + originalDate + "'" + ";"
     }
 
-    fun deleteQuery(id: String, title: String, date: String): String {
+    /**
+     * DetailActivity - 삭제
+     */
+    fun deleteQuery(title: String, date: String): String {
         return "DELETE FROM ${PostDiaryInfo.DB_TABLE_NAME}" + " " +
-                "WHERE ${PostDiaryInfo.DB_COL_USERID} = '$id'" + " " +
+                "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${Constants.userID}'" + " " +
                 "  AND ${PostDiaryInfo.DB_COL_TITLE} = '$title'" + " " +
                 "  AND ${PostDiaryInfo.DB_COL_DATE} = '$date'" + ";"
     }
 
     /**
+     * DetailActivity - 해당 id 의, 해당 일자의 일기 목록에 저장된 이미지 뿌리기 (기타 정보는 recyclerview item 으로부터 가져옴. 이미지는 넘겨주는 게 안 되서 따로 조회함)
+     */
+    fun getDiaryImage(date: String): String{
+        return "SELECT ${PostDiaryInfo.DB_COL_IMAGE} FROM ${PostDiaryInfo.DB_TABLE_NAME} " +
+               "WHERE ${PostDiaryInfo.DB_COL_USERID} = '${Constants.userID}' " +
+               "AND ${PostDiaryInfo.DB_COL_DATE} = '$date'" + ";"
+    }
+
+    /**
+     * [설정]
      * 저장할 것 : 이름, 암호화된 비밀번호, 프로필사진 (USERINFO)
      */
     fun saveSettingQuery(name: String, pw: String, image: String): String {
@@ -111,6 +148,7 @@ object Query {
     }
 
     /**
+     * [설정]
      * 1. USERINFO 에서 삭제
      * 2. POSTINFO 에서 삭제
      */

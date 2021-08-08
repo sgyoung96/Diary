@@ -9,12 +9,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.VectorDrawable
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -26,7 +23,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.diary1.R
 import com.example.diary1.constants.Constants
@@ -34,10 +30,8 @@ import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
-import com.example.diary1.util.RegUtils
-import com.example.diary1.util.RegisterUtils
+import com.example.diary1.util.Utils
 import kotlinx.android.synthetic.main.activity_register.*
-import org.json.JSONObject
 import org.mindrot.jbcrypt.BCrypt
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -73,7 +67,6 @@ import java.util.*
  * 9-3. 메인화면으로 화면 전환하기
  */
 
-// TODO: 프로필사진 예외 처리
 class RegisterActivity : AppCompatActivity() {
 
     /**
@@ -122,8 +115,6 @@ class RegisterActivity : AppCompatActivity() {
             val compareByte: ByteArray = compareByteArray.toByteArray()
             val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
 
-            // 이미지뷰 리소스 bitmap 변환
-
             /**
              * 예외처리 (입력 양식)
              */
@@ -155,7 +146,7 @@ class RegisterActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                if (!RegUtils.checkName(et_register_name.text.toString())) {
+                if (!Utils.checkName(et_register_name.text.toString())) {
                     Toast.makeText(this, "한글 이름을 정확히 써주세요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -166,7 +157,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 // true || false
-                if(RegUtils.checkLetter(et_register_id.text.toString()) || RegUtils.checkNumber(et_register_id.text.toString())) {
+                if(Utils.checkLetter(et_register_id.text.toString()) || Utils.checkNumber(et_register_id.text.toString())) {
                     Toast.makeText(this, "아이디는 영소문자와 숫자의 조합으로 이루어져야 해요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -177,7 +168,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 // true || false
-                if(RegUtils.checkLetter(et_register_pw.text.toString()) || RegUtils.checkNumber(et_register_pw.text.toString())) {
+                if(Utils.checkLetter(et_register_pw.text.toString()) || Utils.checkNumber(et_register_pw.text.toString())) {
                     Toast.makeText(this, "비밀번호는 영소문자와 숫자의 조합으로 이루어져야 해요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -211,7 +202,7 @@ class RegisterActivity : AppCompatActivity() {
          * 2. 만약 결과가 있으면, return 하고, toast 메시지 띄움
          * 3. 만약 결과가 없으면, 회원가입 진행
          */
-        if (RegisterUtils.checkMember(this, et_register_id.text.toString())) {
+        if (Utils.checkMember(this, et_register_id.text.toString())) {
             Toast.makeText(this, "이미 등록된 ID 입니다", Toast.LENGTH_SHORT).show()
             return
         }
@@ -387,6 +378,7 @@ class RegisterActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         // 해당 경로에 있는 파일을 객체화(새로 파일을 만든다는 것으로 이해하면 안 됨)
         val file = File(mCurrentPhotoPath)
+        Log.d("mcurrentPhotoPath", ">>>>>>>>>>$mCurrentPhotoPath")
         val contentUri: Uri = Uri.fromFile(file)
         intent.setData(contentUri)
         sendBroadcast(intent)

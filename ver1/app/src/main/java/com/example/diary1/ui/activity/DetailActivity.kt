@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -27,10 +28,13 @@ import com.example.diary1.R
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
 import com.example.diary1.datasave.SQLiteDBHelper
+import com.example.diary1.datasave.constants.PostDiaryInfo
+import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -59,6 +63,8 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     var date: String = ""       // 일
     var day: String = ""        // 요일
 
+    var originalDate: String? = null
+
     /**
      * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
      * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
@@ -74,7 +80,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     val REQUEST_STORAGE = 4
     val REQUEST_CAMERA = 1
 
-    var mCurrentPhotoPath: String = ""
+    var mCurrentPhotoPath: String? = null
 
     // MainPageActivity 로 전환시 화면 및 버튼 색상 초기화 할 플래그
     var btnClicked: Int? = null
@@ -86,20 +92,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
         database = dbHelper?.readableDatabase
 
-        // 데이터 바인딩
-        itemData = intent.getSerializableExtra("DATA") as PostedDiaryInfo
-        btnClicked = intent.getSerializableExtra("btnClicked") as Int
-        et_detail_title.setText(itemData?.postTitle)
-        tv_detail_date.text = itemData?.postDate
-        et_detail_content.setText(itemData?.postContent)
-        // 원래 날짜 값
-        val originalDate = itemData?.postDate
-
-        // 수정 off 모드
-        setCloseEditMode()
-
-        // CalendarView GONE 처리
-        cv_detail_calendar.visibility = View.GONE
+        init()
 
         /**
          * 날짜 텍스트뷰 클릭시 캘린더뷰 visible, 선택 날짜 textview 에 할당하기
@@ -194,7 +187,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
              */
             if (tv_detail_date.text.toString() != originalDate) { // 날짜를 변경했을 시
                 try {
-                    sqlQuery = Query.checkDiary(Constants.userID, tv_detail_date.text.toString())
+                    sqlQuery = Query.checkDiary(tv_detail_date.text.toString())
                     result = database?.rawQuery(sqlQuery, null)
                     if (result!!.moveToNext()) {
                         Toast.makeText(this, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
@@ -209,7 +202,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             // 데이터 삽입
             try {
                 database = dbHelper?.writableDatabase
-                sqlQuery = Query.saveDiary(Constants.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!, "?")
+                sqlQuery = Query.saveDiary(et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!, "?")
                 val bitmapImage: Bitmap = (iv_detail_image.drawable as BitmapDrawable).bitmap
                 val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_detail_image.width, iv_detail_image.height, true)
                 val stream = ByteArrayOutputStream()
@@ -232,6 +225,36 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
             isEditMode = false
         }
+    }
+
+    fun init() {
+        // 데이터 바인딩
+        itemData = intent.getSerializableExtra("DATA") as PostedDiaryInfo
+        btnClicked = intent.getSerializableExtra("btnClicked") as Int
+        et_detail_title.setText(itemData?.postTitle)
+        tv_detail_date.text = itemData?.postDate
+        et_detail_content.setText(itemData?.postContent)
+        // 원래 날짜 값
+        originalDate = itemData?.postDate
+
+        // 수정 off 모드
+        setCloseEditMode()
+
+        // CalendarView GONE 처리
+        cv_detail_calendar.visibility = View.GONE
+
+        // 이미지뷰에 이미지 세팅
+        var bitmapImage: Bitmap? = null
+        database = dbHelper?.readableDatabase
+        sqlQuery = Query.getDiaryImage(itemData?.postDate!!)
+        result = database?.rawQuery(sqlQuery, null)
+        if (result!!.moveToNext()) {
+            val imageFromDB = result!!.getBlob(result!!.getColumnIndex(PostDiaryInfo.DB_COL_IMAGE))
+            bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)
+        }
+
+        iv_detail_image.setImageBitmap(bitmapImage)
+
     }
 
     fun showPopup(view: View) {
@@ -287,7 +310,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
                     database = dbHelper?.writableDatabase
-                    sqlQuery = Query.deleteQuery(Constants.userID, et_detail_title.text.toString(), tv_detail_date.text.toString())
+                    sqlQuery = Query.deleteQuery(et_detail_title.text.toString(), tv_detail_date.text.toString())
                     database?.execSQL(sqlQuery)
                     database?.close()
 
@@ -469,12 +492,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
      */
     override fun onBackPressed() {
         if (isEditMode) {
-            setCloseEditMode()
-
-            et_detail_title.setText(itemData?.postTitle)
-            tv_detail_date.text = itemData?.postDate
-            et_detail_content.setText(itemData?.postContent)
-            // TODO : 뒤로가기 눌러서 수정모드 종료됐을 때 itemData 로부터 넘겨받은 이미지로 되돌려 놓기 세팅 - 단, 이미지가 없으면, 기본 설정된 이미지로 바껴야 함
+            init()
 
             isEditMode = false
         } else {

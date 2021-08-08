@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.diary1.R
 import com.example.diary1.datasave.execsql.ExecQuery
-import com.example.diary1.util.RegisterUtils
+import com.example.diary1.util.Utils
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
          * 3. 정보가 존재하지 않는다면, 실패 로그 찍고, Toast.show()
          */
         btn_login.setOnClickListener {
-            if (!RegisterUtils.checkMember(this, et_id.text.toString())) {
+            if (!Utils.checkMember(this, et_id.text.toString())) {
                 Log.d("checkMember()", ">>>>>>>>>>회원정보 없음")
                 Toast.makeText(this, "회원가입을 먼저 해주세요", Toast.LENGTH_SHORT).show()
             } else {

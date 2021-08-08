@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diary1.R
 import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
@@ -18,6 +20,7 @@ import com.example.diary1.ui.activity.MainPageActivity
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import com.example.diary1.ui.fragment.myrecycler.ItemClickListener
 import com.example.diary1.ui.fragment.myrecycler.MyDiaryAdapter
+import kotlinx.android.synthetic.main.fragment_diary_list.*
 import kotlinx.android.synthetic.main.fragment_my_diary.*
 
 class MyDiaryFragment : Fragment() {
@@ -53,14 +56,14 @@ class MyDiaryFragment : Fragment() {
                     result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_DATE)),
                     result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_TITLE)),
                     result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_CONTENT)),
-                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY)),
-                    result.getBlob(result.getColumnIndex(PostDiaryInfo.DB_COL_IMAGE)))
+                    result.getString(result.getColumnIndex(PostDiaryInfo.DB_COL_MY)))
             )
         }
         database.close()
 
         myDiaryAdapter?.data = data
         itemData = data
+        rv_my_diary.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         rv_my_diary.adapter = myDiaryAdapter
 
         myDiaryAdapter?.setItemListener(object : ItemClickListener {
