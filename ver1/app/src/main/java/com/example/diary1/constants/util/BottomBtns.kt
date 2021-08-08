@@ -1,4 +1,4 @@
-package com.example.diary1.util
+package com.example.diary1.constants.util
 
 object BottomBtns {
     const val DIARY_LIST = 1

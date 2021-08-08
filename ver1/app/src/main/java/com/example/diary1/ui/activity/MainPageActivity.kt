@@ -30,7 +30,7 @@ import com.example.diary1.constants.Constants
 import com.example.diary1.ui.fragment.*
 import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
-import com.example.diary1.util.BottomBtns
+import com.example.diary1.constants.util.BottomBtns
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_page.*

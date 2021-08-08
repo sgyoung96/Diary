@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.diary1.R
 import com.example.diary1.datasave.execsql.ExecQuery
-import com.example.diary1.util.Utils
+import com.example.diary1.constants.util.Utils
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 

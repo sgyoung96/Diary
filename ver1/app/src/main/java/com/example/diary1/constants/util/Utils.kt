@@ -1,4 +1,4 @@
-package com.example.diary1.util
+package com.example.diary1.constants.util
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

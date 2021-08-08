@@ -105,9 +105,10 @@ class PostDiaryFragment : Fragment() {
             cv_post_calendar.visibility = View.VISIBLE
             Log.d("calendar", ">>>>>>>>>>클릭했어요")
 
-            view.setOnClickListener {
-                cv_post_calendar.visibility = View.GONE
-            }
+            // 오픈되어 있을 때는 다른 뷰 클릭 이벤트 x
+            iv_post_image.isEnabled = false
+            et_input_content.isEnabled = false
+            btn_post_submit.isEnabled = false
 
             /**
              * setOnChangeListener 에 인자로 사용할 변수들
@@ -146,6 +147,11 @@ class PostDiaryFragment : Fragment() {
 
                 // 년, 월, 일, 요일 텍스트뷰에 세팅
                 tv_select_date_text.text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
+
+                // 다른 뷰 클릭 이벤트 다시 가져오기
+                iv_post_image.isEnabled = true
+                et_input_content.isEnabled = true
+                btn_post_submit.isEnabled = true
 
                 cv_post_calendar.visibility = View.GONE
             }

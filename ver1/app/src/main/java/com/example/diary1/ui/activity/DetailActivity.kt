@@ -100,10 +100,12 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         tv_detail_date.setOnClickListener {
             cv_detail_calendar.visibility = View.VISIBLE
 
-            // 다른 곳 클릭 시 달력 사라짐
-            view.setOnClickListener {
-                cv_detail_calendar.visibility = View.GONE
-            }
+            // open 되어 있을 시 다른 뷰 클릭 이벤트 x
+            et_detail_title.isEnabled = false
+            iv_detail_image.isEnabled = false
+            et_detail_content.isEnabled = false
+            btn_detail_complete.isEnabled = false
+            ib_detail_menu.isEnabled = false
 
             /**
              * setOnChangeListener 에 인자로 사용할 변수들
@@ -142,6 +144,13 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
                 // 년, 월, 일, 요일 텍스트뷰에 세팅
                 tv_detail_date.text = "${this.year}-${this.month!!}-${this.date} ${this.day}"
+
+                // 클릭 이벤트 살리기
+                et_detail_title.isEnabled = true
+                iv_detail_image.isEnabled = true
+                et_detail_content.isEnabled = true
+                btn_detail_complete.isEnabled = true
+                ib_detail_menu.isEnabled = true
 
                 cv_detail_calendar.visibility = View.GONE
             }

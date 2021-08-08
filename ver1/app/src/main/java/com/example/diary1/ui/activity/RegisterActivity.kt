@@ -30,7 +30,7 @@ import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
-import com.example.diary1.util.Utils
+import com.example.diary1.constants.util.Utils
 import kotlinx.android.synthetic.main.activity_register.*
 import org.mindrot.jbcrypt.BCrypt
 import java.io.ByteArrayOutputStream
