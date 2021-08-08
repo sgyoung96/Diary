@@ -18,6 +18,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -342,7 +343,7 @@ class MainPageActivity : AppCompatActivity() {
     }
 
     /**
-     * SettingActivity 갔다가 BackPress 로 되돌아왔을 때
+     * Activity 갔다가 BackPress 로 되돌아왔을 때
      */
     override fun onResume() {
         super.onResume()
@@ -351,5 +352,7 @@ class MainPageActivity : AppCompatActivity() {
             setBottomInit()
             selectBottomBtn(flag)
         }
+        val manager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }

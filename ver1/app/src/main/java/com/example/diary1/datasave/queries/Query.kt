@@ -109,8 +109,8 @@ object Query {
                 "SET" + " " +
                 PostDiaryInfo.DB_COL_TITLE + " = " + "'" + title + "'" + "," + " " +
                 PostDiaryInfo.DB_COL_DATE + " = " + "'" + date + "'" + "," + " " +
-                PostDiaryInfo.DB_COL_CONTENT + " = " + "'" + content + "'" + " " +
-                PostDiaryInfo.DB_COL_IMAGE + " = " + image +
+                PostDiaryInfo.DB_COL_CONTENT + " = " + "'" + content + "'" + ", " + " " +
+                PostDiaryInfo.DB_COL_IMAGE + " = " + image + " " +
                 "WHERE ${PostDiaryInfo.DB_COL_USERID} = " + "'" + Constants.userID + "'" +
                 "  AND ${PostDiaryInfo.DB_COL_DATE} = " + "'" + originalDate + "'" + ";"
     }

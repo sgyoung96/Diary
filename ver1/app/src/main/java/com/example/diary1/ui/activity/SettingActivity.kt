@@ -18,6 +18,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -40,7 +42,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
+// TODO : 이미지 사이즈에 따라서 정사각형으로 잘라서 세팅될 수 있도록
 class SettingActivity : AppCompatActivity() {
 
     // MainPageActivity 에서 마지막에 선택한 버튼 플래그
@@ -167,17 +169,17 @@ class SettingActivity : AppCompatActivity() {
             val imageFromDB = result!!.getBlob(result!!.getColumnIndex(RegisterInfo.DB_COLE_IMAGE))
             bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)
         }
-        val centerCropImage: Bitmap
-        if (bitmapImage!!.width >= bitmapImage.height) {
-            centerCropImage = Bitmap.createBitmap(bitmapImage, bitmapImage.width/2 - bitmapImage.height/2, 0, bitmapImage.height, bitmapImage.height)
-        } else {
-            centerCropImage = Bitmap.createBitmap(bitmapImage, 0, bitmapImage.height/2 - bitmapImage.width/2, bitmapImage.width, bitmapImage.width)
-        }
-
+        // val centerCropImage: Bitmap
+        // if (bitmapImage!!.width >= bitmapImage.height) {
+        //     centerCropImage = Bitmap.createBitmap(bitmapImage, bitmapImage.width/2 - bitmapImage.height/2, 0, bitmapImage.height, bitmapImage.height)
+        // } else {
+        //     centerCropImage = Bitmap.createBitmap(bitmapImage, 0, bitmapImage.height/2 - bitmapImage.width/2, bitmapImage.width, bitmapImage.width)
+        // }
 
         et_setting_name.setText(name)
         et_setting_name.hint = name
-        iv_setting_profile.setImageBitmap(centerCropImage)
+        iv_setting_profile.setImageBitmap(bitmapImage)
+        // iv_setting_profile.scaleType = ImageView.ScaleType.CENTER_CROP
 
         et_setting_pw.setText("")
         et_setting_check_pw.setText("")
@@ -306,7 +308,7 @@ class SettingActivity : AppCompatActivity() {
      * 변경 정보 저장
      * 1. pw 암호화
      * 2. writable 모드로 db open
-     * 3. insert sql 할당
+     * 3. update sql 할당
      * 4. 실행
      */
     fun saveSettings() {
