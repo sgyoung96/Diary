@@ -219,7 +219,7 @@ class RegisterActivity : AppCompatActivity() {
          */
         val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
         val registerQuery = Query.register(et_register_name.text.toString(), et_register_id.text.toString(), pw, "?")
-        val resizedImage: Bitmap = Bitmap.createScaledBitmap((iv_register_image.drawable as BitmapDrawable).bitmap, iv_register_image.width, iv_register_image.height, true)
+        val resizedImage: Bitmap = Bitmap.createScaledBitmap((iv_register_image.drawable as BitmapDrawable).bitmap, (iv_register_image.drawable as BitmapDrawable).bitmap.width/2, (iv_register_image.drawable as BitmapDrawable).bitmap.height/2, true)
         val stream = ByteArrayOutputStream()
         resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val convertedImage: ByteArray = stream.toByteArray()

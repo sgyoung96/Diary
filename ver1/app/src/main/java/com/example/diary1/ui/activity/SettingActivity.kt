@@ -42,7 +42,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-// TODO : 이미지 사이즈에 따라서 정사각형으로 잘라서 세팅될 수 있도록
+
 class SettingActivity : AppCompatActivity() {
 
     // MainPageActivity 에서 마지막에 선택한 버튼 플래그
@@ -175,11 +175,19 @@ class SettingActivity : AppCompatActivity() {
         // } else {
         //     centerCropImage = Bitmap.createBitmap(bitmapImage, 0, bitmapImage.height/2 - bitmapImage.width/2, bitmapImage.width, bitmapImage.width)
         // }
+        // ------> 이미지를 resize 해서 저장할 때부터 잘못된 것 같다 -----> registeractivity, settingactivity
+        // Log.d("settingactivity", "width : ${bitmapImage!!.width}") // 525
+        // Log.d("settingactivity", "width/2 : ${bitmapImage.width/2}") // 262
+        // Log.d("settingactivity", "height : ${bitmapImage.height}") // 525
+        // Log.d("settingactivity", "height/2 : ${bitmapImage.height/2}") // 262
+        // Log.d("settingactivity", "dimen : ${resources.getDimension(R.dimen.profile_size.toInt())}") // 525.0
+        // Log.d("settingactivity", "x start : ${bitmapImage.width/2 - resources.getDimension(R.dimen.profile_size).toInt()/2}") // 0
+        // Log.d("settingactivity", "y start : ${bitmapImage.height/2 - resources.getDimension(R.dimen.profile_size).toInt()/2}") // 0
+        // centerCropImage = Bitmap.createBitmap(bitmapImage!!, bitmapImage.width/2 - resources.getDimension(R.dimen.profile_size).toInt()/2, bitmapImage.height/2 - resources.getDimension(R.dimen.profile_size).toInt()/2, resources.getDimension(R.dimen.profile_size).toInt(), resources.getDimension(R.dimen.profile_size).toInt())
 
         et_setting_name.setText(name)
         et_setting_name.hint = name
         iv_setting_profile.setImageBitmap(bitmapImage)
-        // iv_setting_profile.scaleType = ImageView.ScaleType.CENTER_CROP
 
         et_setting_pw.setText("")
         et_setting_check_pw.setText("")
@@ -315,7 +323,7 @@ class SettingActivity : AppCompatActivity() {
         // 입력된 비밀번호값 암호화
         val pw: String = BCrypt.hashpw(et_setting_pw.text.toString(), BCrypt.gensalt(10))
         val bitmapImage: Bitmap = (iv_setting_profile.drawable as BitmapDrawable).bitmap
-        val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_setting_profile.width, iv_setting_profile.height, true)
+        val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, bitmapImage.width/2, bitmapImage.height/2, true)
         val stream = ByteArrayOutputStream()
         resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val convertedImage: ByteArray = stream.toByteArray()

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Diary1</string>
+    <string name="app_name">My Diary</string>
     <string name="splash_text1">오늘의 사연을</string>
     <string name="splash_text2">기록하자</string>
     <string name="title_main">Diary</string>
