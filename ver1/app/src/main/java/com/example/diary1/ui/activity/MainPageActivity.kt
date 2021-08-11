@@ -78,6 +78,8 @@ class MainPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
+        hideKeyboard()
+
         /**
          * 하단 버튼 색상 초기화
          * 일기 목록이 메인 화면이므로 색상을 바꿔줌
@@ -352,7 +354,11 @@ class MainPageActivity : AppCompatActivity() {
             setBottomInit()
             selectBottomBtn(flag)
         }
+        hideKeyboard()
+    }
+
+    fun hideKeyboard() {
         val manager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.RESULT_HIDDEN)
     }
 }

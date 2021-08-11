@@ -226,8 +226,8 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                 Toast.makeText(this, "일기를 저장 중에 오류가 발생했어요", Toast.LENGTH_SHORT).show()
             }
 
-            // 수정 off 모드 및 초기화
-            init()
+            // 수정 off 모드
+            setCloseEditMode()
 
             // db 연결 닫기
             database?.close()
