@@ -201,16 +201,16 @@
 
         <Button
             android:id="@+id/btn_register_submit"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/register_btn_register"
             android:textColor="@color/input_submit_text"
             android:textStyle="bold"
             android:background="@drawable/bg_btn_round"
             android:backgroundTint="@color/input_submit_button"
-            android:layout_marginLeft="150dp"
-            android:layout_marginRight="150dp"
             android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vg_register_pw2"
             />
 

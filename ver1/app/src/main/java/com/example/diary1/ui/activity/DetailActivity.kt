@@ -1,6 +1,5 @@
 package com.example.diary1.ui.activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -27,9 +26,9 @@ import androidx.core.content.FileProvider
 import com.example.diary1.R
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
+import com.example.diary1.constants.util.Utils
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.constants.PostDiaryInfo
-import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -64,21 +63,6 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     var day: String = ""        // 요일
 
     var originalDate: String? = null
-
-    /**
-     * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
-     * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
-     */
-    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
-    val STORAGE_PERMISSION = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-    val PERMISSION_CAMERA = 1
-    val PERMISSION_STORAGE = 2
-    // val REQUEST_CAMERA = 3
-    val REQUEST_STORAGE = 4
-    val REQUEST_CAMERA = 1
 
     var mCurrentPhotoPath: String? = null
 
@@ -212,13 +196,9 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             try {
                 database = dbHelper?.writableDatabase
                 sqlQuery = Query.saveDiary(et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!, "?")
-                val bitmapImage: Bitmap = (iv_detail_image.drawable as BitmapDrawable).bitmap
-                val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_detail_image.width, iv_detail_image.height, true)
-                val stream = ByteArrayOutputStream()
-                resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                val convertedImage: ByteArray = stream.toByteArray()
                 val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
-                sqliteStatement.bindBlob(1, convertedImage)
+                val image = Utils.resizeImage(iv_detail_image.drawable, iv_detail_image.width, iv_detail_image.height)
+                sqliteStatement.bindBlob(1, image)
                 sqliteStatement.execute()
                 // database?.execSQL(sqlQuery)
             } catch (e: Exception) {
@@ -425,15 +405,15 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
      * 카메라 열기 : openCamera
      */
     private fun openGallery() {
-        if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.STORAGE_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            startActivityForResult(intent, REQUEST_STORAGE)
+            startActivityForResult(intent, Utils.REQUEST_STORAGE)
         }
     }
 
     private fun openCamera() {
-        if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.CAMERA_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(packageManager) != null) {
                 var photoFile: File? = null
@@ -443,7 +423,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
                 }
             }
-            startActivityForResult(intent, REQUEST_CAMERA)
+            startActivityForResult(intent, Utils.REQUEST_CAMERA)
         }
     }
 
@@ -472,12 +452,12 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         if(data == null ) Log.d("gall", ">>>>>>>>>>data null")
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_STORAGE -> {
+                Utils.REQUEST_STORAGE -> {
                     val uri = data?.data
                     Log.d("gall", ">>>>>>>>>>uri ${uri?.path}")
                     iv_detail_image.setImageURI(uri)
                 }
-                REQUEST_CAMERA -> {
+                Utils.REQUEST_CAMERA -> {
                     // val bitmap = data?.extras?.get("data") as Bitmap
                     // iv_detail_image.setImageBitmap(bitmap)
                     galleryAddPic()

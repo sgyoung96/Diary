@@ -164,7 +164,8 @@ class MainPageActivity : AppCompatActivity() {
             }
         }
     }
-
+    
+// TODO: 하트 클릭시, notifyChange 가 안 먹고 바로 갱신이 안돼서 fragment 자기 자신으로 이동시킨건데, 이동 없이 하는 방법 없을까?
     fun changeFragment(index: Int) {
         if (index == 1) {
             try {

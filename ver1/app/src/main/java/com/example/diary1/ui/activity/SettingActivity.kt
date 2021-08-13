@@ -1,11 +1,9 @@
 package com.example.diary1.ui.activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
@@ -18,8 +16,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -55,21 +51,6 @@ class SettingActivity : AppCompatActivity() {
     var database: SQLiteDatabase? = null
     var sqlQuery: String? = null
     var result: Cursor? = null
-
-    /**
-     * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
-     * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
-     */
-    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
-    val STORAGE_PERMISSION = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-    val PERMISSION_CAMERA = 1
-    val PERMISSION_STORAGE = 2
-    // val REQUEST_CAMERA = 3
-    val REQUEST_STORAGE = 4
-    val REQUEST_CAMERA = 1
 
     var mCurrentPhotoPath: String = ""
 
@@ -241,15 +222,15 @@ class SettingActivity : AppCompatActivity() {
      * 카메라 열기 : openCamera
      */
     private fun openGallery() {
-        if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.STORAGE_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            startActivityForResult(intent, REQUEST_STORAGE)
+            startActivityForResult(intent, Utils.REQUEST_STORAGE)
         }
     }
 
     private fun openCamera() {
-        if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.CAMERA_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(packageManager) != null) {
                 val photoFile = createImageFile()
@@ -258,7 +239,7 @@ class SettingActivity : AppCompatActivity() {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
                 }
             }
-            startActivityForResult(intent, REQUEST_CAMERA)
+            startActivityForResult(intent, Utils.REQUEST_CAMERA)
         }
     }
 
@@ -285,12 +266,12 @@ class SettingActivity : AppCompatActivity() {
         if(data == null ) Log.d("gall", ">>>>>>>>>>data null")
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_STORAGE -> {
+                Utils.REQUEST_STORAGE -> {
                     val uri = data?.data
                     Log.d("gall", ">>>>>>>>>>uri ${uri?.path}")
                     iv_setting_profile.setImageURI(uri)
                 }
-                REQUEST_CAMERA -> {
+                Utils.REQUEST_CAMERA -> {
                     // val bitmap = data?.extras?.get("data") as Bitmap
                     // iv_setting_profile.setImageBitmap(bitmap)
                     galleryAddPic()
@@ -322,16 +303,12 @@ class SettingActivity : AppCompatActivity() {
     fun saveSettings() {
         // 입력된 비밀번호값 암호화
         val pw: String = BCrypt.hashpw(et_setting_pw.text.toString(), BCrypt.gensalt(10))
-        val bitmapImage: Bitmap = (iv_setting_profile.drawable as BitmapDrawable).bitmap
-        val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, bitmapImage.width/2, bitmapImage.height/2, true)
-        val stream = ByteArrayOutputStream()
-        resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val convertedImage: ByteArray = stream.toByteArray()
 
         database = dbHelper?.writableDatabase
         sqlQuery = Query.saveSettingQuery(et_setting_name.text.toString(), pw, "?")
         val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
-        sqliteStatement.bindBlob(1, convertedImage)
+        val image = Utils.resizeImage(iv_setting_profile.drawable, (iv_setting_profile.drawable as BitmapDrawable).bitmap.width/2, (iv_setting_profile.drawable as BitmapDrawable).bitmap.height/2)
+        sqliteStatement.bindBlob(1, image)
         sqliteStatement.execute()
         // database?.execSQL(sqlQuery)
 

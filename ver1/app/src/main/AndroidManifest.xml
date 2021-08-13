@@ -23,10 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.Diary1.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

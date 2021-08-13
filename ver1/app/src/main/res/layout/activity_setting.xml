@@ -283,10 +283,9 @@
 
             <Button
                 android:id="@+id/btn_setting_edit"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
                 android:text="@string/setting_btn_edit"
-                android:textSize="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/input_text_main"
                 android:background="@drawable/bg_btn_round"
@@ -300,10 +299,9 @@
 
             <Button
                 android:id="@+id/btn_setting_delete"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
                 android:text="@string/setting_btn_delete"
-                android:textSize="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/input_text_main"
                 android:background="@drawable/bg_btn_round"

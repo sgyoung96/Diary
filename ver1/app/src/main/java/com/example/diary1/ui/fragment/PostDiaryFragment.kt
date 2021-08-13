@@ -24,6 +24,7 @@ import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.PostDiaryInfo
 import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
+import com.example.diary1.constants.util.Utils
 import com.example.diary1.datasave.SQLiteDBHelper
 import com.example.diary1.datasave.queries.Query
 import com.example.diary1.ui.activity.MainPageActivity
@@ -195,22 +196,7 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // 이미지 지정 안 한 것 체크
-            // 기본 이미지 bitmap 변환
-            var defaultImage: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_launcher_foreground)
-            val bitmapDefault: Bitmap = Bitmap.createScaledBitmap((defaultImage as Drawable).toBitmap(iv_post_image.width, iv_post_image.height, Bitmap.Config.ARGB_8888), iv_post_image.width, iv_post_image.height, true)
-            val defaultByteArray = ByteArrayOutputStream()
-            bitmapDefault.compress(Bitmap.CompressFormat.PNG, 70, defaultByteArray)
-            val defaultByte: ByteArray = defaultByteArray.toByteArray()
-            val defaultString: String = Base64.encodeToString(defaultByte, Base64.DEFAULT)
-
-            val compareImage = (iv_post_image.drawable as Drawable).toBitmap(iv_post_image.width, iv_post_image.height, Bitmap.Config.ARGB_8888)
-            val compareByteArray = ByteArrayOutputStream()
-            compareImage.compress(Bitmap.CompressFormat.PNG, 70, compareByteArray)
-            val compareByte: ByteArray = compareByteArray.toByteArray()
-            val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
-
-            if (defaultString == compareString) {
+            if (Utils.checkDefaultImage(requireContext(), iv_post_image.drawable, iv_post_image.width, iv_post_image.height)) {
                 Toast.makeText(requireContext(), "사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -228,13 +214,9 @@ class PostDiaryFragment : Fragment() {
                                          et_input_title.text.toString(),
                                          et_input_content.text.toString(),
                                          "?")
-            val bitmapImage: Bitmap = (iv_post_image.drawable as BitmapDrawable).bitmap
-            val resizedImage: Bitmap = Bitmap.createScaledBitmap(bitmapImage, iv_post_image.width, iv_post_image.height, true)
-            val stream = ByteArrayOutputStream()
-            resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val convertedImage: ByteArray = stream.toByteArray()
             val sqliteStatement: SQLiteStatement = database.compileStatement(sqlQuery)
-            sqliteStatement.bindBlob(1, convertedImage)
+            val image = Utils.resizeImage(iv_post_image.drawable, iv_post_image.width, iv_post_image.height)
+            sqliteStatement.bindBlob(1, image)
             sqliteStatement.execute()
             // database.execSQL(sqlQuery)
 

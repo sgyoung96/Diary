@@ -1,6 +1,5 @@
 package com.example.diary1.ui.activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -69,21 +68,6 @@ import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
-    /**
-     * 카메라와 앨범으로부터 이미지 가져오는 기능에 필요한 변수들
-     * CAMERA_PERMISSION, CAMERA_PERMISSION, PERMISSION_CAMERA, PERMISSION_STORAGE, REQUEST_CAMERA, REQUEST_STORAGE
-     */
-    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
-    val STORAGE_PERMISSION = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-    val PERMISSION_CAMERA = 1
-    val PERMISSION_STORAGE = 2
-    // val REQUEST_CAMERA = 3
-    val REQUEST_STORAGE = 4
-    val REQUEST_CAMERA = 1
-
     var mCurrentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,25 +80,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         btn_register_submit.setOnClickListener {
-            // 기본 이미지 bitmap 변환
-            // val defaultImage = (resources.getDrawable(R.drawable.ic_launcher_foreground) as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
-            var defaultImage: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground)
-            // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //     defaultImage = (DrawableCompat.wrap(defaultImage!!)).mutate()
-            // }
-            // // val bitmapDefault: Bitmap = Bitmap.createBitmap(defaultImage!!.intrinsicWidth, defaultImage.intrinsicHeight, Bitmap.Config.ARGB_8888)
-            val bitmapDefault: Bitmap = Bitmap.createScaledBitmap((defaultImage as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888), iv_register_image.width, iv_register_image.height, true)
-            val defaultByteArray = ByteArrayOutputStream()
-            bitmapDefault.compress(Bitmap.CompressFormat.PNG, 70, defaultByteArray)
-            val defaultByte: ByteArray = defaultByteArray.toByteArray()
-            val defaultString: String = Base64.encodeToString(defaultByte, Base64.DEFAULT)
-
-            val compareImage = (iv_register_image.drawable as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
-            val compareByteArray = ByteArrayOutputStream()
-            compareImage.compress(Bitmap.CompressFormat.PNG, 70, compareByteArray)
-            val compareByte: ByteArray = compareByteArray.toByteArray()
-            val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
-
             /**
              * 예외처리 (입력 양식)
              */
@@ -124,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                 et_register_pw.text.isNullOrEmpty() ||
                 et_register_pw2.text.isNullOrEmpty()) {
                 Toast.makeText(this, "양식을 다 채워주세요", Toast.LENGTH_SHORT).show()
-            } else if (compareString == defaultString) {
+            } else if (Utils.checkDefaultImage(this, iv_register_image.drawable, iv_register_image.width, iv_register_image.height)) {
                 Toast.makeText(this, "프로필 사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
             } else {
                 /**
@@ -219,13 +184,10 @@ class RegisterActivity : AppCompatActivity() {
          */
         val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
         val registerQuery = Query.register(et_register_name.text.toString(), et_register_id.text.toString(), pw, "?")
-        val resizedImage: Bitmap = Bitmap.createScaledBitmap((iv_register_image.drawable as BitmapDrawable).bitmap, (iv_register_image.drawable as BitmapDrawable).bitmap.width/2, (iv_register_image.drawable as BitmapDrawable).bitmap.height/2, true)
-        val stream = ByteArrayOutputStream()
-        resizedImage.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val convertedImage: ByteArray = stream.toByteArray()
 
         val sqlStatement: SQLiteStatement = database.compileStatement(registerQuery)
-        sqlStatement.bindBlob(1, convertedImage)
+        val image = Utils.resizeImage(iv_register_image.drawable, (iv_register_image.drawable as BitmapDrawable).bitmap.width/2, (iv_register_image.drawable as BitmapDrawable).bitmap.height/2)
+        sqlStatement.bindBlob(1, image)
         sqlStatement.execute()
         // database.execSQL(registerQuery) // ************ 여기서 터진다
 
@@ -335,15 +297,15 @@ class RegisterActivity : AppCompatActivity() {
      * 카메라 열기 : openCamera
      */
     private fun openGallery() {
-        if (checkPermission(STORAGE_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.STORAGE_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            startActivityForResult(intent, REQUEST_STORAGE)
+            startActivityForResult(intent, Utils.REQUEST_STORAGE)
         }
     }
 
     private fun openCamera() {
-        if (checkPermission(CAMERA_PERMISSION, PERMISSION_CAMERA)) {
+        if (checkPermission(Utils.CAMERA_PERMISSION, Utils.PERMISSION_CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(packageManager) != null) {
                 val photoFile: File? = createImageFile()
@@ -354,7 +316,7 @@ class RegisterActivity : AppCompatActivity() {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI)
                 }
             }
-            startActivityForResult(intent, REQUEST_CAMERA)
+            startActivityForResult(intent, Utils.REQUEST_CAMERA)
         }
     }
 
@@ -398,12 +360,12 @@ class RegisterActivity : AppCompatActivity() {
         if(data == null ) Log.d("gall", ">>>>>>>>>>data null")
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_STORAGE -> {
+                Utils.REQUEST_STORAGE -> {
                     val uri = data?.data
                     Log.d("gall", ">>>>>>>>>>uri ${uri?.path}")
                     iv_register_image.setImageURI(uri)
                 }
-                REQUEST_CAMERA -> {
+                Utils.REQUEST_CAMERA -> {
                     // val bitmap = data?.extras?.get("data") as Bitmap
                     // iv_register_image.setImageBitmap(bitmap)
                     galleryAddPic()
