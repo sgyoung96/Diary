@@ -89,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                 et_register_pw.text.isNullOrEmpty() ||
                 et_register_pw2.text.isNullOrEmpty()) {
                 Toast.makeText(this, "양식을 다 채워주세요", Toast.LENGTH_SHORT).show()
-            } else if (Utils.checkDefaultImage(this, iv_register_image.drawable, iv_register_image.width, iv_register_image.height)) {
+            } else if (Utils.checkDefaultProfile(this, iv_register_image.drawable, iv_register_image.width, iv_register_image.height)) {
                 Toast.makeText(this, "프로필 사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
             } else {
                 /**
@@ -378,7 +378,9 @@ class RegisterActivity : AppCompatActivity() {
      * 뒤로가기 버튼 누르면 이 화면 종료 (LoginActivity 로 이동)
      */
     override fun onBackPressed() {
-        finish()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
         overridePendingTransition(R.anim.right_in, 0)
+        finish()
     }
 }

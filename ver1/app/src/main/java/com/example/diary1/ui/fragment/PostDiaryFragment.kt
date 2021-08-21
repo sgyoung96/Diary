@@ -196,7 +196,7 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (Utils.checkDefaultImage(requireContext(), iv_post_image.drawable, iv_post_image.width, iv_post_image.height)) {
+            if (Utils.checkDefaultPosting(requireContext(), iv_post_image.drawable, iv_post_image.width, iv_post_image.height)) {
                 Toast.makeText(requireContext(), "사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, 0)
+            finish()
         }
 
         /**

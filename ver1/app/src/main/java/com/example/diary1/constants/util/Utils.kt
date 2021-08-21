@@ -64,10 +64,33 @@ object Utils {
      * 1. 이미지를 세팅했는지 체크, true: 세팅 안 함, false: 세팅함
      * 2. image resize
      */
-    fun checkDefaultImage(context: Context, ivDrawable: Drawable, width: Int, height: Int): Boolean {
+    fun checkDefaultProfile(context: Context, ivDrawable: Drawable, width: Int, height: Int): Boolean {
         // 기본 이미지 bitmap 변환
         // val defaultImage = (resources.getDrawable(R.drawable.ic_launcher_foreground) as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
-        var defaultImage: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground)
+        var defaultImage: Drawable? = ContextCompat.getDrawable(context, R.drawable.img_blank_profile)
+        // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        //     defaultImage = (DrawableCompat.wrap(defaultImage!!)).mutate()
+        // }
+        // // val bitmapDefault: Bitmap = Bitmap.createBitmap(defaultImage!!.intrinsicWidth, defaultImage.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmapDefault: Bitmap = Bitmap.createScaledBitmap((defaultImage as Drawable).toBitmap(width, height, Bitmap.Config.ARGB_8888), width, height, true)
+        val defaultByteArray = ByteArrayOutputStream()
+        bitmapDefault.compress(Bitmap.CompressFormat.PNG, 70, defaultByteArray)
+        val defaultByte: ByteArray = defaultByteArray.toByteArray()
+        val defaultString: String = Base64.encodeToString(defaultByte, Base64.DEFAULT)
+
+        val compareImage = (ivDrawable as Drawable).toBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val compareByteArray = ByteArrayOutputStream()
+        compareImage.compress(Bitmap.CompressFormat.PNG, 70, compareByteArray)
+        val compareByte: ByteArray = compareByteArray.toByteArray()
+        val compareString: String = Base64.encodeToString(compareByte, Base64.DEFAULT)
+
+        return compareString == defaultString
+    }
+
+    fun checkDefaultPosting(context: Context, ivDrawable: Drawable, width: Int, height: Int): Boolean {
+        // 기본 이미지 bitmap 변환
+        // val defaultImage = (resources.getDrawable(R.drawable.ic_launcher_foreground) as Drawable).toBitmap(iv_register_image.width, iv_register_image.height, Bitmap.Config.ARGB_8888)
+        var defaultImage: Drawable? = ContextCompat.getDrawable(context, R.drawable.img_blank_post)
         // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         //     defaultImage = (DrawableCompat.wrap(defaultImage!!)).mutate()
         // }
