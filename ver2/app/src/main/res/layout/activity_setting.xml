@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.SettingActivity"
+    android:background="@color/main_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/main_background"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_setting_profile"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/img_blank_profile"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_setting_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/setting_profile"
+                    android:textColor="@color/main_sub_text_color"
+                    android:textSize="11dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_setting_profile"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/vg_setting_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_setting_profile"
+                    >
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:text="@string/setting_id_title"
+                        android:background="@drawable/bg_register_tv_round"
+                        android:backgroundTint="@color/main_highlight"
+                        android:textColor="@color/input_text_main"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        >
+
+                        <EditText
+                            android:id="@+id/et_setting_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_sub_background"
+                            android:hint="@string/setting_id_contnet"
+                            android:textColorHint="@color/main_sub_text_color"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main_text_color"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_id_guide"
+                            android:textColor="@color/main_sub_text_color"
+                            android:textSize="9dp"
+                            app:layout_constraintTop_toBottomOf="@id/et_setting_id"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vg_setting_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/vg_setting_id"
+                    >
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:text="@string/setting_name_title"
+                        android:background="@drawable/bg_register_tv_round"
+                        android:backgroundTint="@color/main_highlight"
+                        android:textColor="@color/input_text_main"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        >
+
+                        <EditText
+                            android:id="@+id/et_setting_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_sub_background"
+                            android:hint="@string/setting_name_content"
+                            android:textColorHint="@color/main_sub_text_color"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main_text_color"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:maxLength="5"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_name_guide"
+                            android:textColor="@color/main_sub_text_color"
+                            android:textSize="9dp"
+                            app:layout_constraintTop_toBottomOf="@id/et_setting_name"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vg_setting_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/vg_setting_name"
+                    >
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:text="@string/setting_pw_title"
+                        android:background="@drawable/bg_register_tv_round"
+                        android:backgroundTint="@color/main_highlight"
+                        android:textColor="@color/input_text_main"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        >
+
+                        <EditText
+                            android:id="@+id/et_setting_pw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_sub_background"
+                            android:hint="@string/setting_pw_content"
+                            android:textColorHint="@color/main_sub_text_color"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:password="true"
+                            android:textColor="@color/main_text_color"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:maxLength="20"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_pw_guide"
+                            android:textColor="@color/main_sub_text_color"
+                            android:textSize="9dp"
+                            app:layout_constraintTop_toBottomOf="@id/et_setting_pw"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vg_setting_check_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/vg_setting_pw"
+                    >
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:text="@string/setting_check_pw_title"
+                        android:background="@drawable/bg_register_tv_round"
+                        android:backgroundTint="@color/main_highlight"
+                        android:textColor="@color/input_text_main"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textSize="13dp"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        >
+
+                        <EditText
+                            android:id="@+id/et_setting_check_pw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/main_sub_background"
+                            android:hint="@string/setting_pw_content"
+                            android:textColorHint="@color/main_sub_text_color"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:password="true"
+                            android:textColor="@color/main_text_color"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:maxLength="20"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_setting_pw_check_guide"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_check_pw_guide"
+                            android:textColor="@color/main_sub_text_color"
+                            android:textSize="9dp"
+                            app:layout_constraintTop_toBottomOf="@id/et_setting_check_pw"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_setting_edit"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_btn_edit"
+                    android:textStyle="bold"
+                    android:textColor="@color/input_text_main"
+                    android:background="@drawable/bg_btn_round"
+                    android:backgroundTint="@color/input_submit_button"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginStart="40dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_setting_delete"
+                    app:layout_constraintTop_toBottomOf="@id/vg_setting_check_pw"
+                    />
+
+                <Button
+                    android:id="@+id/btn_setting_delete"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_btn_delete"
+                    android:textStyle="bold"
+                    android:textColor="@color/input_text_main"
+                    android:background="@drawable/bg_btn_round"
+                    android:backgroundTint="@color/input_submit_button"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginEnd="40dp"
+                    app:layout_constraintStart_toEndOf="@id/btn_setting_edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/vg_setting_check_pw"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
