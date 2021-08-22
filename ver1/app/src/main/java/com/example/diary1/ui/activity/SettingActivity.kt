@@ -104,8 +104,8 @@ class SettingActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (et_setting_pw.text.length !in 12..20 || et_setting_check_pw.text.length !in 12..20) {
-                Toast.makeText(this, "비밀번호는 12-20글자 사이로 써야 해요", Toast.LENGTH_SHORT).show()
+            if (et_setting_pw.text.length !in 8..20 || et_setting_check_pw.text.length !in 8..20) {
+                Toast.makeText(this, "비밀번호는 8-20글자 사이로 써야 해요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

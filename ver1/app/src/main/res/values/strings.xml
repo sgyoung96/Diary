@@ -8,7 +8,7 @@
     <string name="register_id">ID</string>
     <string name="register_id_hint">6 ~ 10글자 숫자와 영소문자</string>
     <string name="register_pw">PW</string>
-    <string name="register_pw_hint">12 ~ 20글자 숫자와 영소문자</string>
+    <string name="register_pw_hint">8 ~ 20글자 숫자와 영소문자</string>
     <string name="register_check_pw">Check PW</string>
     <string name="register_check_pw_hint">비밀번호를 한번 더 입력하세요</string>
     <string name="register_btn_register">회원가입</string>
@@ -56,7 +56,7 @@
     <string name="setting_name_content">이름</string>
     <string name="setting_name_guide">내 이름을 변경해요</string>
     <string name="setting_pw_title">PW</string>
-    <string name="setting_pw_content">12 ~ 20글자 숫자와 영소문자</string>
+    <string name="setting_pw_content">8 ~ 20글자 숫자와 영소문자</string>
     <string name="setting_pw_guide">비밀번호를 변경해요</string>
     <string name="setting_check_pw_title">Check PW</string>
     <string name="setting_check_pw_guide">비밀번호를 확인해요</string>
