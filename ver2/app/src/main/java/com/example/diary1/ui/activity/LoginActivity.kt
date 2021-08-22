@@ -8,14 +8,9 @@ import android.widget.Toast
 import com.example.diary1.R
 import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
-import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.database.MyDirayDB
-import com.example.diary1.datasave.entity.UserInfo
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
 
 /**
@@ -109,12 +104,9 @@ class LoginActivity : AppCompatActivity() {
 
     fun checkPW(): Boolean {
         val db = MyDirayDB.getInstance(applicationContext)
-        var userInfo: List<UserInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            userInfo = db!!.userDao().checkPW(et_id.text.toString())
-        }
+        val userInfo = db!!.userDao().checkPW(et_id.text.toString())
         var pw = ""
-        for (getUser in userInfo!!) {
+        for (getUser in userInfo) {
             pw = getUser.userPw
             Constants.userID = getUser.userId // UserId 저장 처리
         }

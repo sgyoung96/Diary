@@ -58,14 +58,12 @@ class DiaryListFragment(context: Context) : Fragment() {
         rv_diary_list.adapter = diaryListAdapter
 
         val db = MyDirayDB.getInstance(applicationContext)
-        var posting: List<PostInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            posting = db!!.PostDao().getListFromId(Constants.userID)
-        }
-        for (data in posting!!) {
+        val posting = db!!.PostDao().getListFromId(Constants.userID)
+        for (data in posting) {
             getPost.add(PostInfo(Constants.userID, data.post_date, data.post_title, data.post_content, data.post_my, byteArrayOf()))
         }
         diaryListAdapter?.diaryData = getPost
+        diaryListAdapter?.notifyDataSetChanged()
         itemData = getPost
 
         diaryListAdapter!!.setOnItemClickListener(object : ItemClickListener {
@@ -78,21 +76,18 @@ class DiaryListFragment(context: Context) : Fragment() {
                 Log.d("item", ">>>>>>>>>>$item")
 
                 // 조회한 flag 가 0이면 1로 업데이트, 1이면 0으로 업데이트
-                var myFlag: List<PostInfo>? = null
-                CoroutineScope(Dispatchers.IO).launch {
-                    myFlag = db!!.PostDao().selectMyFlag(Constants.userID, item.post_date)
-                }
+                val myFlag = db.PostDao().selectMyFlag(Constants.userID, item.post_date)
                 var getMyFlag = ""
-                for (flag in myFlag!!) {
+                for (flag in myFlag) {
                     getMyFlag = flag.post_my
                 }
                 if (getMyFlag == PostDiaryInfo.POST_MY_DEFAULT) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        db!!.PostDao().updateMyFlag1(Constants.userID, item.post_date)
+                        db.PostDao().updateMyFlag1(Constants.userID, item.post_date)
                     }
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
-                        db!!.PostDao().updateMyFlag0(Constants.userID, item.post_date)
+                        db.PostDao().updateMyFlag0(Constants.userID, item.post_date)
                     }
                 }
 

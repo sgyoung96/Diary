@@ -23,7 +23,6 @@ import com.example.diary1.R
 import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
 import com.example.diary1.datasave.database.MyDirayDB
-import com.example.diary1.datasave.entity.UserInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -37,8 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SettingActivity : AppCompatActivity() {
-
-    val db = MyDirayDB.getInstance(applicationContext)
+    var db: MyDirayDB? = null
 
     // MainPageActivity 에서 마지막에 선택한 버튼 플래그
     var btnClicked: Int? = null
@@ -59,6 +57,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        db = MyDirayDB.getInstance(applicationContext)
         btnClicked = intent.getSerializableExtra("btnClicked") as Int
 
         // 초기화
@@ -130,14 +129,11 @@ class SettingActivity : AppCompatActivity() {
         /**
          * 이름과 이미지 세팅하기
          */
-        var userSetting: List<UserInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            userSetting = db!!.userDao().checkOneRegister(Constants.userID)
-        }
+        val userSetting = db!!.userDao().checkOneRegister(Constants.userID)
         var name = ""
         var imageFromDB: ByteArray
         var bitmapImage: Bitmap? = null
-        for (userInfo in userSetting!!) {
+        for (userInfo in userSetting) {
             name = userInfo.userName
             imageFromDB = userInfo.userImage
             bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)

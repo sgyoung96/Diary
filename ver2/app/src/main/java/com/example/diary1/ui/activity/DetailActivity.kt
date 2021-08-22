@@ -38,8 +38,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
-
-    val db = MyDirayDB.getInstance(applicationContext)
+    var db: MyDirayDB? = null
 
     // DiaruListFragment - recyclerview - item 으로부터 데이터 넘겨받을 변수
     var itemData: PostInfo? = null
@@ -64,6 +63,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        db = MyDirayDB.getInstance(applicationContext)
         init()
 
         /**
@@ -168,15 +168,12 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
              */
             if (tv_detail_date.text.toString() != originalDate) { // 날짜를 변경했을 시
                 try {
-                    var checkDate: List<PostInfo>? = null
-                    CoroutineScope(Dispatchers.IO).launch {
-                        checkDate = db!!.PostDao().checkDiary(Constants.userID, tv_detail_date.text.toString())
-                    }
+                    val checkDate = db!!.PostDao().checkDiary(Constants.userID, tv_detail_date.text.toString())
                     var date = ""
-                    for (getDate in checkDate!!) {
+                    for (getDate in checkDate) {
                         date = getDate.post_date
                     }
-                    if (date.isEmpty()) {
+                    if (!date.isEmpty()) {
                         Toast.makeText(this, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
@@ -221,10 +218,7 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         cv_detail_calendar.visibility = View.GONE
 
         // 이미지뷰에 이미지 세팅
-        var postSetting: List<PostInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            postSetting = db!!.PostDao().getDiaryImage(Constants.userID, itemData?.post_date!!)
-        }
+        val postSetting = db!!.PostDao().getDiaryImage(Constants.userID, itemData?.post_date!!)
         var imageFromDB: ByteArray
         var bitmapImage: Bitmap? = null
         for (postInfo in postSetting!!) {

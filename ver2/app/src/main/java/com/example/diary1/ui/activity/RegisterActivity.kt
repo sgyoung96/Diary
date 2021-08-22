@@ -31,13 +31,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : insert O, select X
-
-// TODO : 현재 RegisterActivity, LoginActivity 에서 사용하는 Util.checkMember 사용 안 하고, RegisterActivity 에서 DB 바로 실행하는 중..
-//  Thread 처리 해야 하는데, Thread 돌리면 그 안에 안 탐.
-//  RegisterActivity 에서 DB 처리 성공하면, 전체적으로 Room 사용한 부분들 손봐야 함
-
-// TODO : 위에꺼 처리 완료 후 전체적으로 db open 한 부분들 db.close 처리 해주기
+// insert O, select X, select 처리 때문에 mainThread 에서도 DB 처리 될 수 있도록 함
 class RegisterActivity : AppCompatActivity() {
 
     var mCurrentPhotoPath: String = ""
@@ -126,19 +120,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveData() {
-        val db = MyDirayDB.getInstance(applicationContext)
-        var getMember: List<UserInfo>? = listOf()
-        // CoroutineScope(Dispatchers.IO).launch {
-        //     getMember = db!!.userDao().checkOneRegister(et_register_id.text.toString()) // 왜 안 타..
-        // }
-        // GlobalScope.launch {
-        //     getMember = db!!.userDao().checkOneRegister(et_register_id.text.toString()) // 왜 안 타.. ㅠㅠㅠㅠㅠㅠ
-        // }
-
-        // java.lang.IllegalStateException: Cannot access database on the main thread since it may potentially lock the UI for a long period of time.
-        // getMember = db!!.userDao().checkOneRegister(et_register_id.text.toString())
-
-        if (getMember?.size!! > 0) {
+        if (Utils.checkMember(applicationContext, et_register_id.text.toString())) {
             Toast.makeText(this, "이미 등록된 ID 입니다", Toast.LENGTH_SHORT).show()
             return
         }
@@ -146,7 +128,7 @@ class RegisterActivity : AppCompatActivity() {
         val pw: String = BCrypt.hashpw(et_register_pw.text.toString(), BCrypt.gensalt(10))
         val image = Utils.resizeImage(iv_register_image.drawable, (iv_register_image.drawable as BitmapDrawable).bitmap.width/2, (iv_register_image.drawable as BitmapDrawable).bitmap.height/2)
 
-        // val db = MyDirayDB.getInstance(applicationContext)
+        val db = MyDirayDB.getInstance(applicationContext)
         CoroutineScope(Dispatchers.IO).launch {
             db!!.userDao().register(UserInfo(et_register_id.text.toString(), et_register_name.text.toString(), pw, image)) // 잘 탐!!
         }

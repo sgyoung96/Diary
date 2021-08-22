@@ -24,7 +24,6 @@ import com.example.diary1.ui.fragment.*
 import com.example.diary1.constants.util.BottomBtns
 import com.example.diary1.datasave.entity.PostInfo
 import kotlinx.android.synthetic.main.activity_main_page.*
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
 import java.io.File
 import java.io.IOException
@@ -32,7 +31,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-// TODO : 앱 설치시 나타나는 제목 수정
 // BottomNavigationView 에서 캘린더 아이콘 삭제 X -> Joda Time 라이브러리 사용하여 일기 쓴 날에 해당하여 표시 주기
 // Calendar 리사이클러뷰 그리드로 그리기 + 뷰페이저
 class MainPageActivity : AppCompatActivity() {

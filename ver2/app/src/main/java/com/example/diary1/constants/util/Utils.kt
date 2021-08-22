@@ -35,19 +35,8 @@ object Utils {
     // true : 회원가입 되어 있음 false : 회원정보 없음
     fun checkMember(context: Context, id: String): Boolean {
         val db = MyDirayDB.getInstance(context)
-        var getMember: List<UserInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch { // 다른애 한테 일 시키기
-            getMember = db!!.userDao().checkOneRegister(id)
-        }
-        return if (getMember == null) {
-            false
-        } else {
-            if (getMember?.size!! > 0) {
-                return true
-            } else {
-                return false
-            }
-        }
+        val getMember = db!!.userDao().checkOneRegister(id)
+        return getMember.isNotEmpty()
     }
 
     /**

@@ -25,7 +25,8 @@ abstract class MyDirayDB: RoomDatabase() {
                         context.applicationContext,
                         MyDirayDB::class.java,
                         "my-diary-db"
-                    ).build()
+                    ).allowMainThreadQueries()
+                        .build()
                 }
             }
             return instance

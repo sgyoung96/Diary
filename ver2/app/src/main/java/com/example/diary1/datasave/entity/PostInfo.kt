@@ -1,13 +1,12 @@
 package com.example.diary1.datasave.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.example.diary1.datasave.constants.PostDiaryInfo
 import java.io.Serializable
 
-@Entity
+@Entity(primaryKeys = [PostDiaryInfo.DB_COL_USERID, PostDiaryInfo.DB_COL_DATE])
 data class PostInfo(
-    @PrimaryKey var userId: String = "",
+    var userId: String = "",
     var post_date: String,
     var post_title: String,
     var post_content: String,

@@ -16,7 +16,6 @@ import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
 import com.example.diary1.datasave.database.MyDirayDB
 import com.example.diary1.datasave.entity.PostInfo
-import com.example.diary1.datasave.entity.UserInfo
 import com.example.diary1.ui.activity.MainPageActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
@@ -69,10 +68,7 @@ class PostDiaryFragment(context: Context) : Fragment() {
          * DB 에서 id 값으로 이름 가져오기
          */
         val db = MyDirayDB.getInstance(applicationContext)
-        var userSetting: List<UserInfo>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            userSetting = db!!.userDao().checkOneRegister(Constants.userID)
-        }
+        val userSetting = db!!.userDao().checkOneRegister(Constants.userID)
         var name = ""
         for (userInfo in userSetting!!) {
             name = userInfo.userName
@@ -170,15 +166,12 @@ class PostDiaryFragment(context: Context) : Fragment() {
             }
 
             // 날짜 중복 체크
-            var checkDate: List<PostInfo>? = null
-            CoroutineScope(Dispatchers.IO).launch {
-                checkDate = db!!.PostDao().checkDiary(Constants.userID, tv_select_date_text.text.toString())
-            }
+            val checkDate = db.PostDao().checkDiary(Constants.userID, tv_select_date_text.text.toString())
             var date = ""
-            for (getDate in checkDate!!) {
+            for (getDate in checkDate) {
                 date = getDate.post_date
             }
-            if (date.isEmpty()) {
+            if (!date.isEmpty()) {
                 Toast.makeText(context, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
