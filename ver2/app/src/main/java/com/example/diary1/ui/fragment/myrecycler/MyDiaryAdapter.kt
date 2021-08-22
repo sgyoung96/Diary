@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
-import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
+import com.example.diary1.datasave.entity.PostInfo
 
 class MyDiaryAdapter(val context: Context): RecyclerView.Adapter<MyDiaryViewHolder>() {
-    var data: MutableList<PostedDiaryInfo>? = null
+    var data: MutableList<PostInfo>? = null
     var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyDiaryViewHolder {

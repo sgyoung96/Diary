@@ -2,7 +2,6 @@ package com.example.diary1.constants.util
 
 import android.Manifest
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -10,11 +9,11 @@ import android.util.Base64
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.diary1.R
-import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.constants.SQLiteDBInfo
-import com.example.diary1.datasave.queries.Query
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.fragment_post_diary.*
+import com.example.diary1.datasave.database.MyDirayDB
+import com.example.diary1.datasave.entity.UserInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
@@ -35,11 +34,20 @@ object Utils {
 
     // true : 회원가입 되어 있음 false : 회원정보 없음
     fun checkMember(context: Context, id: String): Boolean {
-        val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
-        val readDatabase: SQLiteDatabase = dbHelper.readableDatabase
-        val checkRegisterQuery = Query.checkOneRegister(id)
-        val result = readDatabase.rawQuery(checkRegisterQuery, null)
-        return result.moveToNext()
+        val db = MyDirayDB.getInstance(context)
+        var getMember: List<UserInfo>? = null
+        CoroutineScope(Dispatchers.IO).launch { // 다른애 한테 일 시키기
+            getMember = db!!.userDao().checkOneRegister(id)
+        }
+        return if (getMember == null) {
+            false
+        } else {
+            if (getMember?.size!! > 0) {
+                return true
+            } else {
+                return false
+            }
+        }
     }
 
     /**

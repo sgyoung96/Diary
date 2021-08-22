@@ -6,10 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.diary1.R
-import com.example.diary1.datasave.execsql.ExecQuery
+import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
+import com.example.diary1.datasave.constants.RegisterInfo
+import com.example.diary1.datasave.database.MyDirayDB
+import com.example.diary1.datasave.entity.UserInfo
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.mindrot.jbcrypt.BCrypt
 
 /**
  * 타이틀바 없애기 :
@@ -47,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
          * 3. 정보가 존재하지 않는다면, 실패 로그 찍고, Toast.show()
          */
         btn_login.setOnClickListener {
-            if (!Utils.checkMember(this, et_id.text.toString())) {
+            if (!Utils.checkMember(applicationContext, et_id.text.toString())) {
                 Log.d("checkMember()", ">>>>>>>>>>회원정보 없음")
                 Toast.makeText(this, "회원가입을 먼저 해주세요", Toast.LENGTH_SHORT).show()
             } else {
@@ -59,8 +66,7 @@ class LoginActivity : AppCompatActivity() {
                  */
                 Log.d("ID 존재 여부", ">>>>>>>>>>ID 있음")
 
-                val existMember = ExecQuery.checkPW(this, et_id.text.toString(), et_pw.text.toString())
-                if (!existMember) {
+                if (!checkPW()) {
                     Log.d("비밀번호 일치 여부", ">>>>>>>>>>불일치")
                         Toast.makeText(this, "비밀번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
@@ -99,5 +105,19 @@ class LoginActivity : AppCompatActivity() {
         } else {
             finish()
         }
+    }
+
+    fun checkPW(): Boolean {
+        val db = MyDirayDB.getInstance(applicationContext)
+        var userInfo: List<UserInfo>? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            userInfo = db!!.userDao().checkPW(et_id.text.toString())
+        }
+        var pw = ""
+        for (getUser in userInfo!!) {
+            pw = getUser.userPw
+            Constants.userID = getUser.userId // UserId 저장 처리
+        }
+        return BCrypt.checkpw(et_pw.text.toString(), pw)
     }
 }

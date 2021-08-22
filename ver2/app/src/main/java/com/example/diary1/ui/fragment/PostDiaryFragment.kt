@@ -2,14 +2,7 @@ package com.example.diary1.ui.fragment
 
 import android.content.Context
 import android.content.DialogInterface
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteStatement
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,20 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.example.diary1.R
-import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.datasave.constants.PostDiaryInfo
-import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
-import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.queries.Query
+import com.example.diary1.datasave.database.MyDirayDB
+import com.example.diary1.datasave.entity.PostInfo
+import com.example.diary1.datasave.entity.UserInfo
 import com.example.diary1.ui.activity.MainPageActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
-import java.io.ByteArrayOutputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +32,9 @@ import java.util.*
  * 3. 제목, 날짜, 내용 문자열 로컬DB에 저장 (SQLite) - 저장할 키값은 아이디
  */
 
-class PostDiaryFragment : Fragment() {
+class PostDiaryFragment(context: Context) : Fragment() {
+
+    var applicationContext = context
 
     /**
      * 화면전환할 때 사용할 변수 (onAttach 함수에서 초기화해준다.)
@@ -74,15 +68,14 @@ class PostDiaryFragment : Fragment() {
         /**
          * DB 에서 id 값으로 이름 가져오기
          */
-        val dbHelper = SQLiteDBHelper(context, SQLiteDBInfo.DB_NAME, null, 1)
-        // Select 모드로 데이터 저장소 가져옴
-        var database: SQLiteDatabase = dbHelper.readableDatabase
-        var sqlQuery: String = Query.getDefaultQuery()
-        var result: Cursor
+        val db = MyDirayDB.getInstance(applicationContext)
+        var userSetting: List<UserInfo>? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            userSetting = db!!.userDao().checkOneRegister(Constants.userID)
+        }
         var name = ""
-        result = database.rawQuery(sqlQuery, null)
-        if (result.moveToNext()) {
-            name = result.getString(result.getColumnIndex(RegisterInfo.DB_COL_NAME))
+        for (userInfo in userSetting!!) {
+            name = userInfo.userName
         }
 
         cv_post_calendar.visibility = View.GONE
@@ -176,10 +169,16 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // 날짜 중복 체크 - SQLite 사용
-            sqlQuery = Query.checkDiary(tv_select_date_text.text.toString())
-            result = database.rawQuery(sqlQuery, null)
-            while (result.moveToNext()) {
+            // 날짜 중복 체크
+            var checkDate: List<PostInfo>? = null
+            CoroutineScope(Dispatchers.IO).launch {
+                checkDate = db!!.PostDao().checkDiary(Constants.userID, tv_select_date_text.text.toString())
+            }
+            var date = ""
+            for (getDate in checkDate!!) {
+                date = getDate.post_date
+            }
+            if (date.isEmpty()) {
                 Toast.makeText(context, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -201,42 +200,15 @@ class PostDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            /**
-             * SQLite 저장 처리
-             * 1. 데이터 삽입
-             * 2. 제대로 삽입되었는지 확인
-             * 3. 처리가 끝난 후에는 닫아주기
-             */
-            // Toast.makeText(context, "통과", Toast.LENGTH_SHORT).show()
-            // 1. 데이터 삽입
-            database = dbHelper.writableDatabase
-            sqlQuery = Query.insertDiary(tv_select_date_text.text.toString(),
-                                         et_input_title.text.toString(),
-                                         et_input_content.text.toString(),
-                                         "?")
-            val sqliteStatement: SQLiteStatement = database.compileStatement(sqlQuery)
             val image = Utils.resizeImage(iv_post_image.drawable, iv_post_image.width, iv_post_image.height)
-            sqliteStatement.bindBlob(1, image)
-            sqliteStatement.execute()
-            // database.execSQL(sqlQuery)
-
-            // 2. 제대로 삽입되었는지 확인
-            database = dbHelper.readableDatabase
-            sqlQuery = Query.checkDiary(tv_select_date_text.text.toString())
-
-            result = database.rawQuery(sqlQuery, null)
-            while (result.moveToNext()) {
-                Log.d("저장 정보 확인, id", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_USERID))}")
-                Log.d("저장 정보 확인, date", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_DATE))}")
-                Log.d("저장 정보 확인, title", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_TITLE))}")
-                Log.d("저장 정보 확인, content", ">>>>>>>>>>${result.getString(result.getColumnIndex(
-                    PostDiaryInfo.DB_COL_CONTENT))}")
+            CoroutineScope(Dispatchers.IO).launch {
+                db!!.PostDao().insertDiary(PostInfo(Constants.userID,
+                                                    tv_select_date_text.text.toString(),
+                                                    et_input_title.text.toString(),
+                                                    et_input_content.text.toString(),
+                                                    PostDiaryInfo.POST_MY_DEFAULT,
+                                                    image))
             }
-
-            database.close()
 
             // 마무리 : 다이어로그 띄우고 화면 전환
             finishPosting()

@@ -6,34 +6,23 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.graphics.toColor
-import androidx.fragment.app.Fragment
 import com.example.diary1.R
 import com.example.diary1.constants.Constants
 import com.example.diary1.ui.fragment.*
-import com.example.diary1.ui.fragment.listrecycler.DiaryListViewHolder
-import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
 import com.example.diary1.constants.util.BottomBtns
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
+import com.example.diary1.datasave.entity.PostInfo
 import kotlinx.android.synthetic.main.activity_main_page.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
@@ -133,7 +122,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_list.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_daily_diary_list)
-                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, DiaryListFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, DiaryListFragment(applicationContext)).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_POST -> {
                 btnClicked = BottomBtns.DIARY_POST
@@ -141,7 +130,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_post.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_post_diary)
-                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, PostDiaryFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, PostDiaryFragment(applicationContext)).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_MY -> {
                 btnClicked = BottomBtns.DIARY_MY
@@ -149,7 +138,7 @@ class MainPageActivity : AppCompatActivity() {
                 tv_bottom_my.setTextColor(getColor(R.color.main_text_color))
 
                 tv_title.text = getString(R.string.title_my_diary)
-                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, MyDiaryFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, 0).replace(R.id.vg_fragment_container, MyDiaryFragment(applicationContext)).commitAllowingStateLoss()
             }
             BottomBtns.DIARY_SET -> {
                 // SettingActivity 로 화면 전환
@@ -169,7 +158,7 @@ class MainPageActivity : AppCompatActivity() {
     fun changeFragment(index: Int) {
         if (index == 1) {
             try {
-                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, DiaryListFragment(applicationContext)).commit()
             } catch (e: Exception) {
                 Log.d("changeFragmentError", ">>>>>>>>>>$e")
                 // FragmentManager has not been attached to a host.
@@ -177,7 +166,7 @@ class MainPageActivity : AppCompatActivity() {
             }
         }
         if (index == 3) {
-            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, MyDiaryFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.vg_fragment_container, MyDiaryFragment(applicationContext)).commit()
             setBottomInit()
             selectBottomBtn(BottomBtns.DIARY_MY)
         }
@@ -321,7 +310,7 @@ class MainPageActivity : AppCompatActivity() {
     /**
      * DiaryList Fragment 에서 item 클릭시, 상세페이지로 이동
      */
-    fun goDetailActivity(data: PostedDiaryInfo) {
+    fun goDetailActivity(data: PostInfo) {
        val intent = Intent(this, DetailActivity::class.java)
         // 버튼 두 번 클릭시, 화면이 두 번 스택에 쌓이지 않도록 플래그 설정
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

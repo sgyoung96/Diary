@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -23,17 +20,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import com.example.diary1.R
-import com.example.diary1.datasave.constants.RegisterInfo
-import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
-import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.queries.Query
 import com.example.diary1.constants.util.Utils
+import com.example.diary1.datasave.database.MyDirayDB
+import com.example.diary1.datasave.entity.UserInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -41,16 +38,10 @@ import java.util.*
 
 class SettingActivity : AppCompatActivity() {
 
+    val db = MyDirayDB.getInstance(applicationContext)
+
     // MainPageActivity 에서 마지막에 선택한 버튼 플래그
     var btnClicked: Int? = null
-
-    /**
-     * SQLite 관련 변수들
-     */
-    var dbHelper: SQLiteDBHelper? = null
-    var database: SQLiteDatabase? = null
-    var sqlQuery: String? = null
-    var result: Cursor? = null
 
     var mCurrentPhotoPath: String = ""
 
@@ -70,7 +61,6 @@ class SettingActivity : AppCompatActivity() {
 
         btnClicked = intent.getSerializableExtra("btnClicked") as Int
 
-        dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
         // 초기화
         init()
 
@@ -140,31 +130,18 @@ class SettingActivity : AppCompatActivity() {
         /**
          * 이름과 이미지 세팅하기
          */
+        var userSetting: List<UserInfo>? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            userSetting = db!!.userDao().checkOneRegister(Constants.userID)
+        }
         var name = ""
+        var imageFromDB: ByteArray
         var bitmapImage: Bitmap? = null
-        database = dbHelper?.readableDatabase
-        sqlQuery = Query.getDefaultQuery()
-        result = database?.rawQuery(sqlQuery, null)
-        if (result!!.moveToNext()) {
-            name = result!!.getString(result!!.getColumnIndex(RegisterInfo.DB_COL_NAME))
-            val imageFromDB = result!!.getBlob(result!!.getColumnIndex(RegisterInfo.DB_COLE_IMAGE))
+        for (userInfo in userSetting!!) {
+            name = userInfo.userName
+            imageFromDB = userInfo.userImage
             bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)
         }
-        // val centerCropImage: Bitmap
-        // if (bitmapImage!!.width >= bitmapImage.height) {
-        //     centerCropImage = Bitmap.createBitmap(bitmapImage, bitmapImage.width/2 - bitmapImage.height/2, 0, bitmapImage.height, bitmapImage.height)
-        // } else {
-        //     centerCropImage = Bitmap.createBitmap(bitmapImage, 0, bitmapImage.height/2 - bitmapImage.width/2, bitmapImage.width, bitmapImage.width)
-        // }
-        // ------> 이미지를 resize 해서 저장할 때부터 잘못된 것 같다 -----> registeractivity, settingactivity
-        // Log.d("settingactivity", "width : ${bitmapImage!!.width}") // 525
-        // Log.d("settingactivity", "width/2 : ${bitmapImage.width/2}") // 262
-        // Log.d("settingactivity", "height : ${bitmapImage.height}") // 525
-        // Log.d("settingactivity", "height/2 : ${bitmapImage.height/2}") // 262
-        // Log.d("settingactivity", "dimen : ${resources.getDimension(R.dimen.profile_size.toInt())}") // 525.0
-        // Log.d("settingactivity", "x start : ${bitmapImage.width/2 - resources.getDimension(R.dimen.profile_size).toInt()/2}") // 0
-        // Log.d("settingactivity", "y start : ${bitmapImage.height/2 - resources.getDimension(R.dimen.profile_size).toInt()/2}") // 0
-        // centerCropImage = Bitmap.createBitmap(bitmapImage!!, bitmapImage.width/2 - resources.getDimension(R.dimen.profile_size).toInt()/2, bitmapImage.height/2 - resources.getDimension(R.dimen.profile_size).toInt()/2, resources.getDimension(R.dimen.profile_size).toInt(), resources.getDimension(R.dimen.profile_size).toInt())
 
         et_setting_name.setText(name)
         et_setting_name.hint = name
@@ -303,14 +280,10 @@ class SettingActivity : AppCompatActivity() {
     fun saveSettings() {
         // 입력된 비밀번호값 암호화
         val pw: String = BCrypt.hashpw(et_setting_pw.text.toString(), BCrypt.gensalt(10))
-
-        database = dbHelper?.writableDatabase
-        sqlQuery = Query.saveSettingQuery(et_setting_name.text.toString(), pw, "?")
-        val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
         val image = Utils.resizeImage(iv_setting_profile.drawable, (iv_setting_profile.drawable as BitmapDrawable).bitmap.width/2, (iv_setting_profile.drawable as BitmapDrawable).bitmap.height/2)
-        sqliteStatement.bindBlob(1, image)
-        sqliteStatement.execute()
-        // database?.execSQL(sqlQuery)
+        CoroutineScope(Dispatchers.IO).launch {
+            db!!.userDao().saveSetting(Constants.userID, et_setting_name.text.toString(), pw, image)
+        }
 
         // 변경사항이 모두 저장되었습니다 다이어로그
         val builder = AlertDialog.Builder(this)
@@ -344,9 +317,10 @@ class SettingActivity : AppCompatActivity() {
         val listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
-                    database = dbHelper?.writableDatabase
-                    sqlQuery = Query.deleteAllQuery()
-                    database?.execSQL(sqlQuery)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        db!!.userDao().deleteUser(Constants.userID)
+                        db!!.PostDao().deletePost(Constants.userID)
+                    }
 
                     // 삭제가 완료 되었습니다 다이어로그
                     builder.setTitle("계정 삭제")
@@ -355,7 +329,6 @@ class SettingActivity : AppCompatActivity() {
                     val listener = DialogInterface.OnClickListener { _, a ->
                         when (a) {
                             DialogInterface.BUTTON_NEUTRAL -> {
-                                database?.close()
                                 startActivity(Intent(this, LoginActivity::class.java))
                                 finish()
                             }
@@ -385,7 +358,6 @@ class SettingActivity : AppCompatActivity() {
      * 뒤로가기 버튼 누르면 db 닫고, 이 화면 종료 (MainPageActivity - 직전 Fragment 로 이동)
      */
     override fun onBackPressed() {
-        database?.close()
         val intent = Intent(this, MainPageActivity::class.java)
         intent.putExtra("btnClicked", btnClicked)
         startActivity(intent)

@@ -1,13 +1,11 @@
 package com.example.diary1.ui.fragment.listrecycler
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
+import com.example.diary1.datasave.entity.PostInfo
 
 class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
@@ -19,21 +17,16 @@ class DiaryListViewHolder(item: View): RecyclerView.ViewHolder(item) {
     // 관심목록 하트
     val itemMy = item.findViewById<ImageView>(R.id.iv_diary_list_my)
 
-    fun bind(data: PostedDiaryInfo, listener: ItemClickListener) {
-        itemDate.text = data.postDate
-        itemTitle.text = data.postTitle
-        itemContent.text = data.postContent
+    fun bind(data: PostInfo, listener: ItemClickListener) {
+        itemDate.text = data.post_date
+        itemTitle.text = data.post_title
+        itemContent.text = data.post_content
 
-        if (data.postMy == "0") {
+        if (data.post_my == "0") {
             itemMy.setImageResource(R.drawable.item_my_off)
         } else {
             itemMy.setImageResource(R.drawable.item_my_on)
         }
-
-        Log.d("ViewHolderDate", ">>>>>>>>>>${data.postDate}")
-        Log.d("ViewHolderTitle", ">>>>>>>>>>${data.postTitle}")
-        Log.d("ViewHolderContent", ">>>>>>>>>>${data.postContent}")
-        Log.d("ViewHolderMy", ">>>>>>>>>>${data.postMy}")
 
         item.setOnClickListener {
             listener.onItemClick(data)

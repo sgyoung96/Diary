@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Diary2</string>
+    <string name="app_name">My Diary</string>
     <string name="title_main">Diary</string>
 
     <string name="register_profile_text">사진을 클릭해 프로필사진을 추가해요</string>

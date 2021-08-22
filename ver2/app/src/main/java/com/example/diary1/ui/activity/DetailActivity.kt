@@ -4,12 +4,8 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteStatement
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,18 +20,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.diary1.R
-import com.example.diary1.datasave.constants.SQLiteDBInfo
 import com.example.diary1.constants.Constants
 import com.example.diary1.constants.util.Utils
-import com.example.diary1.datasave.SQLiteDBHelper
-import com.example.diary1.datasave.constants.PostDiaryInfo
-import com.example.diary1.datasave.queries.Query
-import com.example.diary1.ui.fragment.listrecycler.PostedDiaryInfo
+import com.example.diary1.datasave.database.MyDirayDB
+import com.example.diary1.datasave.entity.PostInfo
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.fragment_post_diary.*
-import java.io.ByteArrayOutputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -44,17 +39,13 @@ import java.util.*
 
 class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
+    val db = MyDirayDB.getInstance(applicationContext)
+
     // DiaruListFragment - recyclerview - item 으로부터 데이터 넘겨받을 변수
-    var itemData: PostedDiaryInfo? = null
+    var itemData: PostInfo? = null
 
     // 수정 모드 플래그
     var isEditMode = false
-
-    // DB 처리 관련 변수들
-    var dbHelper: SQLiteDBHelper? = null
-    var database: SQLiteDatabase? = null
-    var sqlQuery: String? = null
-    var result: Cursor? = null
 
     // 캘린더 관련 변수들
     var year: Int = 0           // 년
@@ -72,9 +63,6 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
-        dbHelper = SQLiteDBHelper(this, SQLiteDBInfo.DB_NAME, null, 1)
-        database = dbHelper?.readableDatabase
 
         init()
 
@@ -180,9 +168,15 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
              */
             if (tv_detail_date.text.toString() != originalDate) { // 날짜를 변경했을 시
                 try {
-                    sqlQuery = Query.checkDiary(tv_detail_date.text.toString())
-                    result = database?.rawQuery(sqlQuery, null)
-                    if (result!!.moveToNext()) {
+                    var checkDate: List<PostInfo>? = null
+                    CoroutineScope(Dispatchers.IO).launch {
+                        checkDate = db!!.PostDao().checkDiary(Constants.userID, tv_detail_date.text.toString())
+                    }
+                    var date = ""
+                    for (getDate in checkDate!!) {
+                        date = getDate.post_date
+                    }
+                    if (date.isEmpty()) {
                         Toast.makeText(this, "해당 날짜에 이미 일기가 있어요", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
@@ -194,13 +188,10 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
             // 데이터 삽입
             try {
-                database = dbHelper?.writableDatabase
-                sqlQuery = Query.saveDiary(et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), originalDate!!, "?")
-                val sqliteStatement: SQLiteStatement = database!!.compileStatement(sqlQuery)
                 val image = Utils.resizeImage(iv_detail_image.drawable, iv_detail_image.width, iv_detail_image.height)
-                sqliteStatement.bindBlob(1, image)
-                sqliteStatement.execute()
-                // database?.execSQL(sqlQuery)
+                CoroutineScope(Dispatchers.IO).launch {
+                    db!!.PostDao().saveDiary(Constants.userID, et_detail_title.text.toString(), tv_detail_date.text.toString(), et_detail_content.text.toString(), itemData?.post_date!!, image)
+                }
             } catch (e: Exception) {
                 Log.d("update diary exception", ">>>>>>>>>>$e")
                 Toast.makeText(this, "일기를 저장 중에 오류가 발생했어요", Toast.LENGTH_SHORT).show()
@@ -209,22 +200,19 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             // 수정 off 모드
             setCloseEditMode()
 
-            // db 연결 닫기
-            database?.close()
-
             isEditMode = false
         }
     }
 
     fun init() {
         // 데이터 바인딩
-        itemData = intent.getSerializableExtra("DATA") as PostedDiaryInfo
+        itemData = intent.getSerializableExtra("DATA") as PostInfo
         btnClicked = intent.getSerializableExtra("btnClicked") as Int
-        et_detail_title.setText(itemData?.postTitle)
-        tv_detail_date.text = itemData?.postDate
-        et_detail_content.setText(itemData?.postContent)
+        et_detail_title.setText(itemData?.post_title)
+        tv_detail_date.text = itemData?.post_date
+        et_detail_content.setText(itemData?.post_content)
         // 원래 날짜 값
-        originalDate = itemData?.postDate
+        originalDate = itemData?.post_date
 
         // 수정 off 모드
         setCloseEditMode()
@@ -233,12 +221,14 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         cv_detail_calendar.visibility = View.GONE
 
         // 이미지뷰에 이미지 세팅
+        var postSetting: List<PostInfo>? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            postSetting = db!!.PostDao().getDiaryImage(Constants.userID, itemData?.post_date!!)
+        }
+        var imageFromDB: ByteArray
         var bitmapImage: Bitmap? = null
-        database = dbHelper?.readableDatabase
-        sqlQuery = Query.getDiaryImage(itemData?.postDate!!)
-        result = database?.rawQuery(sqlQuery, null)
-        if (result!!.moveToNext()) {
-            val imageFromDB = result!!.getBlob(result!!.getColumnIndex(PostDiaryInfo.DB_COL_IMAGE))
+        for (postInfo in postSetting!!) {
+            imageFromDB = postInfo.post_image
             bitmapImage = BitmapFactory.decodeByteArray(imageFromDB, 0, imageFromDB.size)
         }
 
@@ -298,11 +288,9 @@ class DetailActivity() : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         val listener = DialogInterface.OnClickListener { _, a ->
             when (a) {
                 DialogInterface.BUTTON_NEUTRAL -> {
-                    database = dbHelper?.writableDatabase
-                    sqlQuery = Query.deleteQuery(et_detail_title.text.toString(), tv_detail_date.text.toString())
-                    database?.execSQL(sqlQuery)
-                    database?.close()
-
+                    CoroutineScope(Dispatchers.IO).launch {
+                        db!!.PostDao().deleteDiary(Constants.userID, itemData?.post_title!!, itemData?.post_date!!)
+                    }
                     // 삭제가 완료 되었습니다 다이어로그
                     builder.setTitle("삭제 완료")
                     builder.setMessage("삭제가 완료되었습니다")

@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diary1.R
+import com.example.diary1.datasave.entity.PostInfo
 
 class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListViewHolder>() {
 
-    lateinit var diaryData: MutableList<PostedDiaryInfo>
+    lateinit var diaryData: MutableList<PostInfo>
     var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryListViewHolder {
@@ -23,11 +24,6 @@ class DiaryListAdapter(val context: Context): RecyclerView.Adapter<DiaryListView
 
     override fun getItemCount(): Int {
         return diaryData.size
-    }
-
-    fun setData(data: MutableList<PostedDiaryInfo>) {
-        this.diaryData = data
-        notifyDataSetChanged()
     }
 
     fun setOnItemClickListener(listener: ItemClickListener) {

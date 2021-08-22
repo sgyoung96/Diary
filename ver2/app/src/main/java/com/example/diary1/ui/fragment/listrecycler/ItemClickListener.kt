@@ -1,8 +1,8 @@
 package com.example.diary1.ui.fragment.listrecycler
 
-import android.view.View
+import com.example.diary1.datasave.entity.PostInfo
 
 interface ItemClickListener {
-    fun onItemClick(data: PostedDiaryInfo)
-    fun onMyClick(data: PostedDiaryInfo, position: Int)
+    fun onItemClick(data: PostInfo)
+    fun onMyClick(data: PostInfo, position: Int)
 }
