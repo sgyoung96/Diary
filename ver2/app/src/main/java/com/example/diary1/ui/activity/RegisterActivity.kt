@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteStatement
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -21,25 +18,26 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.diary1.R
 import com.example.diary1.constants.Constants
-import com.example.diary1.datasave.constants.RegisterInfo
 import com.example.diary1.constants.util.Utils
 import com.example.diary1.datasave.database.MyDirayDB
 import com.example.diary1.datasave.entity.UserInfo
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+
+// TODO : insert O, select X
 
 // TODO : 현재 RegisterActivity, LoginActivity 에서 사용하는 Util.checkMember 사용 안 하고, RegisterActivity 에서 DB 바로 실행하는 중..
 //  Thread 처리 해야 하는데, Thread 돌리면 그 안에 안 탐.
 //  RegisterActivity 에서 DB 처리 성공하면, 전체적으로 Room 사용한 부분들 손봐야 함
+
+// TODO : 위에꺼 처리 완료 후 전체적으로 db open 한 부분들 db.close 처리 해주기
 class RegisterActivity : AppCompatActivity() {
 
     var mCurrentPhotoPath: String = ""
@@ -130,7 +128,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun saveData() {
         val db = MyDirayDB.getInstance(applicationContext)
         var getMember: List<UserInfo>? = listOf()
-        // CoroutineScope(Dispatchers.IO).launch { // 다른애 한테 일 시키기
+        // CoroutineScope(Dispatchers.IO).launch {
         //     getMember = db!!.userDao().checkOneRegister(et_register_id.text.toString()) // 왜 안 타..
         // }
         // GlobalScope.launch {
@@ -150,7 +148,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // val db = MyDirayDB.getInstance(applicationContext)
         CoroutineScope(Dispatchers.IO).launch {
-            db!!.userDao().register(UserInfo(et_register_id.text.toString(), et_register_name.text.toString(), pw, image))
+            db!!.userDao().register(UserInfo(et_register_id.text.toString(), et_register_name.text.toString(), pw, image)) // 잘 탐!!
         }
 
         finishRegister()
