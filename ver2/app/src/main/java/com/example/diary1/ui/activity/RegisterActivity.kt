@@ -97,8 +97,8 @@ class RegisterActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                if (et_register_pw.text.length !in 12..20 || et_register_pw2.text.length !in 12..20) {
-                    Toast.makeText(this, "비밀번호는 12-20글자 사이로 써야 해요", Toast.LENGTH_SHORT).show()
+                if (et_register_pw.text.length !in 8..20 || et_register_pw2.text.length !in 8..20) {
+                    Toast.makeText(this, "비밀번호는 8-20글자 사이로 써야 해요", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
