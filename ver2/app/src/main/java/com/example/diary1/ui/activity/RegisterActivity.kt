@@ -37,6 +37,9 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
+// TODO : 현재 RegisterActivity, LoginActivity 에서 사용하는 Util.checkMember 사용 안 하고, RegisterActivity 에서 DB 바로 실행하는 중..
+//  Thread 처리 해야 하는데, Thread 돌리면 그 안에 안 탐.
+//  RegisterActivity 에서 DB 처리 성공하면, 전체적으로 Room 사용한 부분들 손봐야 함
 class RegisterActivity : AppCompatActivity() {
 
     var mCurrentPhotoPath: String = ""
