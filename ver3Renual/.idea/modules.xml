@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ver3Renual.iml" filepath="$PROJECT_DIR$/.idea/ver3Renual.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DiaryRenewal.iml" filepath="$PROJECT_DIR$/.idea/modules/DiaryRenewal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DiaryRenewal.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DiaryRenewal.app.iml" />
     </modules>
   </component>
 </project>
