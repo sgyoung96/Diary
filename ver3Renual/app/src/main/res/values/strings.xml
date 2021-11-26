@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DiaryRenewal</string>
+    <string name="key_hash">KeyHash</string>
 </resources>
