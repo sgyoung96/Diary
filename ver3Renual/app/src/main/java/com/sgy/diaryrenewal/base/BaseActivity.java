@@ -22,16 +22,16 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     ViewBinding binding = null;
 
-    abstract String createActivity();
-    abstract void compelteBinding();
-    abstract void onstartActivity();
-    abstract void resumeActivity();
-    abstract void pauseActivity();
-    abstract void stopActivity();
-    abstract void restartActivity();
-    abstract void destroyActivity();
+    protected abstract String createActivity();
+    protected abstract void compelteBinding();
+    protected abstract void onstartActivity();
+    protected abstract void resumeActivity();
+    protected abstract void pauseActivity();
+    protected abstract void stopActivity();
+    protected abstract void restartActivity();
+    protected abstract void destroyActivity();
 
-    abstract void clickView(View view);
+    protected abstract void clickView(View view);
 
     // ************************************************************************************
     // Life Cycle
