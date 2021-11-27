@@ -192,7 +192,7 @@ class PostDiaryFragment(context: Context) : Fragment() {
                 Toast.makeText(requireContext(), "사진을 등록해 주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+1
             val image = Utils.resizeImage(iv_post_image.drawable, iv_post_image.width, iv_post_image.height)
             CoroutineScope(Dispatchers.IO).launch {
                 db!!.PostDao().insertDiary(PostInfo(Constants.userID,
