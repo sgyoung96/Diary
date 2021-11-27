@@ -1,3 +1,4 @@
 ver1 : SQLite 사용
 ver2 : Room 사용
-ver3 : Renewal 버전
+ver3Renewal : java - Renewal 버전.. base 깔다가 중단
+ver3 : Java 사용 (Room, Coroutine)
