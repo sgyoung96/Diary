@@ -1,0 +1,15 @@
+**********************************
+    Custom Settings
+**********************************
+
+[1] How to StatusBar Trasnlucent
+
+1. Edit Theme
+- Light.NoActionBar
+- statusbar color -> @color/translucent (#00000000)
+- add style
+<item name="android:windowLightStatusBar">true</item>
+<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+2. Get StatusBar Height
+3. Set Padding Top to Layout(View) - Not Main View Group (e.x. ConstraintLayout) But Content Views (all veiws)

@@ -1,0 +1,2 @@
+1. [Icon Download] <https://www.flaticon.com/>
+2. [SplachActivity] set opacity <https://devuryu.tistory.com/241>
