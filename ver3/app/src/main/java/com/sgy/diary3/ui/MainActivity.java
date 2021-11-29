@@ -2,6 +2,8 @@ package com.sgy.diary3.ui;
 
 import android.widget.Toast;
 
+import androidx.viewbinding.ViewBinding;
+
 import com.sgy.diary3.base.BaseActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -14,7 +16,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected String getActivity() {
-        return null;
+        return Utils.getTag(this);
     }
 
     @Override
@@ -28,7 +30,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void destroyActivity() {
+    protected void backButtonPressed() {
 
     }
 }

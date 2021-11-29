@@ -59,9 +59,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.destroyActivity();
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.backButtonPressed();
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Custom LifeCycle
      */
     protected abstract void resumeActivity();
-    protected abstract void destroyActivity();
+    protected abstract void backButtonPressed();
 
     /**
      * EditText 시 화면 터치했을 때 키보드 내리기
