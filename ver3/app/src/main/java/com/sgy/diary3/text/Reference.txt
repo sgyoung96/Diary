@@ -1,2 +1,4 @@
 1. [Icon Download] <https://www.flaticon.com/>
-2. [SplachActivity] set opacity <https://devuryu.tistory.com/241>
+2. [Lottie Download] <https://lottiefiles.com/>
+3. [Image Download] <https://pixabay.com/ko/>
+4. [SplachActivity] set opacity <https://devuryu.tistory.com/241>
