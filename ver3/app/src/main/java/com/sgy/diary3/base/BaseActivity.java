@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
@@ -22,12 +23,14 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 1. binding
      * 2. Tag
      * 3. StatusBar
+     * 4. NavigationBar
+     * 5. Total Screen Padding
      */
     public static ViewBinding binding = null;
     public static String TAG = null;
 
     // Layout 에 statusbar 높이만큼 padding 주기 (Main ViewGroup(; ContraintLayout) 말고!) -> view 가 statusbar 와 겹쳐 보이지 않도록
-    public abstract void setStatusbarPadding(int height);
+//    public abstract void setStatusbarPadding(int height);
     public int getStatusbarHeight() {
         int resourceId = this.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -35,6 +38,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             return 0;
         }
+    }
+//    public abstract void setNavigationBarMargin(int height);
+    public int getNavigationBarHeight() {
+        int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return this.getResources().getDimensionPixelOffset(resourceId);
+        } else {
+            return 0;
+        }
+    }
+    public void setScreenPadding(int statusBarHeight, int navigationBarHeight, @NonNull View view) {
+        view.setPadding(0, statusBarHeight, 0, navigationBarHeight);
     }
 
     /**
@@ -47,9 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         TAG = getActivity();
         setActivityBinding();
 
-        // StatusBar 투명 설정 (1. 스크린 확장 2. StatusBar 높이만큼 Padding 줘서 StatusBar Contents 보이게끔 처리)
+        // StatusBar 투명 설정 (1. 스크린 확장 2. StatusBar 높이만큼 Padding 줘서 StatusBar Contents 보이게끔 처리 3. NavigationBar Padding 추가)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        setStatusbarPadding(getStatusbarHeight());
     }
 
     @Override
