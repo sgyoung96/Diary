@@ -1,5 +1,9 @@
 package com.sgy.diary3.ui;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
 import com.sgy.diary3.R;
@@ -9,18 +13,22 @@ import com.sgy.diary3.util.Utils;
 
 public class MainActivity extends BaseActivity {
 
-    private ActivityMainBinding binding =  null;
+    private ActivityMainBinding binding = null;
 
     @Override
-    protected String getActivity() {
-        return Utils.getTag(this);
-    }
-
-    @Override
-    protected void completeBinding() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setScreenPadding(getStatusbarHeight(), getNavigationBarHeight(), binding.vgMain);
-        binding.tvTop.setText(getResources().getString(R.string.app_name));
+        setContentView(binding.getRoot());
+
+        binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        binding.tvTop.setText("tawertyuiop");
+        binding.tvTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMain(Utils.getTag(MainActivity.this));
+            }
+        });
     }
 
     @Override
@@ -30,6 +38,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void backButtonPressed() {
+        finishActivity();
+    }
+
+    @Override
+    protected void destroyedActivity() {
 
     }
 }

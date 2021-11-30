@@ -1,5 +1,7 @@
 package com.sgy.diary3.base;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -13,44 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.sgy.diary3.R;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
+import com.sgy.diary3.ui.splash.SplashActivity;
+import com.sgy.diary3.util.Utils;
 
 public abstract class BaseActivity extends AppCompatActivity {
-
-    /**
-     * default setting
-     * 1. binding
-     * 2. Tag
-     * 3. StatusBar
-     * 4. NavigationBar
-     * 5. Total Screen Padding
-     */
-    public static ViewBinding binding = null;
-    public static String TAG = null;
-
-    // Layout 에 statusbar 높이만큼 padding 주기 (Main ViewGroup(; ContraintLayout) 말고!) -> view 가 statusbar 와 겹쳐 보이지 않도록
-//    public abstract void setStatusbarPadding(int height);
-    public int getStatusbarHeight() {
-        int resourceId = this.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            return this.getResources().getDimensionPixelOffset(resourceId);
-        } else {
-            return 0;
-        }
-    }
-//    public abstract void setNavigationBarMargin(int height);
-    public int getNavigationBarHeight() {
-        int resourceId = this.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            return this.getResources().getDimensionPixelOffset(resourceId);
-        } else {
-            return 0;
-        }
-    }
-    public void setScreenPadding(int statusBarHeight, int navigationBarHeight, @NonNull View view) {
-        view.setPadding(0, statusBarHeight, 0, navigationBarHeight);
-    }
 
     /**
      * LifeCycle - onCreate, onResume
@@ -59,11 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TAG = getActivity();
-        setActivityBinding();
-
-        // StatusBar 투명 설정 (1. 스크린 확장 2. StatusBar 높이만큼 Padding 줘서 StatusBar Contents 보이게끔 처리 3. NavigationBar Padding 추가)
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS); // 스크린 확장
     }
 
     @Override
@@ -74,35 +41,34 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         this.backButtonPressed();
     }
 
-    /**
-     * show Activity by TAG
-     */
-    abstract protected String getActivity();
-    public void setActivityBinding() {
-        if (TAG.equals(ScreenId.TAG_ACT_SPLASH)) {
-            binding = ActivitySplashBinding.inflate(getLayoutInflater());
-        } else if (TAG.equals(ScreenId.TAG_ACT_MAIN)) {
-            binding = ActivityMainBinding.inflate(getLayoutInflater());
-        }
-
-        setContentView(binding.getRoot());
-        this.completeBinding();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.destroyedActivity();
     }
-
-    /**
-     * Binding 처리 끝난 후 로직
-     */
-    protected abstract void completeBinding();
 
     /**
      * Custom LifeCycle
      */
     protected abstract void resumeActivity();
     protected abstract void backButtonPressed();
+    protected abstract void destroyedActivity();
+
+    /**
+     * onBackPressed 함수 안에 삽입할 함수 : 두 번 클릭하면 어플리케이션 완전 종료
+     */
+    long waitTime = 0;
+    public void finishActivity() { // onBackPressed 시 호출할 함수
+        if (System.currentTimeMillis() - waitTime >= 1000) {
+            waitTime = System.currentTimeMillis();
+            Utils.mToast(MyApplication.context.getString(R.string.back_pressed));
+        } else {
+            finishAndRemoveTask();
+        }
+    }
 
     /**
      * EditText 시 화면 터치했을 때 키보드 내리기
@@ -126,5 +92,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    // **********************************************************
+    // Intent 공통 함수 (좌 상단 로고 클릭 시)
+    // **********************************************************
+
+    public void gotoMain(String tag) {
+        if (tag.equals(ScreenId.TAG_ACT_SPLASH)) {
+            return;
+        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) {
+            Intent goSplash = new Intent(this, SplashActivity.class);
+            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(goSplash);
+            overridePendingTransition(0,0);
+        }
     }
 }

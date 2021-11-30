@@ -13,3 +13,8 @@
 
 2. Get StatusBar Height
 3. Set Padding Top to Layout(View) - Not Main View Group (e.x. ConstraintLayout) But Content Views (all veiws)
+
+[2] KaKao Login
+
+App Hash Key : fSCu1et8jLAXKCIAnRsbIrGdd/s=
+Native App Key : c637329c74dbb903e8780ab2f6753e74

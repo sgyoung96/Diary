@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Diary3</string>
 
+    <!-- System -->
+    <string name="app_name">Diary3</string>
     <string name="debug_tag">:: MY DEBUG :: </string>
+    <string name="back_pressed">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="hash_key_null">해시 키 = null</string>
+
+    <!-- Kakao Login -->
+    <string name="app_key">fSCu1et8jLAXKCIAnRsbIrGdd/s=</string>
+    <string name="native_key">c637329c74dbb903e8780ab2f6753e74</string>
 </resources>
