@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon_diary"
         android:label="@string/app_name"
@@ -12,8 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary3">
         <activity
+            android:name=".ui.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,8 +26,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

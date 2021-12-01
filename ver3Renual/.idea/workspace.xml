@@ -12,15 +12,12 @@
     <list default="true" id="68f99a43-6a78-4552-b2a7-e78a725bf270" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../ver3/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/base/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/base/BaseActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/base/MyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/base/MyApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Description.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Description.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Reference.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Reference.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/splash/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/splash/SplashActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/util/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/res/values/colors.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ver3/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

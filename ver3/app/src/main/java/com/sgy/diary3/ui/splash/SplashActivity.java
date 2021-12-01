@@ -11,6 +11,7 @@ import com.sgy.diary3.base.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
+import com.sgy.diary3.ui.LoginActivity;
 import com.sgy.diary3.ui.MainActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -32,7 +33,7 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() { // gotoMain
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(0,0);
