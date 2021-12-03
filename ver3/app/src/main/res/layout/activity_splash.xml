@@ -23,9 +23,7 @@
             android:id="@+id/iv_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             android:src="@drawable/splash_view_circle"
-            android:layout_margin="@dimen/main_layout_margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

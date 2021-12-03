@@ -7,6 +7,9 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.sgy.diary3.R;
 import com.sgy.diary3.base.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivityMainBinding;
@@ -14,6 +17,8 @@ import com.sgy.diary3.databinding.ActivitySplashBinding;
 import com.sgy.diary3.ui.LoginActivity;
 import com.sgy.diary3.ui.MainActivity;
 import com.sgy.diary3.util.Utils;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class SplashActivity extends BaseActivity {
 
@@ -25,6 +30,9 @@ public class SplashActivity extends BaseActivity {
         MyApplication.context = getApplicationContext(); // init context
         binding = ActivitySplashBinding.inflate(getLayoutInflater()); // init binding
         setContentView(binding.getRoot());
+
+        /* init view - blur */
+        Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
         Utils.getAppHashKey(); // 카카오 로그인 연동을 위한 앱 해시 키 Log 로 찍기
 
@@ -48,7 +56,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void backButtonPressed() {
-        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());	// 이 액티비티 종료 후 로그인 액티비티 뜨는 것을 방지하기 위해 App Process 완전 종료
     }
 
     @Override

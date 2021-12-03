@@ -66,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             waitTime = System.currentTimeMillis();
             Utils.mToast(MyApplication.context.getString(R.string.back_pressed));
         } else {
-            finishAndRemoveTask();
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 
@@ -100,8 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void gotoMain(String tag) {
         if (tag.equals(ScreenId.TAG_ACT_SPLASH)) {
-            return;
-        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) {
+            return; // Splash Activity 로고 없음
+        } else if (tag.equals(ScreenId.TAG_ACT_LOGIN)) {
+            return; // Login Activity 로고 없음
+        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // ***** TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동 *****
             Intent goSplash = new Intent(this, SplashActivity.class);
             goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(goSplash);
