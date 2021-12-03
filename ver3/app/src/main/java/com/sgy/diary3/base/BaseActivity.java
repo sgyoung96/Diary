@@ -1,5 +1,6 @@
 package com.sgy.diary3.base;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -30,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* 전체화면 설정 (StatusBar, NavigationBar 까지 화면 확장) */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS); // 스크린 확장
     }
 
@@ -66,6 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             waitTime = System.currentTimeMillis();
             Utils.mToast(MyApplication.context.getString(R.string.back_pressed));
         } else {
+            /* 앱 프로세스 삭제 */
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
