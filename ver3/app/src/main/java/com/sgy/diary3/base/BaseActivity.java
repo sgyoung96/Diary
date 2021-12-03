@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     // **********************************************************
-    // Intent 공통 함수 (좌 상단 로고 클릭 시)
+    // Intent 공통 함수 (좌 상단 로고 클릭 시) TODO 화면 추가 될 때마다 이 곳에 작업
     // **********************************************************
 
     public void gotoMain(String tag) {
@@ -103,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return; // Splash Activity 로고 없음
         } else if (tag.equals(ScreenId.TAG_ACT_LOGIN)) {
             return; // Login Activity 로고 없음
-        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // ***** TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동 *****
+        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
             Intent goSplash = new Intent(this, SplashActivity.class);
             goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(goSplash);
