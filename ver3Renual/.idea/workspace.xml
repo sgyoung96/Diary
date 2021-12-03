@@ -10,22 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68f99a43-6a78-4552-b2a7-e78a725bf270" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Reference.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/text/Reference.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/splash/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/ui/splash/SplashActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/drawable/bg_kakao_login_btn.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/drawable/logo_diary3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/res/layout/activity_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/util/LoginUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ver3/app/src/main/java/com/sgy/diary3/util/LoginUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2af26ae614027ece]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/gayeongsong/.android/avd/Pixel_2_API_29.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />

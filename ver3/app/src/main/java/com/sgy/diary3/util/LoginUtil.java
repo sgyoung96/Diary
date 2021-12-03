@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
-
+// TODO 데이터 삭제해도 자동로그인 되는 거 문제 해결
 public class LoginUtil {
 
     public static LoginUtil instance;
