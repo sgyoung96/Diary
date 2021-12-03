@@ -48,19 +48,11 @@
                 android:layout_marginStart="@dimen/main_layout_margin"
                 android:layout_marginEnd="@dimen/main_layout_margin"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="@string/kakao_login"
-                android:background="@drawable/bg_kakao_login_btn"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="@color/kakao_color"
-                android:paddingStart="@dimen/main_layout_margin"
-                android:paddingEnd="@dimen/main_layout_margin"
-                android:layout_marginStart="@dimen/kakao_btn_margin"
-                android:layout_marginEnd="@dimen/kakao_btn_margin"/>
+            <ImageView
+                android:id="@+id/iv_kakao_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/kakao_login_mid"/>
 
         </LinearLayout>
 

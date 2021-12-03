@@ -9,6 +9,22 @@
     <!-- Kakao Login -->
     <string name="app_key">fSCu1et8jLAXKCIAnRsbIrGdd/s=</string>
     <string name="native_key">c637329c74dbb903e8780ab2f6753e74</string>
+    <string name="kakao_native_key">kakaoc637329c74dbb903e8780ab2f6753e74</string>
 
-    <string name="kakao_login"><u>카카오 계정으로 시작하기</u></string>
+    <string name="kakao_err_access_denied">접근이 거부됨(동의 취소)</string>
+    <string name="kakao_err_invalid_client">유효하지 않은 앱</string>
+    <string name="kakao_err_invalid_grant">인증 수단이 유효하지 않아 인증할 수 없는 상태</string>
+    <string name="kakao_err_invalid_request">요청 파라미터 오류</string>
+    <string name="kakao_err_invalid_scope">유효하지 않은 scope ID</string>
+    <string name="kakao_err_misconfigured">설정이 올바르지 않음(android key hash)</string>
+    <string name="kakao_err_server">서버 에러</string>
+    <string name="kakao_err_unauthorized">앱이 요청 권한이 없음</string>
+    <string name="kakao_err_unknown">기타 에러</string>
+
+    <string name="kakao_login_success">로그인 성공!</string>
+    <string name="kakao_logout_success">로그아웃 성공, SDK 에서 토큰 삭제됨</string>
+    <string name="kakao_login_fail">로그인 실패..</string>
+    <string name="kakao_logout_fail">로그아웃 실패, SDK 에서 토큰 삭제됨</string>
+    <string name="kakao_get_user_info_success">사용자 정보 요청 성공</string>
+    <string name="kakao_get_user_info_fail">사용자 정보 요청 실패</string>
 </resources>

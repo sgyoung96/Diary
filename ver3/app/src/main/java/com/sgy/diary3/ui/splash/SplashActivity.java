@@ -16,6 +16,7 @@ import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
 import com.sgy.diary3.ui.LoginActivity;
 import com.sgy.diary3.ui.MainActivity;
+import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;

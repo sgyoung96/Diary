@@ -7,9 +7,13 @@
 저장소 - <https://medium.com/@dontsu/scoped-storage-with-mediastore-482bf05b9e6b>
 bitmap 등등 - <https://hongbeomi.medium.com/android-11-scoped-storage-%EB%8C%80%EC%9D%91%ED%95%98%EA%B8%B0-6b4319cfac19>
 7. [StatusBar Gradient] <https://stackoverflow.com/questions/29311078/android-completely-transparent-status-bar>
-8. [Kakao Login] <https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android>
+8. [Kakao Login]
+카카오 개발자 콘솔 - <https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android>
+카카오 v2 로그인 연동
+- <https://studyforcoding.tistory.com/5>
+- <https://studyforcoding.tistory.com/6?category=800442>
 9. [LoginActivity]
-Glide <https://github.com/bumptech/glide>
-imageView blur <https://github.com/wasabeef/glide-transformations>
+Glide - <https://github.com/bumptech/glide>
+imageView blur - <https://github.com/wasabeef/glide-transformations>
 10. [Finish]
-앱 완전 종료 <https://calvinjmkim.tistory.com/21>
+앱 완전 종료 - <https://calvinjmkim.tistory.com/21>
