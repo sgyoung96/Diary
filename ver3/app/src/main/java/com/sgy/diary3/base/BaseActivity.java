@@ -19,6 +19,8 @@ import androidx.viewbinding.ViewBinding;
 import com.sgy.diary3.R;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
+import com.sgy.diary3.ui.LoginActivity;
+import com.sgy.diary3.ui.MainActivity;
 import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -102,8 +104,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     // **********************************************************
 
     public void gotoMain(String tag) {
-        if (tag.equals(ScreenId.TAG_ACT_SPLASH)) {
-            return; // Splash Activity 로고 없음
+        if (tag.equals(ScreenId.TAG_ACT_SPLASH)) { // Splash Activity 로고 없음, 앱 실행 시 자동로그인 체크
+            if (MyApplication.isLogin == 0) { // 로그아웃 상태 -> 로그인 화면으로 이동
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(0,0);
+            } else { // 토큰 값이 있음 : 로그인 상태 (자동로그인) -> 메인 화면으로 이동 (tmep main activity)
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                MyApplication.context.startActivity(intent);
+            }
         } else if (tag.equals(ScreenId.TAG_ACT_LOGIN)) {
             return; // Login Activity 로고 없음
         } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동

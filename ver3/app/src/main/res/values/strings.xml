@@ -11,6 +11,9 @@
     <string name="native_key">c637329c74dbb903e8780ab2f6753e74</string>
     <string name="kakao_native_key">kakaoc637329c74dbb903e8780ab2f6753e74</string>
 
+    <string name="kakao_token_info_fail">토큰 정보 보기 실패</string>
+    <string name="kakao_token_info_success">토큰 정보 보기 성공</string>
+
     <string name="kakao_err_access_denied">접근이 거부됨(동의 취소)</string>
     <string name="kakao_err_invalid_client">유효하지 않은 앱</string>
     <string name="kakao_err_invalid_grant">인증 수단이 유효하지 않아 인증할 수 없는 상태</string>
