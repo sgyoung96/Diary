@@ -19,3 +19,6 @@
 App Hash Key : fSCu1et8jLAXKCIAnRsbIrGdd/s=
 Native App Key : c637329c74dbb903e8780ab2f6753e74
 Permission Check : 1. 카카오톡 앱에서 연결된 계정 관리에서 삭제하거나 2. 앱에서 삭제 기능 구현(구글 검색하면 나옴)
+
+자동로그인 : SplashActivity 에서 받아온 토큰 값을 SharedPreference 에 저장 -> 토큰값이 있으면 자동로그인
+자동로그인 해제 : SharedPreference 에서 해당 토큰 값 삭제

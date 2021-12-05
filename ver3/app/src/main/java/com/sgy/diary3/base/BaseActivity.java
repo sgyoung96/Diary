@@ -1,7 +1,5 @@
 package com.sgy.diary3.base;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -11,16 +9,12 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewbinding.ViewBinding;
 
 import com.sgy.diary3.R;
-import com.sgy.diary3.databinding.ActivityMainBinding;
-import com.sgy.diary3.databinding.ActivitySplashBinding;
-import com.sgy.diary3.ui.LoginActivity;
-import com.sgy.diary3.ui.MainActivity;
+import com.sgy.diary3.ui.activty.LoginActivity;
+import com.sgy.diary3.ui.activty.MainActivity;
 import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -105,7 +99,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void gotoMain(String tag) {
         if (tag.equals(ScreenId.TAG_ACT_SPLASH)) { // Splash Activity 로고 없음, 앱 실행 시 자동로그인 체크
-            if (MyApplication.isLogin == 0) { // 로그아웃 상태 -> 로그인 화면으로 이동
+            if (MyApplication.isKakaoLogin == 0) { // 로그아웃 상태 -> 로그인 화면으로 이동
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

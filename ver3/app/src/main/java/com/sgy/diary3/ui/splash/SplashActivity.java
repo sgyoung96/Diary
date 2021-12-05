@@ -1,6 +1,5 @@
 package com.sgy.diary3.ui.splash;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -13,7 +12,6 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
-import com.sgy.diary3.ui.LoginActivity;
 import com.sgy.diary3.util.Utils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -33,7 +31,7 @@ public class SplashActivity extends BaseActivity {
         binding.splashLottie.playAnimation();
         Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
-        MyApplication.isLogin = 0; // 로그인 상태 초기화 - 0 : 로그아웃 상태 1 : 로그인 상태
+        MyApplication.isKakaoLogin = 0; // 로그인 상태 초기화 - 0 : 로그아웃 상태 1 : 로그인 상태
 
         Utils.getAppHashKey(); // 카카오 로그인 연동을 위한 앱 해시 키 Log 로 찍기
 
@@ -62,7 +60,7 @@ public class SplashActivity extends BaseActivity {
                 Utils.mLog(getString(R.string.kakao_token_info_fail));
             } else if (tokenInfo != null) {
                 Utils.mLog(getString(R.string.kakao_token_info_success));
-                MyApplication.isLogin = 1; // 토큰값을 가지고 있으므로 자동로그인 플래그 변경 (0 : 로그아웃 상태 1 : 로그인 상태)
+                MyApplication.isKakaoLogin = 1; // 토큰값을 가지고 있으므로 자동로그인 플래그 변경 (0 : 로그아웃 상태 1 : 로그인 상태)
             }
             return null;
         });
@@ -70,7 +68,7 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() { // gotoMain
             @Override
             public void run() {
-                if (MyApplication.isLogin == 0) { // 로그아웃 상태일 시 로그인 화면으로 이동
+                if (MyApplication.isKakaoLogin == 0) { // 로그아웃 상태일 시 로그인 화면으로 이동
                     gotoMain(Utils.getTag(SplashActivity.this));
                 } else { // 로그인 상태일 시 메인 화면으로 이동
                     gotoMain(Utils.getTag(SplashActivity.this));

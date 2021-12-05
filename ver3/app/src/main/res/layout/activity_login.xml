@@ -5,7 +5,7 @@
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LoginActivity">
+    tools:context=".ui.activty.LoginActivity">
 
     <ImageView
         android:id="@+id/iv_bg_login"
@@ -28,10 +28,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:gravity="center"
             android:layout_marginStart="@dimen/main_layout_margin"
             android:layout_marginEnd="@dimen/main_layout_margin"
@@ -43,18 +42,109 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_layout_margin"
+                android:layout_marginEnd="@dimen/main_layout_margin"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_diary3"
-                android:layout_marginStart="@dimen/main_layout_margin"
-                android:layout_marginEnd="@dimen/main_layout_margin"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_kakao_login"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/vg_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sub_layout_margin"
+                android:layout_marginEnd="@dimen/sub_layout_margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <EditText
+                    android:id="@+id/et_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/id_hint"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/kakao_color"
+                    android:singleLine="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <EditText
+                    android:id="@+id/et_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/pw_hint"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/kakao_color"
+                    android:singleLine="true"
+                    android:password="true"
+                    app:layout_constraintTop_toBottomOf="@id/et_id"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/vg_login_btns"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/tv_make_account"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vg_account"
+                app:layout_constraintWidth_percent="0.5">
+
+                <TextView
+                    android:id="@+id/tv_login_normal"
+                    android:layout_width="80dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_btn_login"
+                    android:gravity="center"
+                    android:text="@string/login_normal"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_kakao_login"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/iv_kakao_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:foreground="@drawable/kakao_login_small_m"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_login_normal" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_make_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/kakao_login_mid"/>
+                android:text="@string/create_account"
+                android:textColor="@color/gray_50"
+                android:padding="10dp"
+                android:layout_marginBottom="@dimen/main_layout_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

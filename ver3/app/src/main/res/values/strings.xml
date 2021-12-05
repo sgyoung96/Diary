@@ -30,4 +30,16 @@
     <string name="kakao_logout_fail">로그아웃 실패, SDK 에서 토큰 삭제됨</string>
     <string name="kakao_get_user_info_success">사용자 정보 요청 성공</string>
     <string name="kakao_get_user_info_fail">사용자 정보 요청 실패</string>
+
+    <!-- LoginActivity -->
+    <string name="id_hint">아이디를 입력하세요.</string>
+    <string name="pw_hint">비밀번호를 입력하세요.</string>
+    <string name="login_normal"><b>로그인</b></string>
+    <string name="create_account"><u>계정 생성</u></string>
+
+    <!-- DrawerLayout Menu -->
+    <string name="menu_profile">내 프로필 설정</string>
+    <string name="menu_logout">로그아웃</string>
+    <string name="menu_delete">계정삭제</string>
+
 </resources>

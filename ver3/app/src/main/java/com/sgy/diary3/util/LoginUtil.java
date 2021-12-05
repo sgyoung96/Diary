@@ -7,7 +7,7 @@ import com.kakao.sdk.common.model.AuthErrorCause;
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
-import com.sgy.diary3.ui.MainActivity;
+import com.sgy.diary3.ui.activty.MainActivity;
 
 import java.util.Objects;
 
@@ -61,9 +61,9 @@ public class LoginUtil {
                     }
                 } else if (oAuthToken != null) { // 성공
                     Utils.mLog(MyApplication.context.getString(R.string.kakao_login_success) + " : " + oAuthToken.getAccessToken());
-//                    Intent intent = new Intent(MyApplication.context, MainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    MyApplication.context.startActivity(intent);
+                    Intent intent = new Intent(MyApplication.context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MyApplication.context.startActivity(intent);
                 }
                 return null;
             }

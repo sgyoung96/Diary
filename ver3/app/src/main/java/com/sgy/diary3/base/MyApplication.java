@@ -8,7 +8,7 @@ import com.sgy.diary3.R;
 
 public class MyApplication extends Application {
     public static Context context = null;
-    public static int isLogin = 0; // 0 : 로그아웃 상태 1 : 로그인 상태
+    public static int isKakaoLogin = 0; // 0 : 로그아웃 상태 1 : 로그인 상태
 
     @Override
     public void onCreate() {

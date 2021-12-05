@@ -5,7 +5,36 @@
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.activty.MainActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_main"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/drawer_header"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/drawer_width"
+            android:background="@color/white">
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/drawer_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
     <ImageView
         android:layout_width="match_parent"
@@ -13,18 +42,17 @@
         android:scaleType="centerCrop"
         android:src="@drawable/bg_splash"/>
 
+    <ImageView
+        android:id="@+id/iv_view_title"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:src="@drawable/title_view_blur"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vg_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <ImageView
-            android:id="@+id/iv_view_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:src="@drawable/title_view_blur"
-            app:layout_constraintTop_toTopOf="@id/iv_logo_top"
-            app:layout_constraintBottom_toBottomOf="@id/iv_logo_top"/>
 
         <ImageView
             android:id="@+id/iv_logo_top"

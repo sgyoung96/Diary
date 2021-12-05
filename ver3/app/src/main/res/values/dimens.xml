@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_layout_margin">20dp</dimen>
-    <dimen name="kakao_btn_margin">40dp</dimen>
+    <dimen name="sub_layout_margin">40dp</dimen>
+    <dimen name="drawer_width">200sp</dimen>
 </resources>

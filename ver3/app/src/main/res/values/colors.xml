@@ -10,10 +10,14 @@
 
     <!-- Custom Color -->
     <color name="translucent">#00000000</color>
+
     <color name="white_50">#80FFFFFF</color>
     <color name="white_30">#4DFFFFFF</color>
     <color name="white_15">#26FFFFFF</color>
     <color name="white_01">#03FFFFFF</color>
+
+    <color name="gray_30">#4D000000</color>
+    <color name="gray_50">#80000000</color>
 
     <!-- Kakao -->
     <color name="kakao_bg_main">#FBE34D</color>

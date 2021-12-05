@@ -1,4 +1,4 @@
-package com.sgy.diary3.ui;
+package com.sgy.diary3.ui.activty;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -59,15 +59,6 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 LoginUtil loginUtil = LoginUtil.getInstance();
                 loginUtil.autoLoginKakao();
-
-//                LoginUtil util = new LoginUtil();
-//                loginCallback = util.loginCallback;
-//                if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(context)) { // 카카오톡 설치 되어 있을 시 카카오톡 로그인
-//                    UserApiClient.getInstance().loginWithKakaoTalk(context, loginCallback);
-//                    util.getKakaoUserInfo();
-//                } else { // 카카오톡 미설치 시 카카오 계정으로 로그인 - test 안 해봄
-//                    UserApiClient.getInstance().loginWithKakaoAccount(context, loginCallback);
-//                }
             }
         });
     }

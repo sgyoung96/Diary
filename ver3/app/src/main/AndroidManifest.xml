@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.activty.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activty.MainActivity"
             android:exported="true"></activity>
     </application>
 
