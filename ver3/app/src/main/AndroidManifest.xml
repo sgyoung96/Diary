@@ -12,12 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary3">
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity" android:exported="true">
+        <activity
+            android:name=".ui.activty.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="oauth"
+
+                <data
+                    android:host="oauth"
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
         </activity>
@@ -35,7 +43,7 @@
         </activity>
         <activity
             android:name=".ui.activty.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

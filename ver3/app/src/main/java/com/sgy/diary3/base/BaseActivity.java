@@ -111,6 +111,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         } else if (tag.equals(ScreenId.TAG_ACT_LOGIN)) {
             return; // Login Activity 로고 없음
+        } else if (tag.equals(ScreenId.TAG_ACT_REGIST)) { // 회원가입 화면 - splash -> main
+            Intent goSplash = new Intent(this, SplashActivity.class);
+            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(goSplash);
+            overridePendingTransition(0,0);
         } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
             Intent goSplash = new Intent(this, SplashActivity.class);
             goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -15,6 +15,7 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivityLoginBinding;
+import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
@@ -37,6 +38,7 @@ public class LoginActivity extends BaseActivity {
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
         Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
+        registerAccount(); // 계정 생성
         loginKakao(); // 카카오톡 연계 로그인
     }
 
@@ -55,7 +57,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public void loginKakao() {
+    private void loginKakao() { // 카카오 로그인 클릭했을 시
         binding.ivKakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +69,18 @@ public class LoginActivity extends BaseActivity {
                 } else { // 카카오톡 미설치 시 카카오 계정으로 로그인 - test 안 해봄
                     UserApiClient.getInstance().loginWithKakaoAccount(context, loginCallback);
                 }
+            }
+        });
+    }
+
+    private void registerAccount() { // 계정 생성 버튼 클릭했을 시 -> 화면 전환
+        binding.tvMakeAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(0,0);
             }
         });
     }
