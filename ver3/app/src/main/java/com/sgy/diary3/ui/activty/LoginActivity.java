@@ -3,6 +3,7 @@ package com.sgy.diary3.ui.activty;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +13,7 @@ import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.BaseActivity;
+import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivityLoginBinding;
 import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
@@ -57,8 +59,14 @@ public class LoginActivity extends BaseActivity {
         binding.ivKakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginUtil loginUtil = LoginUtil.getInstance();
-                loginUtil.autoLoginKakao();
+                LoginUtil util = new LoginUtil();
+                loginCallback = util.loginCallback;
+                if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(context)) { // 카카오톡 설치 되어 있을 시 카카오톡 로그인
+                    UserApiClient.getInstance().loginWithKakaoTalk(context, loginCallback);
+                    util.getKakaoUserInfo();
+                } else { // 카카오톡 미설치 시 카카오 계정으로 로그인 - test 안 해봄
+                    UserApiClient.getInstance().loginWithKakaoAccount(context, loginCallback);
+                }
             }
         });
     }

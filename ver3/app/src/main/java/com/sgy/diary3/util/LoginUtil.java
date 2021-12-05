@@ -13,22 +13,22 @@ import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
-// TODO 데이터 삭제해도 자동로그인 되는 거 문제 해결
+
 public class LoginUtil {
 
     public static LoginUtil instance;
     public Function2<OAuthToken, Throwable, Unit> loginCallback;
 
     public LoginUtil() {
-//        loginKakao();
+        loginKakao();
     }
 
-    public static LoginUtil getInstance() { // 한번만 생성
-        if (instance == null) {
-            instance = new LoginUtil();
-        }
-        return instance;
-    }
+//    public static LoginUtil getInstance() { // 한번만 생성
+//        if (instance == null) {
+//            instance = new LoginUtil();
+//        }
+//        return instance;
+//    }
 
     /**
      * 카카오톡 로그인
@@ -100,13 +100,13 @@ public class LoginUtil {
     /**
      * 카카오톡 로그인
      */
-    public void autoLoginKakao(){
-        loginKakao();
-        if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(MyApplication.context)) { // 카카오톡 설치 되어 있을 시 카카오톡 로그인
-            UserApiClient.getInstance().loginWithKakaoTalk(MyApplication.context, loginCallback);
-            getKakaoUserInfo();
-        } else { // 카카오톡 미설치 시 카카오 계정으로 로그인 - test 안 해봄
-            UserApiClient.getInstance().loginWithKakaoAccount(MyApplication.context, loginCallback);
-        }
-    }
+//    public void autoLoginKakao(){
+//        loginKakao();
+//        if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(MyApplication.context)) { // 카카오톡 설치 되어 있을 시 카카오톡 로그인
+//            UserApiClient.getInstance().loginWithKakaoTalk(MyApplication.context, loginCallback);
+//            getKakaoUserInfo();
+//        } else { // 카카오톡 미설치 시 카카오 계정으로 로그인 - test 안 해봄
+//            UserApiClient.getInstance().loginWithKakaoAccount(MyApplication.context, loginCallback);
+//        }
+//    }
 }
