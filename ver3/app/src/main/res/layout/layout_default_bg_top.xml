@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"/>
 
     <include layout="@layout/layout_top"
-        android:id="@+id/layout_header"/>
+        android:id="@+id/top_container"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

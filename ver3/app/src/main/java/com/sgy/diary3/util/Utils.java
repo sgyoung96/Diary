@@ -41,7 +41,7 @@ public class Utils {
      * @return
      */
     public static String getTag(Context context) {
-        return context.getClass().getName();
+        return context.getClass().getSimpleName();
     }
 
     /**

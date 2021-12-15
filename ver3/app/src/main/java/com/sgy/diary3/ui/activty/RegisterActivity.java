@@ -17,11 +17,10 @@ public class RegisterActivity extends BaseActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        /* init View -- 1. [BaseActivity] StatusBar, NavigationBar 높이 만큼 전체 콘텐츠에 padding 2. [Custom] 상단 레이아웃 설정 */
-        binding.layoutDefaultBg.layoutHeader.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.layoutDefaultBg.layoutHeader.ivMenuTop.setVisibility(View.GONE);        // 계정 생성 화면에서 상단 레이아웃의 드로어 메뉴 필요 없으니 GONE 처리
-        binding.layoutDefaultBg.layoutHeader.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(RegisterActivity.this)));  // 로고 클릭시 메인 화면으로 이동
+        /* init View -- 1. [BaseActivity] StatusBar, NavigationBar 높이 만큼 전체 콘텐츠에 padding 2. [DrawerLayout] GONE 처리 3. [Layout] 상단 아이템 클릭 리스너 설정 */
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        binding.layoutDefaultBg.topContainer.ivMenuTop.setVisibility(View.GONE);
+        binding.layoutDefaultBg.topContainer.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(RegisterActivity.this)));  // 로고 클릭시 메인 화면으로 이동 (drawer 없음)
     }
 
     @Override

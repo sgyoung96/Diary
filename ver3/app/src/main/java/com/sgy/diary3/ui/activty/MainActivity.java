@@ -20,28 +20,13 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        // TODO : 커스텀뷰로 만들기 (공통 배경 화면)
+        /* init view - 1. [BaseActivity] StatusBar, NavigationBar 높이만큼 padding 2. [DrawerLayout] 닫힌 상태 3. [Layout] 상단 아이템 클릭 리스너 설정 */
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        // /* 가운데 원 블러 처리 - 원이 있을 경우만! */
-        // Glide.with(this).load(R.drawable.title_view_blur).apply(RequestOptions.bitmapTransform(new BlurTransformation(23, 3))).into(binding.ivViewTitle);
-
-        binding.ivLogoTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoMain(Utils.getTag(MainActivity.this));
-            }
-        });
-
-        //TODO DrawerLayout 디자인 및 기능 추가
-        binding.ivMenuTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.drawerMain.openDrawer(Gravity.RIGHT);
-                if (binding.drawerMain.isDrawerOpen(GravityCompat.START)) {
-                    binding.drawerMain.closeDrawer(GravityCompat.START);
-                }
-            }
-        });
+        binding.drawer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        setDrawerVisible(binding.drawer, binding.drawerMain, false);
+        binding.vgTop.topContainer.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(MainActivity.this)));
+        binding.vgTop.topContainer.ivMenuTop.setOnClickListener(v -> setDrawerVisible(binding.drawer, binding.drawerMain, true));
     }
 
     @Override

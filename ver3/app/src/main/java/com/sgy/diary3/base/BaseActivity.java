@@ -12,6 +12,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.sgy.diary3.R;
 import com.sgy.diary3.ui.activty.LoginActivity;
@@ -60,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * onBackPressed 함수 안에 삽입할 함수 : 두 번 클릭하면 어플리케이션 완전 종료
      */
     long waitTime = 0;
-    public void finishActivity() { // onBackPressed 시 호출할 함수
+    public void finishActivity() {
         if (System.currentTimeMillis() - waitTime >= 1000) {
             waitTime = System.currentTimeMillis();
             Utils.mToast(MyApplication.context.getString(R.string.back_pressed));
@@ -93,6 +94,30 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * DrawerLayout 에 대한 visibility 처리
+     * @param isVisible
+     */
+//    public DrawerLayout drawerContainer;
+//    public View drawer;
+    public void setDrawerVisible(View drawer, DrawerLayout drawerContainer, boolean isVisible) {
+        if ( !drawer.hasOnClickListeners() ) {
+            drawer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+        if ( null != drawerContainer && null != drawer ) {
+            if (isVisible) {
+                drawerContainer.openDrawer(drawer);
+            } else {
+                drawerContainer.closeDrawer(drawer);
+            }
+        }
     }
 
     // **********************************************************
