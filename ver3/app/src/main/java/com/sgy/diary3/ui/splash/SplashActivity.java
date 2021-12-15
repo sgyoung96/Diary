@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,7 +28,7 @@ public class SplashActivity extends BaseActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater()); // init binding
         setContentView(binding.getRoot());
 
-        /* init view - 1. lottie 2. blur */
+        /* init view - 1. lottie 2. blur (위아래 콘텐츠가 없이 전체화면 기준이므로 StatusBar 및 NavigationBar height 따로 구하지 않는다.) */
         binding.splashLottie.playAnimation();
         Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
@@ -44,8 +45,10 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    protected void backButtonPressed() {
-        android.os.Process.killProcess(android.os.Process.myPid());	// 이 액티비티 종료 후 로그인 액티비티 뜨는 것을 방지하기 위해 App Process 완전 종료
+    protected void backButtonPressed() { // 1. 액티비티 종료 2. 프로세스 종료
+//        android.os.Process.killProcess(android.os.Process.myPid());	// 이 액티비티 종료 후 로그인 액티비티 뜨는 것을 방지하기 위해 App Process 완전 종료
+        ActivityCompat.finishAffinity(this);
+        System.exit(0);
     }
 
     @Override
@@ -75,7 +78,5 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }, 1500);
-
-
     }
 }

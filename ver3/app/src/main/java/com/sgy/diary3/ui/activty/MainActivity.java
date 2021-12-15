@@ -22,6 +22,7 @@ public class MainActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        // /* 가운데 원 블러 처리 - 원이 있을 경우만! */
         // Glide.with(this).load(R.drawable.title_view_blur).apply(RequestOptions.bitmapTransform(new BlurTransformation(23, 3))).into(binding.ivViewTitle);
 
         binding.ivLogoTop.setOnClickListener(new View.OnClickListener() {

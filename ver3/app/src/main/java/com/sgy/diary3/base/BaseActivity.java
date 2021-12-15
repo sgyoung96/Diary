@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.sgy.diary3.R;
 import com.sgy.diary3.ui.activty.LoginActivity;
@@ -28,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* 전체화면 설정 (StatusBar, NavigationBar 까지 화면 확장) */
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS); // 스크린 확장
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     @Override
@@ -64,8 +65,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             waitTime = System.currentTimeMillis();
             Utils.mToast(MyApplication.context.getString(R.string.back_pressed));
         } else {
-            /* 앱 프로세스 삭제 */
-            android.os.Process.killProcess(android.os.Process.myPid());
+            /* 1. 액티비티 종료 2. 프로세스 종료 */
+            ActivityCompat.finishAffinity(this);
+            System.exit(0);
         }
     }
 
@@ -97,28 +99,36 @@ public abstract class BaseActivity extends AppCompatActivity {
     // Intent 공통 함수 (좌 상단 로고 클릭 시) TODO 화면 추가 될 때마다 이 곳에 작업
     // **********************************************************
 
+    /**
+     * 1. 언제든지 이동할 수 있는 액티비티는 화면 전환 시 finish 시키고, SINGLE_TOP 플래그 사용하기 : 스택에 살아 있는 기존 액티비티를 최상단에 띄운다.
+     * 2. 계정 생성 화면에서는 로그인 화면이 메인 화면 (로고 클릭 시 SplashActivity -> LoginActivity)
+     * 3. LoginActivity 에는 로고 없으므로 정의하지 않음
+     * @param tag
+     */
     public void gotoMain(String tag) {
         if (tag.equals(ScreenId.TAG_ACT_SPLASH)) { // Splash Activity 로고 없음, 앱 실행 시 자동로그인 체크
             if (MyApplication.isKakaoLogin == 0) { // 로그아웃 상태 -> 로그인 화면으로 이동
                 Intent intent = new Intent(this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(0,0);
+                finish();
             } else { // 토큰 값이 있음 : 로그인 상태 (자동로그인) -> 메인 화면으로 이동 (tmep main activity)
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                MyApplication.context.startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
             }
-        } else if (tag.equals(ScreenId.TAG_ACT_LOGIN)) {
-            return; // Login Activity 로고 없음
         } else if (tag.equals(ScreenId.TAG_ACT_REGIST)) { // 회원가입 화면 - splash -> main
             Intent goSplash = new Intent(this, SplashActivity.class);
-            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            goSplash.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(goSplash);
             overridePendingTransition(0,0);
+            finish();
         } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
             Intent goSplash = new Intent(this, SplashActivity.class);
-            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(goSplash);
             overridePendingTransition(0,0);
         }
