@@ -28,8 +28,9 @@ public class SplashActivity extends BaseActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater()); // init binding
         setContentView(binding.getRoot());
 
-        /* init view - 1. lottie 2. blur (위아래 콘텐츠가 없이 전체화면 기준이므로 StatusBar 및 NavigationBar height 따로 구하지 않는다.) */
+        /* init view - 1. lottie 2. StatusBar, NavigationBar Height set padding 3. blur */
         binding.splashLottie.playAnimation();
+        binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
         Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
         MyApplication.isKakaoLogin = 0; // 로그인 상태 초기화 - 0 : 로그아웃 상태 1 : 로그인 상태
