@@ -42,4 +42,6 @@
     <string name="menu_logout">로그아웃</string>
     <string name="menu_delete">계정삭제</string>
 
+    <string name="temp_nickName">닉네임8989</string>
+
 </resources>
