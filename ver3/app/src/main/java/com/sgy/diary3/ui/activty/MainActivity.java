@@ -27,10 +27,10 @@ public class MainActivity extends BaseActivity {
          * 1. [BaseActivity] StatusBar, NavigationBar 높이만큼 padding 설정
          * 2. [BaseLayout] - 로고, 메뉴, 드로어 메뉴 클릭 리스너 설정
          */
-        binding.vgSub.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.vgMain.binding.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(MainActivity.this)));
-        binding.vgMain.binding.ivMenuTop.setOnClickListener(v -> setDrawerVisible(binding.vgMain.binding.drawerContainer, binding.vgMain.binding.drawerMain, true));
-        binding.vgMain.binding.drawer.ivClose.setOnClickListener(v -> setDrawerVisible(binding.vgMain.binding.drawerContainer, binding.vgMain.binding.drawerMain, true));
+        binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        binding.vgCustom.binding.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(MainActivity.this)));
+        binding.vgCustom.binding.ivMenuTop.setOnClickListener(v -> setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true));
+        binding.vgCustom.binding.drawer.ivClose.setOnClickListener(v -> setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true));
     }
 
     @Override

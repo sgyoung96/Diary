@@ -7,12 +7,12 @@
     tools:context=".ui.activty.MainActivity">
 
     <com.sgy.diary3.ui.custom.CustomDefaultBackground
-        android:id="@+id/vg_main"
+        android:id="@+id/vg_custom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/vg_sub"
+        android:id="@+id/vg_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 

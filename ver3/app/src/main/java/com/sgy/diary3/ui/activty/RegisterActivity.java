@@ -19,8 +19,8 @@ public class RegisterActivity extends BaseActivity {
 
         /* init View -- 1. [BaseActivity] StatusBar, NavigationBar 높이 만큼 전체 콘텐츠에 padding 2. [DrawerLayout] GONE 처리 3. [Layout] 상단 아이템 클릭 리스너 설정 */
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.vgBgContainer.binding.ivMenuTop.setVisibility(View.GONE);
-        binding.vgBgContainer.binding.ivLogoTop.setOnClickListener( v -> gotoMain(Utils.getTag(RegisterActivity.this))); // 로고 클릭시 메인 화면으로 이동 (drawer 없음)
+        binding.vgCustom.binding.ivMenuTop.setVisibility(View.GONE);
+        binding.vgCustom.binding.ivLogoTop.setOnClickListener( v -> gotoMain(Utils.getTag(RegisterActivity.this))); // 로고 클릭시 메인 화면으로 이동 (drawer 없음)
     }
 
     @Override

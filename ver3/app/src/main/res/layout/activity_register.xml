@@ -7,7 +7,7 @@
     tools:context=".ui.activty.RegisterActivity">
 
     <com.sgy.diary3.ui.custom.CustomDefaultBackground
-        android:id="@+id/vg_bg_container"
+        android:id="@+id/vg_custom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
