@@ -6,9 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.activty.MainActivity">
 
-    <com.sgy.diary3.ui.CustomDefaultBackground
+    <com.sgy.diary3.ui.custom.CustomDefaultBackground
         android:id="@+id/vg_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vg_sub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

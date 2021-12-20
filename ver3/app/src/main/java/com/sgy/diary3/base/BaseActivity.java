@@ -100,8 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * DrawerLayout 에 대한 visibility 처리
      * @param isVisible
      */
-//    public DrawerLayout drawerContainer;
-//    public View drawer;
     public void setDrawerVisible(View drawer, DrawerLayout drawerContainer, boolean isVisible) {
         if ( !drawer.hasOnClickListeners() ) {
             drawer.setOnClickListener(new View.OnClickListener() {

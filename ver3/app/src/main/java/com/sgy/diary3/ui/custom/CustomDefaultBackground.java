@@ -1,4 +1,4 @@
-package com.sgy.diary3.ui;
+package com.sgy.diary3.ui.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
