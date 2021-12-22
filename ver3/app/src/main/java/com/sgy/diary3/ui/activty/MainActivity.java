@@ -5,9 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.sgy.diary3.R;
-import com.sgy.diary3.base.ui.BaseActivity;
-import com.sgy.diary3.base.ClickFlag;
+import com.sgy.diary3.base.contract.ClickFlag;
 import com.sgy.diary3.base.contract.OnBaseClickListener;
+import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.util.Utils;
 

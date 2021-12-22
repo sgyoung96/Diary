@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.sgy.diary3.base.ClickFlag;
+import com.sgy.diary3.base.contract.ClickFlag;
 import com.sgy.diary3.base.contract.OnBaseClickListener;
 import com.sgy.diary3.databinding.LayoutDefaultBgTopBinding;
 import com.sgy.diary3.util.Utils;

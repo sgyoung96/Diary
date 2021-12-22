@@ -16,7 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
-import com.sgy.diary3.base.ScreenId;
+import com.sgy.diary3.base.contract.ScreenId;
 import com.sgy.diary3.ui.activty.LoginActivity;
 import com.sgy.diary3.ui.activty.MainActivity;
 import com.sgy.diary3.ui.splash.SplashActivity;
