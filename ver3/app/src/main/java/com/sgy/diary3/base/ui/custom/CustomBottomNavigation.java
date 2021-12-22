@@ -64,7 +64,7 @@ public class CustomBottomNavigation extends BottomNavigationView {
         mPath = new Path();
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.white_50));
+        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.white));
         setBackgroundColor(Color.TRANSPARENT);
     }
 

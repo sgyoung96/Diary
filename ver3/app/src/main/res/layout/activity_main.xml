@@ -16,11 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vg_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_bottom_navigation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_close"
+            android:src="@drawable/icon_add"
+            android:background="@color/white_30"
             android:layout_marginBottom="30dp"
             android:clickable="true"
             android:focusable="true"

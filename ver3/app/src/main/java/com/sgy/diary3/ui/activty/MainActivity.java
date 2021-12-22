@@ -48,8 +48,9 @@ public class MainActivity extends BaseActivity {
     private void initView () {
         /* set padding */
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        /* custom bottom navigation view 메뉴 설정 */
+        /* custom bottom navigation view 메뉴 및 padding 설정 */
         binding.vgBottomNavigation.inflateMenu(R.menu.menu_bottom_navigation);
+        binding.vgBottom.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
     }
 
     /**
