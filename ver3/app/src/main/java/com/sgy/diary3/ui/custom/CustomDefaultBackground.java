@@ -3,11 +3,14 @@ package com.sgy.diary3.ui.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.sgy.diary3.base.ClickFlag;
+import com.sgy.diary3.contract.OnBaseClickListener;
 import com.sgy.diary3.databinding.LayoutDefaultBgTopBinding;
 import com.sgy.diary3.util.Utils;
 
@@ -18,6 +21,13 @@ public class CustomDefaultBackground extends ConstraintLayout {
 
     /* View Binding */
     public LayoutDefaultBgTopBinding binding = null;
+
+    /* Interface */
+    public OnBaseClickListener onBaseClickListener;
+
+    public void setOnBaseClickListener(OnBaseClickListener onBaseClickListener) {
+        this.onBaseClickListener = onBaseClickListener;
+    }
 
     // ************************************************************************
     // Contructor
@@ -38,7 +48,7 @@ public class CustomDefaultBackground extends ConstraintLayout {
     // ************************************************************************
 
     /**
-     * initialize
+     * Init View
      * @param context
      */
     private void initCustomBg(Context context) {
@@ -47,6 +57,11 @@ public class CustomDefaultBackground extends ConstraintLayout {
 
         /* set Padding */
         binding.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.drawer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        binding.drawerContainer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+
+        /* set Click Listener */
+        binding.ivLogoTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_LOGO_CLICK));
+        binding.ivMenuTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_MENU_CLICK));
+        binding.drawer.ivClose.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.DRAWER_ICON_CLOSE));
     }
 }

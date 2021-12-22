@@ -7,7 +7,10 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 
+import com.sgy.diary3.R;
 import com.sgy.diary3.base.BaseActivity;
+import com.sgy.diary3.base.ClickFlag;
+import com.sgy.diary3.contract.OnBaseClickListener;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.util.Utils;
 
@@ -21,16 +24,8 @@ public class MainActivity extends BaseActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        /* init view - 1. [BaseActivity] StatusBar, NavigationBar 높이만큼 padding 2. [DrawerLayout] 닫힌 상태 3. [Layout] 상단 아이템 클릭 리스너 설정 */
-        /**
-         * init view
-         * 1. [BaseActivity] StatusBar, NavigationBar 높이만큼 padding 설정
-         * 2. [BaseLayout] - 로고, 메뉴, 드로어 메뉴 클릭 리스너 설정
-         */
-        binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.vgCustom.binding.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(MainActivity.this)));
-        binding.vgCustom.binding.ivMenuTop.setOnClickListener(v -> setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true));
-        binding.vgCustom.binding.drawer.ivClose.setOnClickListener(v -> setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true));
+        initView();
+        setBaseClickListener();
     }
 
     @Override
@@ -46,5 +41,41 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void destroyedActivity() {
 
+    }
+
+    /**
+     * init view
+     * 1. [BaseActivity] StatusBar, NavigationBar 높이만큼 padding 설정
+     * 2. [CustomBottomNavigation] menu 연결
+     */
+    private void initView () {
+        /* set padding */
+        binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+        /* custom bottom navigation view 메뉴 설정 */
+        binding.vgBottomNavigation.inflateMenu(R.menu.menu_bottom_navigation);
+    }
+
+    /**
+     * 공통 Click Listener 설정
+     * 1. 상단 로고 및 메뉴
+     * 2. 드로어 레이아웃
+     */
+    private void setBaseClickListener() {
+        binding.vgCustom.setOnBaseClickListener(new OnBaseClickListener() {
+            @Override
+            public void setBaseClickListener(String getViewClick) {
+                switch (getViewClick) {
+                    /* 로고 클릭 */
+                    case ClickFlag.TOP_LOGO_CLICK:
+                        gotoMain(Utils.getTag(MainActivity.this));
+                        break;
+                    /* 상단 메뉴 아이콘, 드로어 닫기 아이콘 */
+                    case ClickFlag.TOP_MENU_CLICK:
+                    case ClickFlag.DRAWER_ICON_CLOSE:
+                        setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true);
+                        break;
+                }
+            }
+        });
     }
 }

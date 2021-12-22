@@ -40,14 +40,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        this.backButtonPressed();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         this.destroyedActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.backButtonPressed();
     }
 
     /**
