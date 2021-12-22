@@ -87,8 +87,8 @@ public class MainActivity extends BaseActivity {
      * - 카카오 로그인 버튼 클릭 시만 사용자 정보 받아오는 함수를 타므로, 시작점이 되는 곳에서 한 번 더 호출해 준다.
      */
     private void getKakaoUserInfo () {
-        LoginUtil loginUtil = new LoginUtil();
-        loginUtil.getKakaoUserInfo();
+        LoginUtil loginUtil = new LoginUtil(this);
+        loginUtil.getKakaoUserInfo(this);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 binding.vgCustom.binding.drawer.tvNickName.setText(UserProfile.getInstance().nickName);
-                Utils.mLog(Utils.getTag(MainActivity.this) + " : " + UserProfile.getInstance().nickName);
+                Utils.mLog(Utils.getTag(MainActivity.this), " : " + UserProfile.getInstance().nickName);
             }
         }, 500);
     }

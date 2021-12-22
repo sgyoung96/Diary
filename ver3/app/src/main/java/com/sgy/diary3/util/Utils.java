@@ -19,18 +19,18 @@ public class Utils {
         try {
             packageInfo = MyApplication.context.getPackageManager().getPackageInfo(MyApplication.context.getPackageName(), PackageManager.GET_SIGNATURES);
         } catch (Exception e) {
-            mLog(e.toString());
+            mLog(Utils.getTag(MyApplication.context), e.toString());
         }
         if (packageInfo == null) {
-            mLog(MyApplication.context.getString(R.string.hash_key_null));
+            mLog(Utils.getTag(MyApplication.context), MyApplication.context.getString(R.string.hash_key_null));
         }
         for (Signature signature : packageInfo.signatures) {
             try {
                 MessageDigest messageDigest = MessageDigest.getInstance("SHA");
                 messageDigest.update(signature.toByteArray());
-                mLog(Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT));
+                mLog(Utils.getTag(MyApplication.context), Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT));
             } catch (Exception e) {
-                mLog( "Unable to get MessageDoigest.signature = " + signature + ":: + ::" + e.toString());
+                mLog(Utils.getTag(MyApplication.context), "Unable to get MessageDoigest.signature = " + signature + ":: + ::" + e.toString());
             }
         }
     }
@@ -49,11 +49,8 @@ public class Utils {
      * @param tag
      * @param msg
      */
-    public static void rawLog(String tag, String msg) {
+    public static void mLog(String tag, String msg) {
         Log.d(MyApplication.context.getString(R.string.debug_tag) + "[" + tag + "]", msg);
-    }
-    public static void mLog(String msg) {
-        Utils.rawLog(Utils.getTag(MyApplication.context), msg);
     }
 
     /**

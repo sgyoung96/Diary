@@ -68,9 +68,9 @@ public class SplashActivity extends BaseActivity {
         /* Kakao 자동로그인 - Token 체크 */
         UserApiClient.getInstance().accessTokenInfo((tokenInfo, error) -> {
             if (error != null) {
-                Utils.mLog(getString(R.string.kakao_token_info_fail));
+                Utils.mLog(Utils.getTag(this), getString(R.string.kakao_token_info_fail));
             } else if (tokenInfo != null) {
-                Utils.mLog(getString(R.string.kakao_token_info_success));
+                Utils.mLog(Utils.getTag(this), getString(R.string.kakao_token_info_success));
                 MyApplication.isKakaoLogin = 1; // 토큰값을 가지고 있으므로 자동로그인 플래그 변경 (0 : 로그아웃 상태 1 : 로그인 상태)
             }
             return null;

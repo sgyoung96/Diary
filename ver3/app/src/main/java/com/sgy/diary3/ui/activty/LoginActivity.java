@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity {
         binding.ivKakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginUtil util = new LoginUtil();
+                LoginUtil util = new LoginUtil(context);
                 loginCallback = util.loginCallback;
                 if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(context)) { // 카카오톡 설치 되어 있을 시 카카오톡 로그인
                     UserApiClient.getInstance().loginWithKakaoTalk(context, loginCallback);
