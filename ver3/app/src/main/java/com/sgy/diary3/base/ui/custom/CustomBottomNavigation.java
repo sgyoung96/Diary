@@ -1,4 +1,4 @@
-package com.sgy.diary3.ui.custom;
+package com.sgy.diary3.base.ui.custom;
 
 import android.content.Context;
 import android.graphics.Canvas;

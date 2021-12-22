@@ -1,7 +1,5 @@
 package com.sgy.diary3.ui.activty;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +10,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
-import com.sgy.diary3.base.BaseActivity;
-import com.sgy.diary3.base.MyApplication;
+import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityLoginBinding;
-import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 

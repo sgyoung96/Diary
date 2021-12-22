@@ -1,4 +1,4 @@
-package com.sgy.diary3.base;
+package com.sgy.diary3.base.contract;
 
 public class ClickFlag {
 

@@ -3,7 +3,7 @@ package com.sgy.diary3.ui.activty;
 import android.os.Bundle;
 import android.view.View;
 
-import com.sgy.diary3.base.BaseActivity;
+import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityRegisterBinding;
 import com.sgy.diary3.util.Utils;
 

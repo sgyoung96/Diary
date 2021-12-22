@@ -1,16 +1,15 @@
-package com.sgy.diary3.ui.custom;
+package com.sgy.diary3.base.ui.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.sgy.diary3.base.ClickFlag;
-import com.sgy.diary3.contract.OnBaseClickListener;
+import com.sgy.diary3.base.contract.OnBaseClickListener;
 import com.sgy.diary3.databinding.LayoutDefaultBgTopBinding;
 import com.sgy.diary3.util.Utils;
 

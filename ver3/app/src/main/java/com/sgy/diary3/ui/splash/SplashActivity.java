@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
-import com.sgy.diary3.base.BaseActivity;
+import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
 import com.sgy.diary3.util.Utils;

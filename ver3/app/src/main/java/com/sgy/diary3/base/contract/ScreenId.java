@@ -1,4 +1,4 @@
-package com.sgy.diary3.base;
+package com.sgy.diary3.base.contract;
 
 import com.sgy.diary3.ui.activty.LoginActivity;
 import com.sgy.diary3.ui.activty.MainActivity;

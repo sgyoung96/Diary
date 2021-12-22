@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activty.RegisterActivity">
 
-    <com.sgy.diary3.ui.custom.CustomDefaultBackground
+    <com.sgy.diary3.base.ui.custom.CustomDefaultBackground
         android:id="@+id/vg_custom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

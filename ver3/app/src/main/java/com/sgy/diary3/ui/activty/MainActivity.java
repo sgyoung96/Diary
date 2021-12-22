@@ -1,16 +1,13 @@
 package com.sgy.diary3.ui.activty;
 
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
 
 import com.sgy.diary3.R;
-import com.sgy.diary3.base.BaseActivity;
+import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.base.ClickFlag;
-import com.sgy.diary3.contract.OnBaseClickListener;
+import com.sgy.diary3.base.contract.OnBaseClickListener;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.util.Utils;
 

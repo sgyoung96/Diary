@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activty.MainActivity">
 
-    <com.sgy.diary3.ui.custom.CustomDefaultBackground
+    <com.sgy.diary3.base.ui.custom.CustomDefaultBackground
         android:id="@+id/vg_custom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.sgy.diary3.ui.custom.CustomBottomNavigation
+        <com.sgy.diary3.base.ui.custom.CustomBottomNavigation
             android:id="@+id/vg_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
