@@ -2,24 +2,32 @@ package com.sgy.diary3.ui.splash;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.airbnb.lottie.L;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ActivitySplashBinding;
+import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class SplashActivity extends BaseActivity {
 
     private ActivitySplashBinding binding = null;
+
+    private Function2<OAuthToken, Throwable, Unit> loginCallback = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

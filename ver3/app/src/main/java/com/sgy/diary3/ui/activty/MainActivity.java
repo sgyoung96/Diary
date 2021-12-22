@@ -1,14 +1,17 @@
 package com.sgy.diary3.ui.activty;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
 import com.sgy.diary3.R;
+import com.sgy.diary3.base.UserProfile;
 import com.sgy.diary3.base.contract.ClickFlag;
 import com.sgy.diary3.base.contract.OnBaseClickListener;
 import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityMainBinding;
+import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
 public class MainActivity extends BaseActivity {
@@ -23,6 +26,8 @@ public class MainActivity extends BaseActivity {
 
         initView();
         setBaseClickListener();
+        getKakaoUserInfo();
+        setUserInfo();
     }
 
     @Override
@@ -75,5 +80,27 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     * kakao 로그인 시 사용자 정보 받아오기
+     * - 카카오 로그인 버튼 클릭 시만 사용자 정보 받아오는 함수를 타므로, 시작점이 되는 곳에서 한 번 더 호출해 준다.
+     */
+    private void getKakaoUserInfo () {
+        LoginUtil loginUtil = new LoginUtil();
+        loginUtil.getKakaoUserInfo();
+    }
+
+    /**
+     * 사용자 정보 화면에 나타내기
+     */
+    private void setUserInfo () {
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                binding.vgCustom.binding.drawer.tvNickName.setText(UserProfile.getInstance().nickName);
+                Utils.mLog(Utils.getTag(MainActivity.this) + " : " + UserProfile.getInstance().nickName);
+            }
+        }, 500);
     }
 }
