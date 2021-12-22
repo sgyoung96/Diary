@@ -42,12 +42,11 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void resumeActivity() {
-        // 화면 전환 시 finish() 를 시켜버렸으므로 이 함수 안 탐
+
     }
 
     @Override
     protected void backButtonPressed() { // 1. 액티비티 종료 2. 프로세스 종료
-//        android.os.Process.killProcess(android.os.Process.myPid());	// 이 액티비티 종료 후 로그인 액티비티 뜨는 것을 방지하기 위해 App Process 완전 종료
         ActivityCompat.finishAffinity(this);
         System.exit(0);
     }
