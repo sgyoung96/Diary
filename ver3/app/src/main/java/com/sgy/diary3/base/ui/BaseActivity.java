@@ -18,7 +18,7 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.base.contract.ScreenId;
 import com.sgy.diary3.ui.activty.LoginActivity;
-import com.sgy.diary3.ui.activty.MainActivity;
+import com.sgy.diary3.ui.activty.temp.MainActivity2;
 import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -139,7 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 overridePendingTransition(0,0);
                 finish();
             } else { // 토큰 값이 있음 : 로그인 상태 (자동로그인) -> 메인 화면으로 이동 (tmep main activity)
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, MainActivity2.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -151,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(goSplash);
             overridePendingTransition(0,0);
             finish();
-        } else if (tag.equals(ScreenId.TAG_ACT_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
+        } else if (tag.equals(ScreenId.TAG_ACT_MAIN2)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
             Intent goSplash = new Intent(this, SplashActivity.class);
             goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(goSplash);

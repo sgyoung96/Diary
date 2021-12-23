@@ -6,13 +6,10 @@ import android.content.Intent;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.model.AuthErrorCause;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.User;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.base.UserProfile;
-import com.sgy.diary3.ui.activty.MainActivity;
-
-import java.util.Objects;
+import com.sgy.diary3.ui.activty.temp.MainActivity;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;

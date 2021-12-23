@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_50"
+    tools:context=".ui.activty.temp.MainActivity2">
+
+    <!--    <include layout="@layout/layout_default_bg_top"-->
+    <!--        android:id="@+id/layout_bg_top"/>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vg_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_splash" />
+
+        <ImageView
+            android:id="@+id/iv_view_title"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:src="@drawable/view_gradient_top"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vg_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_logo_top"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_layout_margin"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo_common_top"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_menu_top"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/main_layout_margin"
+                android:adjustViewBounds="true"
+                android:src="@drawable/icon_menu"
+                app:layout_constraintBottom_toBottomOf="@id/iv_logo_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_logo_top" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/view_gradient_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.15" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vg_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_bottom_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@color/white_30"
+                android:backgroundTint="@color/white_50"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/icon_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.sgy.diary3.base.ui.custom.CustomBottomNavigation
+                android:id="@+id/vg_bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/drawer_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+
+        <include
+            android:id="@+id/drawer"
+            layout="@layout/layout_drawer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,4 +1,4 @@
-package com.sgy.diary3.ui.activty;
+package com.sgy.diary3.ui.activty.temp;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.UserProfile;
-import com.sgy.diary3.base.contract.ClickFlag;
-import com.sgy.diary3.base.contract.OnBaseClickListener;
 import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityMainBinding;
 import com.sgy.diary3.util.LoginUtil;
@@ -25,7 +23,7 @@ public class MainActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         initView();
-        setBaseClickListener();
+        // setBaseClickListener();
         getKakaoUserInfo();
         setUserInfo();
     }
@@ -63,24 +61,27 @@ public class MainActivity extends BaseActivity {
      * 1. 상단 로고 및 메뉴
      * 2. 드로어 레이아웃
      */
-    private void setBaseClickListener() {
-        binding.vgCustom.setOnBaseClickListener(new OnBaseClickListener() {
-            @Override
-            public void setBaseClickListener(String getViewClick) {
-                switch (getViewClick) {
-                    /* 로고 클릭 */
-                    case ClickFlag.TOP_LOGO_CLICK:
-                        gotoMain(Utils.getTag(MainActivity.this));
-                        break;
-                    /* 상단 메뉴 아이콘, 드로어 닫기 아이콘 */
-                    case ClickFlag.TOP_MENU_CLICK:
-                    case ClickFlag.DRAWER_ICON_CLOSE:
-                        setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true);
-                        break;
-                }
-            }
-        });
-    }
+//    private void setBaseClickListener() {
+//        binding.vgCustom.setOnBaseClickListener(new OnBaseClickListener() {
+//            @Override
+//            public void setBaseClickListener(String getViewClick) {
+//                switch (getViewClick) {
+//                    /* 로고 클릭 */
+//                    case ClickFlag.TOP_LOGO_CLICK:
+//                        gotoMain(Utils.getTag(MainActivity.this));
+//                        break;
+//                    /* 상단 메뉴 아이콘 */
+//                    case ClickFlag.TOP_MENU_CLICK:
+//                        setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, true);
+//                        break;
+//                    /* 드로어 닫기 아이콘 */
+//                    case ClickFlag.DRAWER_ICON_CLOSE:
+//                        setDrawerVisible(binding.vgCustom.binding.drawerContainer, binding.vgCustom.binding.drawerMain, false);
+//                        break;
+//                }
+//            }
+//        });
+//    }
 
     /**
      * kakao 로그인 시 사용자 정보 받아오기
@@ -98,8 +99,8 @@ public class MainActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                binding.vgCustom.binding.drawer.tvNickName.setText(UserProfile.getInstance().nickName);
-                Utils.mLog(Utils.getTag(MainActivity.this), " : " + UserProfile.getInstance().nickName);
+                // binding.vgCustom.binding.drawer.tvNickName.setText(UserProfile.getInstance().nickName);
+                Utils.mLog(Utils.getTag(MainActivity.this), UserProfile.getInstance().nickName);
             }
         }, 500);
     }

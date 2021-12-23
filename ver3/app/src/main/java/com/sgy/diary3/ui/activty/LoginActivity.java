@@ -35,8 +35,8 @@ public class LoginActivity extends BaseActivity {
         binding.vgMain.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
         Glide.with(this).load(R.drawable.splash_view_circle).apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 1))).into(binding.ivView);
 
-        registerAccount(); // 계정 생성
-        loginKakao(); // 카카오톡 연계 로그인
+        registerAccount();  // 계정 생성
+        loginKakao();       // 카카오톡 연계 로그인
     }
 
     @Override

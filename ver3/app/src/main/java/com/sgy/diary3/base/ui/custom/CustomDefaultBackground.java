@@ -51,16 +51,16 @@ public class CustomDefaultBackground extends ConstraintLayout {
      * @param context
      */
     private void initCustomBg(Context context) {
-        /* init View Binding */
-        binding = LayoutDefaultBgTopBinding.inflate(LayoutInflater.from(context), this, true);
-
-        /* set Padding */
-        binding.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-        binding.drawerContainer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
-
-        /* set Click Listener */
-        binding.ivLogoTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_LOGO_CLICK));
-        binding.ivMenuTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_MENU_CLICK));
-        binding.drawer.ivClose.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.DRAWER_ICON_CLOSE));
+//        /* init View Binding */
+//        binding = LayoutDefaultBgTopBinding.inflate(LayoutInflater.from(context), this, true);
+//
+//        /* set Padding */
+//        binding.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+//        binding.drawerContainer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
+//
+//        /* set Click Listener */
+//        binding.ivLogoTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_LOGO_CLICK));
+//        binding.ivMenuTop.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.TOP_MENU_CLICK));
+//        binding.drawer.ivClose.setOnClickListener(v -> onBaseClickListener.setBaseClickListener(ClickFlag.DRAWER_ICON_CLOSE));
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activty.MainActivity">
+    tools:context=".ui.activty.temp.MainActivity">
 
     <com.sgy.diary3.base.ui.custom.CustomDefaultBackground
         android:id="@+id/vg_custom"
