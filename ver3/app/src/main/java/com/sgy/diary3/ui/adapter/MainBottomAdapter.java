@@ -30,9 +30,8 @@ public class MainBottomAdapter extends RecyclerView.Adapter<MainBottomHolder> {
     @NonNull
     @Override
     public MainBottomHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        binding = ItemBottomMenuBinding.inflate(LayoutInflater.from(parent.getContext()));
-        View itemView = LayoutInflater.from(context).inflate(R.layout.item_bottom_menu, parent, false);
-        return new MainBottomHolder(itemView);
+        binding = ItemBottomMenuBinding.inflate(LayoutInflater.from(parent.getContext()));
+        return new MainBottomHolder(binding.getRoot());
     }
 
     @Override
@@ -43,7 +42,7 @@ public class MainBottomAdapter extends RecyclerView.Adapter<MainBottomHolder> {
 
     @Override
     public int getItemCount() {
-        Utils.mLog(Utils.getTag(context), " bottom Items.size : " + bottomItems.size());
+        Utils.mLog(Utils.getTag(context), "bottom Items.size : " + bottomItems.size());
         return bottomItems.size();
     }
 }

@@ -45,7 +45,7 @@ public class MyDiaryMainActivity extends BaseActivity {
 
     @Override
     protected void backButtonPressed() {
-
+        finishActivity();
     }
 
     @Override
@@ -74,34 +74,14 @@ public class MyDiaryMainActivity extends BaseActivity {
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent)));    // 최근목록
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getString(R.string.menu_my_list)));     // 내 일기 목록
         items.add(new MainBottomItem(null, null));                                                          // 빈 공간
+        items.add(new MainBottomItem(null, null));                                                          // 빈 공간
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getString(R.string.menu_drawer)));    // 내 서랍
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getString(R.string.menu_1_line)));      // 한줄 일기
-
-//        MainBottomItem item1 = new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent));
-//        item1.setIcon(getDrawable(R.drawable.icon_menu_recent));
-//        item1.setTitle(getString(R.string.menu_recent));
-//
-//        MainBottomItem item2 = new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent));
-//        item2.setIcon(getDrawable(R.drawable.icon_menu_recent));
-//        item2.setTitle(getString(R.string.menu_recent));
-//
-//        MainBottomItem item3 = new MainBottomItem(null, null);
-//        item3.setIcon(getDrawable(R.drawable.icon_menu_recent));
-//        item3.setTitle(getString(R.string.menu_recent));
-//
-//        MainBottomItem item4 = new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent));
-//        item4.setIcon(getDrawable(R.drawable.icon_menu_recent));
-//        item4.setTitle(getString(R.string.menu_recent));
-//
-//        MainBottomItem item5 = new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent));
-//        item5.setIcon(getDrawable(R.drawable.icon_menu_recent));
-//        item5.setTitle(getString(R.string.menu_recent));
-//
-//        items = new ArrayList<>(Arrays.asList(item1, item2, item3, item4, item5));
 
         /* init adapter */
         mainAdapter = new MainBottomAdapter(this, items);
         binding.rvMainMenu.setAdapter(mainAdapter);
+        mainAdapter.notifyDataSetChanged();
     }
 
     /**
