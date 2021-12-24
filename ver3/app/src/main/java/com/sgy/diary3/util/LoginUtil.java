@@ -58,7 +58,7 @@ public class LoginUtil {
                     Utils.mLog(Utils.getTag(context), context.getString(R.string.kakao_login_success) + " : " + oAuthToken.getAccessToken());
                     getKakaoUserInfo(context);      // 사용자 정보 가져오기
                     Intent intent = new Intent(MyApplication.context, MyDiaryMainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MyApplication.context.startActivity(intent);
                 }
                 return null;
