@@ -26,4 +26,7 @@
     <!-- Kakao -->
     <color name="kakao_bg_main">#FBE34D</color>
     <color name="kakao_color">#3B201E</color>
+
+    <!-- bottom menu -->
+    <color name="bottom_menu_checked">#FFC1C1</color>
 </resources>

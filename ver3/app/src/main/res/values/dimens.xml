@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="main_layout_margin">20dp</dimen>
     <dimen name="sub_layout_margin">40dp</dimen>
     <dimen name="drawer_width">200sp</dimen>
+
+    <!-- Custom Bottom Navigation View Text Size -->
+<!--    <dimen name="design_bottom_navigation_text_size" tools:override="true">10dp</dimen>-->
+<!--    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">10dp</dimen>-->
 </resources>

@@ -46,7 +46,7 @@ public class MainActivity2 extends BaseActivity {
         binding.vgMain.setPadding(0, 0, 0, Utils.getNavigationBarHeight());
         binding.drawerContainer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
         /* bottom navigation view 에 메뉴 붙이기 */
-        binding.vgBottomNavigation.inflateMenu(R.menu.menu_bottom_navigation);
+//        binding.vgBottomNavigation.inflateMenu(R.menu.menu_bottom_navigation);
         /* bottom fab */
 
     }

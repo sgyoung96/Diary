@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_50"
-    tools:context=".ui.activty.temp.MainActivity2">
+    tools:context=".ui.activty.MyDiaryMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vg_main"
@@ -84,6 +84,7 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_main_menu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

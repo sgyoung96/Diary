@@ -18,6 +18,7 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.base.contract.ScreenId;
 import com.sgy.diary3.ui.activty.LoginActivity;
+import com.sgy.diary3.ui.activty.MyDiaryMainActivity;
 import com.sgy.diary3.ui.activty.temp.MainActivity2;
 import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.Utils;
@@ -139,7 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 overridePendingTransition(0,0);
                 finish();
             } else { // 토큰 값이 있음 : 로그인 상태 (자동로그인) -> 메인 화면으로 이동 (tmep main activity)
-                Intent intent = new Intent(this, MainActivity2.class);
+                Intent intent = new Intent(this, MyDiaryMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

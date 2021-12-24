@@ -3,32 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/menu_recent"
         android:enabled="true"
-        android:icon="@drawable/icon_love_check"
-        android:title="Page1"
+        android:icon="@drawable/icon_menu_recent"
+        android:title="@string/menu_recent"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_schedules"
+        android:id="@+id/menu_my_list"
         android:enabled="true"
-        android:title="Page2"
-        android:icon="@drawable/icon_love_check"
+        android:title="@string/menu_my_list"
+        android:icon="@drawable/icon_menu_list"
         app:showAsAction="ifRoom"/>
     <item
-        android:enabled="true"
+        android:enabled="false"
         android:title=""
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_drawer"
+        android:enabled="true"
+        android:icon="@drawable/icon_menu_drawer"
+        android:title="@string/menu_drawer"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/menu_1_line"
         android:enabled="true"
-        android:icon="@drawable/icon_love_check"
-        android:title="Page3"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_schedules1"
-        android:enabled="true"
-        android:title="Page4"
-        android:icon="@drawable/icon_love_check"
+        android:title="@string/menu_1_line"
+        android:icon="@drawable/icon_menu_memo"
         app:showAsAction="ifRoom"/>
 
 </menu>

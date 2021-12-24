@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary3">
         <activity
+            android:name=".ui.activty.MyDiaryMainActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activty.temp.MainActivity2"
             android:exported="true" />
         <activity

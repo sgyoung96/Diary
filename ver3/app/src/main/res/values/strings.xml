@@ -37,6 +37,12 @@
     <string name="login_normal"><b>로그인</b></string>
     <string name="create_account"><u>계정 생성</u></string>
 
+    <!-- Bottom Navigation Bar Menu -->
+    <string name="menu_recent">최근일기</string>
+    <string name="menu_my_list">내일기</string>
+    <string name="menu_drawer">내서랍</string>
+    <string name="menu_1_line">한줄일기</string>
+
     <!-- DrawerLayout Menu -->
     <string name="menu_profile">내 프로필 설정</string>
     <string name="menu_logout">로그아웃</string>
