@@ -40,6 +40,23 @@
     <string name="login_normal"><b>로그인</b></string>
     <string name="create_account"><u>계정 생성</u></string>
 
+    <!-- RegisterActivity -->
+    <string name="guide_profile">프로필 사진을 등록하세요.</string>
+    <string name="guide_pw_incorrect">비밀번호 불일치</string>
+    <string name="guide_pw_correct">비밀번호 일치</string>
+
+    <string name="text_nickName">닉네임</string>
+    <string name="text_id">아이디</string>
+    <string name="text_pw">비밀번호</string>
+    <string name="text_pw_2">비밀번호 확인</string>
+
+    <string name="hint_nickName">닉네임을 입력하세요.</string>
+    <string name="hint_id">아이디를 입력하세요.</string>
+    <string name="hint_pw">비밀번호를 입력하세요.</string>
+    <string name="hint_pw_2">비밀번호를 한번 더 입력하세요.</string>
+
+    <string name="register">가입하기</string>
+
     <!-- Bottom Navigation Bar Menu -->
     <string name="menu_recent">최근일기</string>
     <string name="menu_my_list">내일기</string>
