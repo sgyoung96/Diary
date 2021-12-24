@@ -90,6 +90,8 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_bottom_menu"
+                android:paddingTop="3dp"
+                tools:itemCount="5"
                 app:layout_constraintTop_toTopOf="@id/vg_bottom_navigation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

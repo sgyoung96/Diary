@@ -74,7 +74,6 @@ public class MyDiaryMainActivity extends BaseActivity {
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent)));    // 최근목록
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getString(R.string.menu_my_list)));     // 내 일기 목록
         items.add(new MainBottomItem(null, null));                                                          // 빈 공간
-        items.add(new MainBottomItem(null, null));                                                          // 빈 공간
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getString(R.string.menu_drawer)));    // 내 서랍
         items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getString(R.string.menu_1_line)));      // 한줄 일기
 

@@ -9,12 +9,11 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="match_parent"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:src="@drawable/icon_menu_recent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
