@@ -10,7 +10,6 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.base.UserProfile;
 import com.sgy.diary3.ui.activty.MyDiaryMainActivity;
-import com.sgy.diary3.ui.activty.temp.MainActivity;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;

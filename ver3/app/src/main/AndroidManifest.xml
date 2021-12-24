@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary3">
         <activity
-            android:name=".ui.activty.MyDiaryMainActivity"
+            android:name=".ui.activty.temp.TempActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.activty.temp.MainActivity2"
+            android:name=".ui.activty.MyDiaryMainActivity"
             android:exported="true" />
         <activity
             android:name=".ui.activty.RegisterActivity"
@@ -47,9 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activty.temp.MainActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

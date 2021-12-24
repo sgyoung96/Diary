@@ -19,7 +19,6 @@ import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.base.contract.ScreenId;
 import com.sgy.diary3.ui.activty.LoginActivity;
 import com.sgy.diary3.ui.activty.MyDiaryMainActivity;
-import com.sgy.diary3.ui.activty.temp.MainActivity2;
 import com.sgy.diary3.ui.splash.SplashActivity;
 import com.sgy.diary3.util.Utils;
 
@@ -152,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(goSplash);
             overridePendingTransition(0,0);
             finish();
-        } else if (tag.equals(ScreenId.TAG_ACT_MAIN2)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
+        } else if (tag.equals(ScreenId.TAG_ACT_MY_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
             Intent goSplash = new Intent(this, SplashActivity.class);
             goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(goSplash);

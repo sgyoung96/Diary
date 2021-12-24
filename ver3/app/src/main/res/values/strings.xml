@@ -43,10 +43,11 @@
     <string name="menu_drawer">내서랍</string>
     <string name="menu_1_line">한줄일기</string>
 
-    <!-- DrawerLayout Menu -->
-    <string name="menu_profile">내 프로필 설정</string>
-    <string name="menu_logout">로그아웃</string>
-    <string name="menu_delete">계정삭제</string>
+    <!-- DrawerLayout -->
+    <string name="menu_profile">내 프로필</string>
+    <string name="menu_friends">친구목록</string>
+    <string name="menu_center">고객센터</string>
+    <string name="logout">로그아웃</string>
 
     <string name="temp_nickName">닉네임8989</string>
 

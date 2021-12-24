@@ -1,7 +1,5 @@
 package com.sgy.diary3.ui.activty;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -9,7 +7,6 @@ import com.sgy.diary3.R;
 import com.sgy.diary3.base.UserProfile;
 import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityMyDiaryMainBinding;
-import com.sgy.diary3.ui.activty.temp.MainActivity;
 import com.sgy.diary3.ui.adapter.MainBottomAdapter;
 import com.sgy.diary3.ui.data.MainBottomItem;
 import com.sgy.diary3.util.LoginUtil;
