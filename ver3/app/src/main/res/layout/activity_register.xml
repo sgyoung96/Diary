@@ -6,15 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".ui.activty.RegisterActivity">
 
-    <com.sgy.diary3.base.ui.custom.CustomDefaultBackground
-        android:id="@+id/vg_custom"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_splash" />
+
+    <ImageView
+        android:id="@+id/iv_view_title"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:src="@drawable/view_gradient_top"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vg_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_logo_top"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_layout_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_common_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vg_register_contents"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/register_bg_rect"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,7 +2,9 @@ package com.sgy.diary3.ui.activty;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
+import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.UserProfile;
 import com.sgy.diary3.base.ui.BaseActivity;
@@ -14,6 +16,9 @@ import com.sgy.diary3.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import kotlin.Unit;
+import okhttp3.internal.Util;
 
 public class MyDiaryMainActivity extends BaseActivity {
 
@@ -50,7 +55,7 @@ public class MyDiaryMainActivity extends BaseActivity {
 
     }
 
-    private void initView () {
+    private void initView() {
         /* padding 설정 */
         binding.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, 0);
         binding.vgMain.setPadding(0, 0, 0, Utils.getNavigationBarHeight());
@@ -59,10 +64,11 @@ public class MyDiaryMainActivity extends BaseActivity {
         initBottomMenu();
     }
 
-    private void setClickListener () {
+    private void setClickListener() {
         binding.ivLogoTop.setOnClickListener(v -> gotoMain(Utils.getTag(this)));
         binding.ivMenuTop.setOnClickListener(v -> setDrawerVisible(binding.drawerContainer, binding.drawerMain, true));
         binding.drawer.ivClose.setOnClickListener(v -> setDrawerVisible(binding.drawerContainer, binding.drawerMain, false));
+        binding.drawer.vgLogout.setOnClickListener(v -> kakaoLogout());
     }
 
     private void initBottomMenu() {
@@ -84,7 +90,7 @@ public class MyDiaryMainActivity extends BaseActivity {
      * kakao 로그인 시 사용자 정보 받아오기
      * - 카카오 로그인 버튼 클릭 시만 사용자 정보 받아오는 함수를 타므로, 시작점이 되는 곳에서 한 번 더 호출해 준다.
      */
-    private void getKakaoUserInfo () {
+    private void getKakaoUserInfo() {
         LoginUtil loginUtil = new LoginUtil(this);
         loginUtil.getKakaoUserInfo(this);
     }
@@ -92,13 +98,29 @@ public class MyDiaryMainActivity extends BaseActivity {
     /**
      * 사용자 정보 화면에 나타내기
      */
-    private void setUserInfo () {
-        new Handler().postDelayed(new Runnable(){
+    private void setUserInfo() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 binding.drawer.tvNickName.setText(UserProfile.getInstance().nickName);
                 Utils.mLog(Utils.getTag(MyDiaryMainActivity.this), UserProfile.getInstance().nickName);
             }
         }, 500);
+    }
+
+    /**
+     * 드로어 메뉴 - 로그아웃
+     */
+    private void kakaoLogout() {
+        UserApiClient.getInstance().logout(error -> {
+            if (error != null) {
+                Utils.mToast(getString(R.string.system_kakao_logout_fail));
+                Utils.mLog(Utils.getTag(this), getString(R.string.kakao_logout_fail));
+            } else {
+                Utils.mToast(getString(R.string.system_kakao_logout_success));
+                gotoMain(Utils.getTag(this));
+            }
+            return null;
+        });
     }
 }

@@ -131,31 +131,24 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param tag
      */
     public void gotoMain(String tag) {
+        Intent intent = null;
         if (tag.equals(ScreenId.TAG_ACT_SPLASH)) { // Splash Activity 로고 없음, 앱 실행 시 자동로그인 체크
             if (MyApplication.isKakaoLogin == 0) { // 로그아웃 상태 -> 로그인 화면으로 이동
-                Intent intent = new Intent(this, LoginActivity.class);
+                intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-                finish();
             } else { // 토큰 값이 있음 : 로그인 상태 (자동로그인) -> 메인 화면으로 이동 (tmep main activity)
-                Intent intent = new Intent(this, MyDiaryMainActivity.class);
+                intent = new Intent(this, MyDiaryMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
             }
         } else if (tag.equals(ScreenId.TAG_ACT_REGIST)) { // 회원가입 화면 - splash -> main
-            Intent goSplash = new Intent(this, SplashActivity.class);
-            goSplash.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(goSplash);
-            overridePendingTransition(0,0);
-            finish();
-        } else if (tag.equals(ScreenId.TAG_ACT_MY_MAIN)) { // TODO 추수 후정 : 타 경로에서 메인이 되는 액티비티로 이동
-            Intent goSplash = new Intent(this, SplashActivity.class);
-            goSplash.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(goSplash);
-            overridePendingTransition(0,0);
+            intent = new Intent(this, SplashActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        } else if (tag.equals(ScreenId.TAG_ACT_MY_MAIN)) {
+            intent = new Intent(this, SplashActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
     }
 }

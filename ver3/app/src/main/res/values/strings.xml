@@ -31,6 +31,9 @@
     <string name="kakao_get_user_info_success">사용자 정보 요청 성공</string>
     <string name="kakao_get_user_info_fail">사용자 정보 요청 실패</string>
 
+    <string name="system_kakao_logout_fail">로그아웃에 실패하였습니다.</string>
+    <string name="system_kakao_logout_success">로그아웃 되었습니다.</string>
+
     <!-- LoginActivity -->
     <string name="id_hint">아이디를 입력하세요.</string>
     <string name="pw_hint">비밀번호를 입력하세요.</string>
