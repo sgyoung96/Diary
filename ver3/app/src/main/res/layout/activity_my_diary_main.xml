@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 app:maxImageSize="50dp"
-                android:backgroundTint="@color/bottom_menu_checked"
+                android:backgroundTint="@color/bg_floating"
                 app:borderWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
