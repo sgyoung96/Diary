@@ -42,6 +42,8 @@ public class MyDiaryMainActivity extends BaseActivity {
 
     @Override
     protected void resumeActivity() {
+        getKakaoUserInfo();
+        setUserInfo();
         mainAdapter.notifyDataSetChanged();
     }
 
