@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
 import com.sgy.diary3.base.UserProfile;
@@ -11,6 +13,7 @@ import com.sgy.diary3.base.ui.BaseActivity;
 import com.sgy.diary3.databinding.ActivityMyDiaryMainBinding;
 import com.sgy.diary3.ui.adapter.MainBottomAdapter;
 import com.sgy.diary3.ui.data.MainBottomItem;
+import com.sgy.diary3.ui.fragment.RecentFragment;
 import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
@@ -38,6 +41,8 @@ public class MyDiaryMainActivity extends BaseActivity {
         setClickListener();
         getKakaoUserInfo();
         setUserInfo();
+
+        setScreen();
     }
 
     @Override
@@ -57,6 +62,10 @@ public class MyDiaryMainActivity extends BaseActivity {
 
     }
 
+    // ****************************************************************************************
+    // Methods
+    // ****************************************************************************************
+
     private void initView() {
         /* padding 설정 */
         binding.vgHeader.setPadding(0, Utils.getStatusbarHeight(), 0, 0);
@@ -73,20 +82,34 @@ public class MyDiaryMainActivity extends BaseActivity {
         binding.drawer.vgLogout.setOnClickListener(v -> kakaoLogout());
     }
 
+    /**
+     * Fragment 관련 - 하단 RecyclerView 로 구성한 메뉴 클릭 시마다 Fragment 전환
+     */
+    public void setScreen() {
+        getSupportFragmentManager().beginTransaction().replace(binding.vgMainContainer.getId(), new RecentFragment()).commit();
+    }
+
+    /**
+     * 하단 메뉴 RecyclerView 데이터 생성 및 어댑터 붙이기
+     */
     private void initBottomMenu() {
         /* set data */
         items = new ArrayList<>();
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent)));    // 최근목록
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getString(R.string.menu_my_list)));     // 내 일기 목록
-        items.add(new MainBottomItem(null, null));                                                          // 빈 공간
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getString(R.string.menu_drawer)));    // 내 서랍
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getString(R.string.menu_1_line)));      // 한줄 일기
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent)));     // 최근목록
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getString(R.string.menu_my_list)));        // 내 일기 목록
+        items.add(new MainBottomItem(null, null));                                   // 빈 공간
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getString(R.string.menu_drawer)));      // 내 서랍
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getString(R.string.menu_1_line)));       // 한줄 일기
 
         /* init adapter */
         mainAdapter = new MainBottomAdapter(this, items);
         binding.rvMainMenu.setAdapter(mainAdapter);
         mainAdapter.notifyDataSetChanged();
     }
+
+    // ****************************************************************************************
+    // Drawer Layout 관련
+    // ****************************************************************************************
 
     /**
      * kakao 로그인 시 사용자 정보 받아오기
@@ -111,7 +134,7 @@ public class MyDiaryMainActivity extends BaseActivity {
     }
 
     /**
-     * 드로어 메뉴 - 로그아웃
+     * 카카오 로그아웃
      */
     private void kakaoLogout() {
         UserApiClient.getInstance().logout(error -> {

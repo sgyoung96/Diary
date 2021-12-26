@@ -26,7 +26,7 @@ import com.sgy.diary3.util.Utils;
 public abstract class BaseActivity extends AppCompatActivity {
 
     /**
-     * LifeCycle - onCreate, onResume
+     * LifeCycle - onCreate, onResume, onDestroy
      * @param savedInstanceState
      */
     @Override
