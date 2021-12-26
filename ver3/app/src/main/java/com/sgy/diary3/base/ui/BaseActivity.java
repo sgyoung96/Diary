@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -32,7 +33,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* 전체화면 설정 (StatusBar, NavigationBar 까지 화면 확장) */
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        /* 키보드 관련 화면 리사이징 안되는 버그 해결 */
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
 
     @Override
@@ -74,29 +78,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * EditText 시 화면 터치했을 때 키보드 내리기
-     * @param ev
-     * @return
-     */
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View view = getCurrentFocus();
-            if (view instanceof EditText) {
-                Rect rect = new Rect();
-                view.getGlobalVisibleRect(rect);
-                int rawX = (int) ev.getRawX();
-                int rawY = (int) ev.getRawY();
-                if (!rect.contains(rawX, rawY)) {
-                    view.clearFocus();
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+//    /**
+//     * EditText 시 화면 터치했을 때 키보드 내리기 -------------> FULL SCREEN 모드일 때 키보드 노출 시 화면 리사이징 후 키보드 내리면 하단에 검은 공백 생김으로 삭제
+//     * @param ev
+//     * @return
+//     */
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+//            View view = getCurrentFocus();
+//            if (view instanceof EditText) {
+//                Rect rect = new Rect();
+//                view.getGlobalVisibleRect(rect);
+//                int rawX = (int) ev.getRawX();
+//                int rawY = (int) ev.getRawY();
+//                if (!rect.contains(rawX, rawY)) {
+//                    view.clearFocus();
+//                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                }
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
 
     /**
      * DrawerLayout 에 대한 visibility 처리
