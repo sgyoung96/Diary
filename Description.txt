@@ -1,4 +1,4 @@
 ver1 : SQLite 사용
 ver2 : Room 사용
 ver3Renewal : java - Renewal 버전.. base 깔다가 중단
-ver3 : Java 사용 (Room, Coroutine)
+ver3 : Java 사용, 서버 구축, API 통신, 이미지 aws s3 서버 사용
