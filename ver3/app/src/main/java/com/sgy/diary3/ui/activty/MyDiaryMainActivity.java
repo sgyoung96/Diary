@@ -2,9 +2,6 @@ package com.sgy.diary3.ui.activty;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-
-import androidx.fragment.app.FragmentManager;
 
 import com.kakao.sdk.user.UserApiClient;
 import com.sgy.diary3.R;
@@ -18,10 +15,6 @@ import com.sgy.diary3.util.LoginUtil;
 import com.sgy.diary3.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import kotlin.Unit;
-import okhttp3.internal.Util;
 
 public class MyDiaryMainActivity extends BaseActivity {
 
@@ -73,6 +66,8 @@ public class MyDiaryMainActivity extends BaseActivity {
         binding.drawerContainer.setPadding(0, Utils.getStatusbarHeight(), 0, Utils.getNavigationBarHeight());
         /* bottom menu RecyclerView */
         initBottomMenu();
+        /* Fragment 전환 */
+        setScreen();
     }
 
     private void setClickListener() {
@@ -95,11 +90,11 @@ public class MyDiaryMainActivity extends BaseActivity {
     private void initBottomMenu() {
         /* set data */
         items = new ArrayList<>();
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getString(R.string.menu_recent)));     // 최근목록
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getString(R.string.menu_my_list)));        // 내 일기 목록
-        items.add(new MainBottomItem(null, null));                                   // 빈 공간
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getString(R.string.menu_drawer)));      // 내 서랍
-        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getString(R.string.menu_1_line)));       // 한줄 일기
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_recent), getDrawable(R.drawable.icon_menu_recent_off), getString(R.string.menu_recent)));   // 최근목록
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_list), getDrawable(R.drawable.icon_menu_list_off), getString(R.string.menu_my_list)));        // 내 일기 목록
+        items.add(new MainBottomItem(null, null, null));                                                                // 빈 공간
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_drawer), getDrawable(R.drawable.icon_menu_drawer_off), getString(R.string.menu_drawer)));    // 내 서랍
+        items.add(new MainBottomItem(getDrawable(R.drawable.icon_menu_memo), getDrawable(R.drawable.icon_menu_memo_off), getString(R.string.menu_1_line)));       // 한줄 일기
 
         /* init adapter */
         mainAdapter = new MainBottomAdapter(this, items);

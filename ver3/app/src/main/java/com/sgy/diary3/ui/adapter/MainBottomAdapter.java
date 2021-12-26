@@ -37,7 +37,7 @@ public class MainBottomAdapter extends RecyclerView.Adapter<MainBottomHolder> {
     @Override
     public void onBindViewHolder(@NonNull MainBottomHolder holder, int position) {
         Utils.mLog(Utils.getTag(context), "position : " + position);
-        holder.bind(bottomItems.get(position));
+        holder.bind(bottomItems.get(position), position);
     }
 
     @Override

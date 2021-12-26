@@ -1,14 +1,10 @@
 package com.sgy.diary3.ui.holder;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sgy.diary3.R;
 import com.sgy.diary3.base.MyApplication;
 import com.sgy.diary3.databinding.ItemBottomMenuBinding;
 import com.sgy.diary3.ui.data.MainBottomItem;
@@ -23,10 +19,17 @@ public class MainBottomHolder extends RecyclerView.ViewHolder {
         binding = ItemBottomMenuBinding.bind(itemView);
     }
 
-    public void bind(MainBottomItem item) {
-        binding.ivIcon.setImageDrawable(item.icon);
+    public void bind(MainBottomItem item, int position) {
+        /* init - 첫번째 아이콘 선택 모드 */
+        if (position == 0) {
+            binding.ivIcon.setImageDrawable(item.iconOn);
+        } else {
+            binding.ivIcon.setImageDrawable(item.iconOff);
+        }
+
+        /* 메뉴 텍스트 설정 */
         binding.tvTitle.setText(item.title);
 
-        Utils.mLog(Utils.getTag(MyApplication.context), "title : " + item.title);
+
     }
 }

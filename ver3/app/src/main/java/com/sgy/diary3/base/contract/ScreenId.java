@@ -13,6 +13,9 @@ public class ScreenId {
     public static final String TAG_ACT_REGIST = RegisterActivity.class.getSimpleName();
     public static final String TAG_ACT_MY_MAIN = MyDiaryMainActivity.class.getSimpleName();
 
+    // ********** Fragment ***********
+    public static final String TAG_FRG_MY_MAIN = MyDiaryMainActivity.class.getSimpleName();
+
     /* TEMP Activity */
     public static final String TAG_ACT_TEMP = TempActivity.class.getSimpleName();
 }
