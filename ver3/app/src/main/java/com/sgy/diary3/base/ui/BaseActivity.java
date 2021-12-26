@@ -34,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         /* 전체화면 설정 (StatusBar, NavigationBar 까지 화면 확장) */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        /* 키보드 관련 화면 리사이징 안되는 버그 해결 */
+        /* 전체화면일 시 키보드 관련 화면 리사이징 안되는 버그 해결 */
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
     }
